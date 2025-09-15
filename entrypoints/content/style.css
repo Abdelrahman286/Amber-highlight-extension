@@ -1,0 +1,13 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  background-color: black;
+  padding: 16px;
+}
+
+.my-button {
+  padding: 20px;
+}

@@ -6,10 +6,9 @@ export default defineConfig({
   manifest: {
     permissions: ["storage", "unlimitedStorage", "sidePanel"],
     optional_permissions: ["tabs", "downloads"],
-    name: "MemoTab - New Tab Notes",
-    version: "2.9.4",
-    description: "__MSG_extDescription__",
-    default_locale: "en",
+    name: "Amber",
+    version: "0.0.1",
+    description: "Text Hihglighting chrome extension",
   },
   // @ts-expect-error: vite is valid in WXT config but not typed
   vite: () => ({
