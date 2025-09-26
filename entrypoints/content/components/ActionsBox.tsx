@@ -30,11 +30,11 @@ const ActionsBox = () => {
         <motion.div
           ref={boxRef}
           key="trigger-icons"
-          initial={{ opacity: 0, y: -12, scale: 0.95 }}
+          initial={{ opacity: 0, y: -12, scale: 0.75 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: -8, scale: 0.95 }}
-          transition={{ duration: 0.25, ease: "easeOut" }}
-          className="fixed z-[999999] "
+          transition={{ duration: 0.1, ease: "easeOut" }}
+          className="fixed w-[250px] h-[200px] "
           style={{
             top: `${buttonPos.y - 20}px`,
             left: `${buttonPos.x - 20}px`,

@@ -1,5 +1,5 @@
 import { Tree } from "react-arborist";
-
+import ActionsBoxContent from "./Test";
 const data = [
   { id: "1", name: "Testingggggg  dfds" },
   { id: "2", name: "Threads" },
@@ -25,7 +25,10 @@ const data = [
 const App = () => {
   return (
     <div>
-      <Tree initialData={data} />
+      {/* <Tree initialData={data} /> */}
+      <div className="w-[250px] h-[200px] m-7">
+        <ActionsBoxContent></ActionsBoxContent>
+      </div>
     </div>
   );
 };

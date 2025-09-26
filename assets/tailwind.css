@@ -81,6 +81,9 @@
 
   --grid-lines-light: #e6e6e6;
   --grid-background-light: #f1f1f1;
+
+  --tab-active-circle: rgb(63 63 70); /* zinc-700 */
+  --tab-active-square: rgb(82 82 91); /* zinc-600 */
 }
 
 .dark {
@@ -212,29 +215,6 @@ textarea.scrollbar-none {
   display: none !important;
 }
 
-@keyframes flash {
-  0% {
-    box-shadow: 0 0 0px rgba(255, 255, 0, 0);
-  }
-  25% {
-    box-shadow: 0 0 10px 4px rgba(255, 255, 0, 0.8); /* yellow */
-  }
-  50% {
-    box-shadow: 0 0 20px 8px rgba(0, 132, 255, 0.9); /* bright neon blue */
-  }
-  75% {
-    box-shadow: 0 0 10px 4px rgba(255, 255, 0, 0.8); /* yellow again */
-  }
-  100% {
-    box-shadow: 0 0 0px rgba(255, 255, 0, 0);
-  }
-}
-
-.flash-animation {
-  animation: flash 1s ease-in-out;
-  border-radius: 8px;
-}
-
 .custom-markdown,
 .custom-markdown h1,
 .custom-markdown h2,
@@ -260,20 +240,63 @@ textarea.scrollbar-none {
   margin-top: 4px;
   margin-bottom: 8px;
 }
-
-.memotab-transparent {
-  background-color: rgba(255, 255, 255, 0.15); /* or 0.05–0.2 */
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(12px); /* for Safari */
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+.amber-tabs-list * {
+  transition: none;
+}
+.amber-tabs-list button {
+  box-shadow: none;
 }
 
-/* Small */
-.note-color-picker .react-colorful {
-  width: 130px;
-  height: 130px;
+/* Common trigger styling */
+.amber-tabs-trigger-btn {
+  position: relative;
+  border: none;
+  outline: none;
+  border-radius: none;
 }
-.note-color-picker .react-colorful__hue {
-  height: 20px;
+
+.amber-tabs-trigger-btn[data-state="active"]:not(.skip-tab-btn)::before {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background-color: var(--tab-active-circle);
+  content: "";
+  bottom: 0%;
+  left: -8px;
+  border-radius: 50%;
+  z-index: 3;
+}
+
+.amber-tabs-trigger-btn[data-state="active"]:not(.skip-tab-btn)::after {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background-color: var(--tab-active-square);
+  content: "";
+  bottom: 0%;
+  left: -4px;
+  z-index: 1;
+}
+
+.amber-tabs-trigger-btn[data-state="active"] .corner-wrapper::before {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background-color: var(--tab-active-circle);
+  content: "";
+  bottom: 0px;
+  right: -8px;
+  border-radius: 50%;
+  z-index: 2;
+}
+
+.amber-tabs-trigger-btn[data-state="active"] .corner-wrapper::after {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background-color: var(--tab-active-square);
+  content: "";
+  bottom: 0px;
+  right: -4px;
+  z-index: 1;
 }

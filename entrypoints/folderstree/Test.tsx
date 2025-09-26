@@ -21,10 +21,10 @@ const fontColors = ["#ffffff", "#000000", "#f97316", "#a78bfa"];
 
 // Reusable classnames
 const tabTriggerClass =
-  "data-[state=active]:bg-zinc-400 data-[state=active]:text-white text-zinc-400 transition-all py-1 rounded-tl-4xl rounded-tr-4xl relative amber-tabs-trigger-btn rounded-bl-none rounded-br-none border-none ";
+  "data-[state=active]:bg-zinc-600 data-[state=active]:text-white text-zinc-100 transition-all py-1 rounded-tl-4xl rounded-tr-4xl relative amber-tabs-trigger-btn rounded-bl-none rounded-br-none border-none ";
 
 const tabContentClass =
-  "bg-zinc-400 p-2 rounded-b-xl border-none outline-none shadow-none m-0 ";
+  "bg-zinc-600 p-2 rounded-xl border-none outline-none shadow-none m-0 ";
 
 const ActionsBoxContent = () => {
   const [notes, setNotes] = useState("");
@@ -34,18 +34,18 @@ const ActionsBoxContent = () => {
   }
 
   return (
-    <div className="relativea w-full rounded-xl border-white/20 bg-black/70  z-[999999]    text-white p-3">
+    <div className="relative w-full rounded-xl border-white/40  bg-zinc-700 text-white p-2">
       {/* Close Button */}
       <button
         onClick={closeBox}
-        className="absolute top-2 right-2 text-zinc-400 hover:text-white transition"
+        className="absolute top-2 right-2 text-zinc-600 hover:text-white transition"
       >
         <X className="w-4 h-4" />
       </button>
 
       {/* Tabs */}
       <Tabs defaultValue="highlight" className="w-full border-none  gap-[0px]">
-        <TabsList className="amber-tabs-list rounded-t-xl p-0 m-0 border-none outline-none mb-0 pb-0 rounded-none shadow-none h-fit flex bg-white">
+        <TabsList className="amber-tabs-list rounded-t-xl p-0 m-0 border-none outline-none mb-0 pb-0 rounded-none shadow-none h-fit flex   bg-zinc-700 ">
           <TabsTrigger
             value="highlight"
             className={`${tabTriggerClass} amber-tabs-trigger-btn skip-tab-btn`}
@@ -93,7 +93,11 @@ const ActionsBoxContent = () => {
         </TabsList>
 
         {/* Highlight Tab */}
-        <TabsContent value="highlight" className={tabContentClass}>
+        <TabsContent
+          value="highlight"
+          className=" bg-zinc-600 p-2 rounded-b-xl rounded-tr-xl rounded-tl-none border-none outline-none shadow-none m-0 
+"
+        >
           <div className="flex gap-1">
             {highlightColors.map((color) => (
               <button
@@ -149,6 +153,12 @@ const ActionsBoxContent = () => {
           >
             <Sparkles className="w-4 h-4 mr-1" /> Summarize
           </Button>
+          <p>
+            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Inventore,
+            veniam. Quis neque ipsa optio, magnam officia consequuntur sint quo
+            expedita vero, ullam veritatis? Deserunt esse, vero totam voluptatem
+            odit cumque!
+          </p>
         </TabsContent>
 
         {/* Translate Tab */}
@@ -174,26 +184,14 @@ const ActionsBoxContent = () => {
 
       {/* Extra Actions */}
       <div className="flex gap-1 justify-end p-1">
-        <Button
-          size="icon"
-          variant="ghost"
-          className="h-7 w-7 text-zinc-300 hover:text-white"
-        >
+        <Button size="icon" variant="ghost" className="h-7 w-7 text-zinc-300 ">
+          <PanelRightOpen className="w-4 h-4" />
+        </Button>
+        <Button size="icon" variant="ghost" className="h-7 w-7 text-zinc-300 ">
           <Copy className="w-4 h-4" />
         </Button>
-        <Button
-          size="icon"
-          variant="ghost"
-          className="h-7 w-7 text-red-400 hover:text-red-300"
-        >
+        <Button size="icon" variant="ghost" className="h-7 w-7 text-red-400 ">
           <Trash2 className="w-4 h-4" />
-        </Button>
-        <Button
-          size="icon"
-          variant="ghost"
-          className="h-7 w-7 text-zinc-300 hover:text-white"
-        >
-          <PanelRightOpen className="w-4 h-4" />
         </Button>
       </div>
     </div>
