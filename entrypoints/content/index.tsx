@@ -1,6 +1,7 @@
 import "./style.css";
 import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
+import { AppContextProvider } from "./context/AppContext.tsx";
 
 export default defineContentScript({
   matches: ["*://*/*"],
@@ -21,7 +22,11 @@ export default defineContentScript({
         container.append(wrapper);
 
         const root = ReactDOM.createRoot(wrapper);
-        root.render(<App />);
+        root.render(
+          <AppContextProvider>
+            <App></App>
+          </AppContextProvider>
+        );
         return { root, wrapper };
       },
       onRemove: (elements) => {

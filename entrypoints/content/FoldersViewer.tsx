@@ -1,34 +1,30 @@
-import { Button } from "@/components/ui/button";
-import { Tree } from "react-arborist";
+import { NodeRendererProps, Tree } from "react-arborist";
+import { data } from "./data";
 
-const data = [
-  { id: "1", name: "Testingggggg  dfds" },
-  { id: "2", name: "Threads" },
-  {
-    id: "3",
-    name: "Chat Rooms",
-    children: [
-      { id: "c1", name: "General" },
-      { id: "c2", name: "Random" },
-      { id: "c3", name: "Open Source Projects" },
-    ],
-  },
-  {
-    id: "4",
-    name: "Direct Messages",
-    children: [
-      { id: "d1", name: "Alice" },
-      { id: "d2", name: "Bob" },
-      { id: "d3", name: "Charlie" },
-    ],
-  },
-];
-const FoldersViewer = () => {
+function Node({ node, style, dragHandle }: NodeRendererProps<any>) {
+  /* This node instance can do many things. See the API reference. */
   return (
-    <div>
-      <Tree initialData={data} />
+    <div style={style} ref={dragHandle} onClick={() => node.toggle()}>
+      {node.isLeaf ? "🍁" : "🗀"} {node.data.name}
     </div>
   );
-};
+}
 
-export default FoldersViewer;
+/* Customize Appearance */
+export default function FoldersViewer() {
+  return (
+    <Tree
+      initialData={data}
+      openByDefault={false}
+      width={600}
+      height={1000}
+      indent={24}
+      rowHeight={36}
+      paddingTop={30}
+      paddingBottom={10}
+      padding={25 /* sets both */}
+    >
+      {Node}
+    </Tree>
+  );
+}
