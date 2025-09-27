@@ -1,5 +1,5 @@
-import "@/assets/tailwind.css";
-import { useEffect, useRef } from "react";
+import "@/assets/contentScript.css";
+import { useEffect } from "react";
 import { restoreHighlights } from "./RestoreHighlights";
 import { useAppContext } from "./context/AppContext";
 import TriggerIcons from "./components/TriggerIcons";
@@ -72,7 +72,14 @@ const App = () => {
   }, [showActionsBox]);
 
   return (
-    <div className="p-0 m-0 fixed z-[100]">
+    <div
+      style={{
+        padding: 0,
+        margin: 0,
+        position: "fixed",
+        zIndex: 100,
+      }}
+    >
       {buttonPos && !showActionsBox ? <TriggerIcons /> : null}
       {showActionsBox && <ActionsBox />}
     </div>

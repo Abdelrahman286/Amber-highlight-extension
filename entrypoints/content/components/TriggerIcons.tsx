@@ -1,7 +1,6 @@
-import React from "react";
 import { highlight } from "../highlightFunction";
 import { useAppContext } from "../context/AppContext";
-import { Button } from "@/components/ui/button";
+import Button from "./Button/Button";
 import { Highlighter, Logs } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -49,7 +48,7 @@ const TriggerIcons = () => {
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: -8, scale: 0.95 }}
           transition={{ duration: 0.25, ease: "easeOut" }}
-          className="fixed z-[999999] flex gap-2 rounded-2xl border border-white/20 bg-black/70 backdrop-blur-md p-1 shadow-2xl"
+          className="trigger-icons-container"
           style={{
             top: `${buttonPos.y}px`,
             left: `${buttonPos.x}px`,
@@ -57,24 +56,24 @@ const TriggerIcons = () => {
           }}
         >
           <Button
-            size={"iconSm"}
+            size={"sm"}
             variant={"ghost"}
-            className="rounded-xl text-white transition-all hover:bg-white/20 hover:text-yellow-300 hover:scale-110 hover:shadow-lg"
+            className="trigger-button"
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
               setShowActionsBox(true);
             }}
           >
-            <Logs className="w-5 h-5" />
+            <Logs className="icon" />
           </Button>
           <Button
-            size={"iconSm"}
+            size={"sm"}
             variant={"ghost"}
-            className="rounded-xl text-white transition-all hover:bg-white/20 hover:text-yellow-300 hover:scale-110 hover:shadow-lg"
+            className="trigger-button"
             onClick={handleHighlightText}
           >
-            <Highlighter className="w-5 h-5" />
+            <Highlighter className="icon" />
           </Button>
         </motion.div>
       )}

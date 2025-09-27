@@ -11,6 +11,8 @@ const App = () => {
       </h1>
 
       <IndexedDBPlayground></IndexedDBPlayground>
+      
+
     </div>
   );
 };

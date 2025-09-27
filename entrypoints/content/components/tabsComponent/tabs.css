@@ -1,0 +1,92 @@
+.tabs-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  font-family: sans-serif;
+}
+
+.tabs-list {
+  display: flex;
+}
+
+.tab-trigger {
+  position: relative;
+  padding: 6px 12px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: white;
+  border-top-right-radius: 12px;
+  border-top-left-radius: 12px;
+}
+
+/* 1 - right side circle */
+.tab-trigger.active .right-popout-corner::after {
+  position: absolute;
+  content: "";
+  width: 14px;
+  height: 14px;
+  background: var(--zinc-700);
+  z-index: 999999;
+  bottom: 0;
+  right: -14px;
+  border-radius: 50%;
+}
+/* 2 - right side square */
+.tab-trigger.active .right-popout-corner::before {
+  position: absolute;
+  content: "";
+  width: 8px;
+  height: 8px;
+  background: var(--zinc-600);
+  z-index: 999999;
+  bottom: 0;
+  right: -8px;
+}
+
+/* 3 - right side circle */
+
+.tabs-list .tab-trigger.active:not(:first-child)::after {
+  position: absolute;
+  content: "";
+  width: 14px;
+  height: 14px;
+  background: var(--zinc-700);
+  z-index: 9999;
+  bottom: 0;
+  left: -14px;
+  border-radius: 50%;
+}
+
+/* 4 - right side square */
+.tabs-list .tab-trigger.active:not(:first-child)::before {
+  position: absolute;
+  content: "";
+  width: 8px;
+  height: 8px;
+  background: var(--zinc-600);
+  z-index: 9999;
+  bottom: 0;
+  left: -8px;
+}
+
+.tab-trigger.active {
+  background: var(--zinc-600);
+  font-weight: 600;
+  color: white;
+}
+
+.tabs-content {
+  padding: 16px;
+  background: var(--zinc-600);
+  width: 100%;
+  color: white;
+
+  border-radius: 8px; /* base */
+  /* override just the top-left corner */
+  border-top-left-radius: 0;
+}
+
+.tab-trigger:hover {
+  /* background: #f9fafb; */
+}

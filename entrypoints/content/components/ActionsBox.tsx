@@ -34,11 +34,13 @@ const ActionsBox = () => {
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: -8, scale: 0.95 }}
           transition={{ duration: 0.1, ease: "easeOut" }}
-          className="fixed w-[250px] h-[200px] "
           style={{
             top: `${buttonPos.y - 20}px`,
             left: `${buttonPos.x - 20}px`,
             transform: "translateX(-50%)",
+            position: "fixed",
+            width: "300px",
+            // height: "200px",
           }}
         >
           <ActionsBoxContent></ActionsBoxContent>
