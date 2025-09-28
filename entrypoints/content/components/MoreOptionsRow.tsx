@@ -10,6 +10,18 @@ const MoreOptionsRow = () => {
     }
   };
 
+  const handleCopy = async () => {
+    try {
+      const response = await browser.runtime.sendMessage({
+        action: "addDummyWebsite",
+      });
+
+      console.log(response);
+    } catch (error) {
+      console.error("Error opening sidebar:", error);
+    }
+  };
+
   return (
     <div
       style={{
@@ -47,7 +59,9 @@ const MoreOptionsRow = () => {
           variant="icon"
           size="sm"
           icon={<Copy className="size-18" />}
+          onClick={() => handleCopy()}
         ></Button>
+
         <Button
           variant="icon"
           size="sm"

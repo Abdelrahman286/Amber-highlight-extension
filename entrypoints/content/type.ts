@@ -35,6 +35,8 @@ export type StoredHighlight = {
   highlightIndex: number;
   selectionString: string;
 
+  urlId: string;
+
   anchorOffset: number;
   focusOffset: number;
   anchorPath: string | null;
@@ -43,3 +45,10 @@ export type StoredHighlight = {
   anchorContext: ContextText;
   focusContext: ContextText;
 };
+
+// Define the websites interface
+export interface Websites {
+  id: string;
+  createdAt: number;
+  url: string;
+}

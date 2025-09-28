@@ -16,7 +16,6 @@ const App = () => {
 
   useEffect(() => {
     function handleMouseUp(e: MouseEvent) {
-      console.log("useEffect run");
       if (showActionsBox) return;
       setTimeout(() => {
         const selection = window.getSelection();
