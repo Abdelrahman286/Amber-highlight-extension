@@ -18,6 +18,24 @@ const App = () => {
       <Button variant={"outline"}>Open sidePanel</Button>
       <Button onClick={handleOpenOptionsPage}>Open options page </Button>
       <strong>{error}</strong>
+      <Button
+        onClick={async () => {
+          try {
+            const currentWindow = await browser.windows.getCurrent();
+            if (currentWindow.id) {
+              if (browser.sidePanel && browser.sidePanel.open) {
+                await browser.sidePanel.open({ windowId: currentWindow.id });
+              } else {
+                console.log("Side panel API not supported");
+              }
+            }
+          } catch (error) {
+            console.error("Error opening sidebar:", error);
+          }
+        }}
+      >
+        open sidePanel
+      </Button>
     </div>
   );
 };

@@ -3,7 +3,7 @@ import { useAppContext } from "../context/AppContext";
 import Button from "./Button/Button";
 import { Highlighter, Logs } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-
+import { getTriggersButtonsCoord } from "../PositioningUtils";
 const TriggerIcons = () => {
   const { selectionRef, setButtonPos, buttonPos, setShowActionsBox } =
     useAppContext();
@@ -39,6 +39,13 @@ const TriggerIcons = () => {
     }
   };
 
+  let x = 0;
+  let y = 0;
+
+  if (buttonPos) {
+    ({ x, y } = getTriggersButtonsCoord(buttonPos.x, buttonPos.y));
+  }
+
   return (
     <AnimatePresence>
       {buttonPos && (
@@ -50,8 +57,8 @@ const TriggerIcons = () => {
           transition={{ duration: 0.25, ease: "easeOut" }}
           className="trigger-icons-container"
           style={{
-            top: `${buttonPos.y}px`,
-            left: `${buttonPos.x}px`,
+            top: `${y}px`,
+            left: `${x}px`,
             transform: "translateX(-50%)",
           }}
         >

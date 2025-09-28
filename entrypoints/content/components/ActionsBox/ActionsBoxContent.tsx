@@ -49,7 +49,7 @@ const Test = () => {
         icon={<X className="size-16" />}
         className="close-actions-btn"
       ></Button>
-      <Tabs tabs={tabs} defaultActive={2} />
+      <Tabs tabs={tabs} defaultActive={0} />
       <MoreOptionsRow></MoreOptionsRow>
     </div>
   );

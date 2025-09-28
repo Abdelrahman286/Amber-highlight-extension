@@ -2,7 +2,8 @@ import { useEffect, useRef } from "react";
 import { useAppContext } from "../context/AppContext";
 import { motion, AnimatePresence } from "framer-motion";
 import ActionsBoxContent from "./ActionsBox/ActionsBoxContent";
-
+import { ACTIONS_BOX_WIDTH, ACTIONS_BOX_HEIGHT } from "../CONTANTS";
+import { getActionsBoxCoord } from "../PositioningUtils";
 const ActionsBox = () => {
   const { buttonPos, setButtonPos, setShowActionsBox } = useAppContext();
   const boxRef = useRef<HTMLDivElement | null>(null);
@@ -24,6 +25,18 @@ const ActionsBox = () => {
     };
   }, [setButtonPos, setShowActionsBox]);
 
+  let x = 0;
+  let y = 0;
+
+  if (buttonPos) {
+    ({ x, y } = getActionsBoxCoord(
+      buttonPos.x,
+      buttonPos.y,
+      ACTIONS_BOX_WIDTH,
+      ACTIONS_BOX_HEIGHT
+    ));
+  }
+
   return (
     <AnimatePresence>
       {buttonPos && (
@@ -35,12 +48,12 @@ const ActionsBox = () => {
           exit={{ opacity: 0, y: -8, scale: 0.95 }}
           transition={{ duration: 0.1, ease: "easeOut" }}
           style={{
-            top: `${buttonPos.y - 20}px`,
-            left: `${buttonPos.x - 20}px`,
-            transform: "translateX(-50%)",
+            top: `${y}px`,
+            left: `${x}px`,
             position: "fixed",
-            width: "300px",
-            // height: "200px",
+            width: `${ACTIONS_BOX_WIDTH}px`,
+            // transform: "translateX(-50%)",
+            // height: `${ACTIONS_BOX_HEIGHT}px`,
           }}
         >
           <ActionsBoxContent></ActionsBoxContent>

@@ -4,8 +4,7 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineConfig({
   modules: ["@wxt-dev/module-react"],
   manifest: {
-    permissions: ["storage", "unlimitedStorage", "sidePanel"],
-    optional_permissions: ["tabs", "downloads"],
+    permissions: ["storage", "unlimitedStorage", "sidePanel", "tabs"],
     name: "Amber",
     version: "0.0.1",
     description: "Text Hihglighting chrome extension",

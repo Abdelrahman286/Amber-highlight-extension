@@ -1,7 +1,15 @@
 import Button from "./Button/Button";
 import { PanelRightOpen, Copy, Trash2, Folder } from "lucide-react";
-
+import { browser } from "wxt/browser";
 const MoreOptionsRow = () => {
+  const handleOpenSidebar = async () => {
+    try {
+      await browser.runtime.sendMessage({ action: "openSidePanel" });
+    } catch (error) {
+      console.error("Error opening sidebar:", error);
+    }
+  };
+
   return (
     <div
       style={{
@@ -33,6 +41,7 @@ const MoreOptionsRow = () => {
           variant="icon"
           size="sm"
           icon={<PanelRightOpen className="size-18" />}
+          onClick={() => handleOpenSidebar()}
         ></Button>
         <Button
           variant="icon"

@@ -69,6 +69,7 @@
 /* ------------------- Trigger buttons ------------------ */
 /* container */
 .trigger-icons-container {
+  direction: ltr !important;
   position: fixed;
   z-index: 999999;
   display: flex;
@@ -92,7 +93,6 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: red;
 }
 
 /* hover effects */
@@ -108,6 +108,7 @@
 
 /*------------------------ Actions box -------------------  */
 .actions-box-container {
+  direction: ltr !important;
   position: relative;
   width: 100%;
   height: 100%;
