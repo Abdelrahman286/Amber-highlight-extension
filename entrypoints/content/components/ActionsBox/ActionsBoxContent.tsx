@@ -43,9 +43,8 @@ const Test = () => {
 
   return (
     <div className="actions-box-container ">
- 
-
       <Button
+        title="close"
         variant="icon"
         size="sm"
         icon={<X className="size-16" />}

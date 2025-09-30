@@ -9,9 +9,14 @@
 }
 
 :root {
-  --zinc-600: oklch(44.2% 0.017 285.786);
+  --zinc-900: oklch(21% 0.006 285.885);
+  --zinc-800: oklch(27.4% 0.006 286.033);
   --zinc-700: oklch(37% 0.013 285.805);
+  --zinc-600: oklch(44.2% 0.017 285.786);
+  --zinc-500: oklch(55.2% 0.016 285.938);
+  --zinc-400: oklch(70.5% 0.015 286.067);
   --zinc-300: oklch(87.1% 0.006 286.286);
+
   --yelow: #facc15;
 }
 
@@ -83,7 +88,8 @@
 }
 
 /* buttons */
-.trigger-button {
+.trigger-button,
+.trigger-button-no-hover {
   border-radius: 12px;
   color: var(--zinc-300);
   transition: all 0.2s ease;
@@ -124,4 +130,55 @@
   top: 8px;
   right: 8px;
   background: red;
+}
+
+/* Scrollbar settings */
+.thin-scrollbar::-webkit-scrollbar {
+  width: 5px;
+  height: 8px;
+  background: white; /* Make the scrollbar background white */
+  border-top-right-radius: 20px;
+  border-top-left-radius: 20px;
+}
+
+/* Track (the non-moving part) */
+.thin-scrollbar::-webkit-scrollbar-track {
+  background: transparent; /* Ensure track is also white */
+}
+
+/* Handle (the moving part) */
+.thin-scrollbar::-webkit-scrollbar-thumb {
+  background: var(
+    --scrollbar-thumb,
+    #888888
+  ); /* The moving part gets the variable background */
+  border-radius: 10px;
+}
+
+/* Track piece (the non-moving part) */
+.thin-scrollbar::-webkit-scrollbar-track-piece {
+  background: transparent; /* Make the track pieces white */
+}
+
+/*------------------- Scrollbar black -----------------------  */
+.thin-black-scrollbar::-webkit-scrollbar {
+  width: 5px;
+  height: 8px;
+  background: transparent;
+  border-top-right-radius: 20px;
+  border-top-left-radius: 20px;
+}
+
+.thin-black-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.thin-black-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb, #888888);
+  border-radius: 10px;
+}
+
+/* Track piece (the non-moving part) */
+.thin-black-scrollbar::-webkit-scrollbar-track-piece {
+  background: transparent; /* Make the track pieces white */
 }

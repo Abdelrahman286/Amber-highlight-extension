@@ -1,0 +1,47 @@
+:root {
+  --border-color: var(--zinc-700);
+  --bg: var(--zinc-700);
+  --bg-hover: var(--zinc-600);
+  --text: var(--zinc-300);
+  --text-muted: oklch(70% 0.005 285.8);
+  --focus-ring: color-mix(in oklab, var(--zinc-300) 30%, transparent);
+}
+
+.select-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.select {
+  width: 100%;
+  padding: 6px 16px 6px 6px; /* extra space on right for icon */
+  font-size: 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background: var(--bg);
+  color: var(--text);
+  appearance: none; /* remove native arrow */
+  cursor: pointer;
+}
+
+/* Position the icon */
+.select-icon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  pointer-events: none; /* let clicks go to select */
+  transform: translateY(-50%);
+  color: var(--text-muted);
+}
+
+.select:hover {
+  /* background-color: var(--bg-hover); */
+  border: 1px solid var(--focus-ring);
+}
+
+/* ✅ clean dark zinc focus */
+.select:focus {
+  outline: none;
+  border-color: var(--zinc-300);
+  box-shadow: 0 0 0 2px var(--focus-ring);
+}
