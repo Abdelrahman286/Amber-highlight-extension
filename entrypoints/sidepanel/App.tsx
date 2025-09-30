@@ -26,6 +26,7 @@ const App = () => {
   return (
     <div>
       <h1>Dummy websites</h1>
+      <h2>heheheh</h2>
       <Button onClick={loadWebsites}>Refresh</Button>
       <ul>
         {websites.map((site) => (

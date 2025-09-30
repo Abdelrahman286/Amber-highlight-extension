@@ -83,6 +83,39 @@
     <div style="height: 160vh;">aa</div>
 
     <h1>Hello world </h1>
+
+
+
+    <script>
+        function isGeminiNanoAvailable() {
+            // Check if the new AI API is exposed
+            if (typeof window.ai !== "undefined") {
+                console.log("✅ Gemini Nano / AI API is available in this browser.");
+                return true;
+            }
+
+
+
+            // Fallback checks (since Nano relies on WebGPU and/or WebNN)
+            const hasWebGPU = !!navigator.gpu;
+            const hasWebNN = !!navigator.ml; // Web Neural Network API (very experimental)
+
+
+            console.log(navigator.gpu)
+
+            if (hasWebGPU || hasWebNN) {
+                console.log("⚠️ AI runtime features (WebGPU/WebNN) are available, Gemini Nano may work.");
+                return true;
+            }
+
+            console.log("❌ Gemini Nano is not available in this browser.");
+            return false;
+        }
+
+        // Run it
+        isGeminiNanoAvailable();
+
+    </script>
 </body>
 
 </html>
