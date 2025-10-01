@@ -1,3 +1,4 @@
+import { browser } from "wxt/browser";
 import { highlight } from "../highlightFunction";
 import { useAppContext } from "../context/AppContext";
 import Button from "./Button/Button";

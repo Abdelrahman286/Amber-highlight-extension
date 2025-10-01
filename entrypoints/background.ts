@@ -5,6 +5,8 @@ import {
   addHighlightDB,
   deleteAllHighlightsDB,
   addWebsiteDB,
+  getWebsiteHighlightsDB,
+  deleteHighlightDB,
 } from "./src/dbFunction";
 
 console.log("background script");
@@ -74,6 +76,24 @@ const messageHandlers: Record<
   addWebsite: async (message, sender, sendResponse) => {
     try {
       const res = await addWebsiteDB(message.data);
+      sendResponse(res);
+    } catch (err: any) {
+      sendResponse(err);
+    }
+  },
+
+  getWebsiteHighlights: async (message, sender, sendResponse) => {
+    try {
+      const res = await getWebsiteHighlightsDB(message.data);
+      sendResponse(res);
+    } catch (err: any) {
+      sendResponse(err);
+    }
+  },
+
+  deleteSingleHighlight: async (message, sender, sendResponse) => {
+    try {
+      const res = await deleteHighlightDB(message.data);
       sendResponse(res);
     } catch (err: any) {
       sendResponse(err);

@@ -16,8 +16,10 @@ import SummerizeTab from "../tabs-content/SummerizeTab";
 import TranslateTab from "../tabs-content/TranslateTab";
 import NotesTab from "../tabs-content/NotesTab";
 import MoreOptionsRow from "../MoreOptionsRow";
+import { useAppContext } from "../../context/AppContext";
 
 const Test = () => {
+  const { setButtonPos, selectionRef, setShowActionsBox } = useAppContext();
   const tabs: TabItem[] = [
     {
       label: <Highlighter className="size-16"></Highlighter>,
@@ -41,9 +43,18 @@ const Test = () => {
     },
   ];
 
+  const handleCloseActionsBox = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setButtonPos(null);
+    setShowActionsBox(false);
+    selectionRef.current = null;
+  };
+
   return (
     <div className="actions-box-container ">
       <Button
+        onClick={handleCloseActionsBox}
         title="close"
         variant="icon"
         size="sm"

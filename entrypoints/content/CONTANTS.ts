@@ -1,4 +1,4 @@
-export const HIGHLIGHT_CLASS = "highlighter--highlighted";
+export const HIGHLIGHT_CLASS = "amber-highlighter-class";
 export const DELETED_CLASS = "highlighter--deleted";
 export const STORAGE_KEY = "highlights";
 

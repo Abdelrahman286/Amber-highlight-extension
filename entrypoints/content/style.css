@@ -1,5 +1,3 @@
-
-
 /* ----------------  highlight style */
 
 .highlighter--highlighted {
@@ -10,8 +8,10 @@
   text-decoration: line-through;
   background: none;
 }
+/* amber-highlighter */
+/* highlighter-span  */
 
-highlighter-span {
+amber-highlighter {
   position: relative;
   cursor: pointer;
 }

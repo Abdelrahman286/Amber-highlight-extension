@@ -12,13 +12,33 @@ const App = () => {
     selectionRef,
     showActionsBox,
     setShowActionsBox,
+    setSelectedHighlightId,
   } = useAppContext();
 
   useEffect(() => {
+    console.log(3);
     function handleMouseUp(e: MouseEvent) {
+      if (
+        (e.target as HTMLElement).tagName == "AMBER-HIGHLIGHTER" &&
+        (e.target as HTMLElement)?.dataset?.amberhighlightid
+      ) {
+        const target = e.target as HTMLElement;
+        console.log((e.target as HTMLElement)?.dataset?.amberhighlightid);
+
+        setSelectedHighlightId(String(target?.dataset?.amberhighlightid));
+        // show actions box
+        setShowActionsBox(true);
+        setButtonPos({
+          x: e.clientX,
+          y: e.clientY + 8,
+        });
+        return;
+      }
       if (showActionsBox) return;
+
       setTimeout(() => {
         const selection = window.getSelection();
+
         if (
           selection &&
           selection.toString().trim().length > 0 &&
@@ -68,8 +88,7 @@ const App = () => {
     return () => {
       document.removeEventListener("DOMContentLoaded", handleDOMContentLoaded);
     };
-  }, [showActionsBox]);
-
+  }, []); // remove showActionsBox from dep
   return (
     <div
       style={{

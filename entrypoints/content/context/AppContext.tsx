@@ -18,6 +18,9 @@ type AppContextType = {
 
   showActionsBox: boolean;
   setShowActionsBox: Dispatch<SetStateAction<boolean>>;
+
+  selectHighlightId: string;
+  setSelectedHighlightId: Dispatch<SetStateAction<string>>;
 };
 
 // Create the context with a default (undefined)
@@ -34,6 +37,8 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
   // store selection globally inside this ref
   const selectionRef = useRef<Selection | null>(null);
 
+  const [selectHighlightId, setSelectedHighlightId] = useState<string>("");
+
   return (
     <AppContext.Provider
       value={{
@@ -43,6 +48,8 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
 
         showActionsBox,
         setShowActionsBox,
+        selectHighlightId,
+        setSelectedHighlightId,
       }}
     >
       {children}

@@ -15,6 +15,7 @@ type ContextText = {
 } | null;
 
 export type RecursiveWrapperArgs = {
+  id: string;
   color: string;
   textColor: string;
   createdAt: number;

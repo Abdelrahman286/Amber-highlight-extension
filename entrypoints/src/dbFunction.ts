@@ -50,21 +50,41 @@ export const deleteAllHighlightsDB = async (): Promise<{
       return { success: false, error: err.message };
     });
 };
-
 // --- Delete Single Highlight ---
 export const deleteHighlightDB = async (
   id: string
 ): Promise<{ success: boolean; error?: string }> => {
-  return db.highlights
-    .delete(id)
-    .then(() => {
-      console.log(`Highlight with id ${id} deleted successfully.`);
-      return { success: true };
-    })
-    .catch((err) => {
-      console.error("Error deleting highlight:", err);
-      return { success: false, error: err.message };
-    });
+  try {
+    // First, get the highlight (to retrieve urlId)
+    const highlight = await db.highlights.get(id);
+    if (!highlight) {
+      return { success: false, error: `Highlight with id ${id} not found.` };
+    }
+
+    const { urlId } = highlight;
+
+    // Delete the highlight
+    await db.highlights.delete(id);
+    console.log(`Highlight with id ${id} deleted successfully.`);
+
+    // Check if there are other highlights for this urlId
+    const remaining = await db.highlights.where("urlId").equals(urlId).count();
+
+    if (remaining === 0) {
+      // No other highlights → delete website record
+      await db.websites.delete(urlId);
+      console.log(`Website with id ${urlId} deleted (no highlights left).`);
+    } else {
+      console.log(
+        `Website with id ${urlId} kept (still ${remaining} highlight(s) left).`
+      );
+    }
+
+    return { success: true };
+  } catch (err: any) {
+    console.error("Error deleting highlight:", err);
+    return { success: false, error: err.message };
+  }
 };
 
 // --- Add Website ---
@@ -90,4 +110,34 @@ export const addWebsiteDB = async (
     console.error("Error adding new website:", err);
     return { success: false, error: err.message };
   }
+};
+
+// --- get website highlights ---
+export const getWebsiteHighlightsDB = async (
+  url: string
+): Promise<{ success: boolean; error?: string; data?: StoredHighlight[] }> => {
+  try {
+    // 1. Find the website entry by its url
+    const website = await db.websites.where("url").equals(url).first();
+
+    if (!website) {
+      return { success: false, error: "Website not found" };
+    }
+
+    // 2. Use website.id (urlId) to get all highlights
+    const highlights = await db.highlights
+      .where("urlId")
+      .equals(website.id)
+      .toArray();
+
+    return { success: true, data: highlights };
+  } catch (err: any) {
+    console.error("Error fetching highlights:", err);
+    return { success: false, error: err.message };
+  }
+};
+
+// --- Test Delya ---
+export const delay = (ms: number): Promise<void> => {
+  return new Promise((resolve) => setTimeout(resolve, ms));
 };

@@ -1,4 +1,4 @@
-import { HIGHLIGHT_CLASS, DELETED_CLASS, STORAGE_KEY } from "./CONTANTS";
+import { HIGHLIGHT_CLASS, DELETED_CLASS } from "./CONTANTS";
 import { HighlightArgs, RecursiveWrapperArgs, StoredHighlight } from "./type";
 import { getNodePath, getContextText } from "./DomUtils";
 import { browser } from "wxt/browser";
@@ -73,6 +73,7 @@ function _recursiveWrapper(
   charsHighlighted: number
 ): [boolean, number] {
   const {
+    id: uuid,
     anchor,
     focus,
     anchorOffset,
@@ -154,13 +155,14 @@ function _recursiveWrapper(
       return;
     }
 
-    const highlightNode = document.createElement("highlighter-span");
+    const highlightNode = document.createElement("amber-highlighter");
     highlightNode.classList.add(
       color === "inherit" ? DELETED_CLASS : HIGHLIGHT_CLASS
     );
+
     highlightNode.style.backgroundColor = color;
     highlightNode.style.color = textColor;
-    highlightNode.dataset.highlightId = String(createdAt);
+    highlightNode.dataset.amberhighlightid = uuid;
     highlightNode.textContent = highlightText ?? "";
 
     highlightTextEl.remove();
@@ -168,6 +170,22 @@ function _recursiveWrapper(
   });
 
   return [startFound, charsHighlighted];
+}
+
+//======= remove highlight ==========
+
+export function removeHighlightById(id: string) {
+  // Find all elements with the dataset id
+  const highlights = document.querySelectorAll<HTMLElement>(
+    `[data-amberhighlightid="${id}"]`
+  );
+
+  highlights.forEach((el) => {
+    el.classList.remove(HIGHLIGHT_CLASS);
+    el.style.backgroundColor = "inherit";
+    el.style.color = "inherit";
+    el.dataset.amberhighlightid = "";
+  });
 }
 
 // ===================== STORAGE ===========================
@@ -201,6 +219,10 @@ async function saveHighlight(info: StoredHighlight): Promise<boolean> {
         ...info,
         urlId: storedWebsiteID,
       },
+    });
+    // revalidate sidepanel highlights
+    await browser.runtime.sendMessage({
+      action: "invalidateSidepanelHighlights",
     });
 
     if (!highlightRes.success) {
