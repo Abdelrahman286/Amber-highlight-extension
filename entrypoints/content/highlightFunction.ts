@@ -1,21 +1,26 @@
 import { HIGHLIGHT_CLASS, DELETED_CLASS, STORAGE_KEY } from "./CONTANTS";
 import { HighlightArgs, RecursiveWrapperArgs, StoredHighlight } from "./type";
 import { getNodePath, getContextText } from "./DomUtils";
+import { browser } from "wxt/browser";
 // ===== HIGHLIGHTING =====
 export function highlight({
+  id,
+  urlId,
   container,
   selection,
   color,
   textColor,
-  highlightIndex,
+  createdAt,
 }: HighlightArgs) {
   const selString = selection.toString() as string;
   const rangeLength = selString.length;
 
   const highlightInfo = {
+    id: id,
+    urlId: urlId,
     color: color || "yellow",
     textColor: textColor || "inherit",
-    highlightIndex,
+    createdAt,
     selectionString: selString,
 
     anchorOffset: selection.anchorOffset,
@@ -74,7 +79,7 @@ function _recursiveWrapper(
     focusOffset,
     color,
     textColor,
-    highlightIndex,
+    createdAt,
     selectionString,
   } = highlightInfo;
   const selectionLength = selectionString.length;
@@ -155,7 +160,7 @@ function _recursiveWrapper(
     );
     highlightNode.style.backgroundColor = color;
     highlightNode.style.color = textColor;
-    highlightNode.dataset.highlightId = String(highlightIndex);
+    highlightNode.dataset.highlightId = String(createdAt);
     highlightNode.textContent = highlightText ?? "";
 
     highlightTextEl.remove();
@@ -166,9 +171,47 @@ function _recursiveWrapper(
 }
 
 // ===================== STORAGE ===========================
-function saveHighlight(info: StoredHighlight) {
-  const highlights = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
-  highlights.push(info);
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(highlights));
-  console.log("Saved highlights:", highlights);
+async function saveHighlight(info: StoredHighlight): Promise<boolean> {
+  try {
+    // Step 1: Save website (background script decides ID or reuse existing one)
+    const websiteRes = await browser.runtime.sendMessage({
+      action: "addWebsite",
+      data: {
+        id: crypto.randomUUID(), // propose an ID, but background can override
+        createdAt: Date.now(),
+        url: window.location.href,
+      },
+    });
+
+    if (!websiteRes.success) {
+      console.warn("⚠️ Failed to save website:", websiteRes.error);
+      return false;
+    }
+
+    const storedWebsiteID = websiteRes.websiteID;
+    if (!storedWebsiteID) {
+      console.warn("⚠️ No websiteID returned from addWebsite.");
+      return false;
+    }
+
+    // Step 2: Save highlight with the actual website ID
+    const highlightRes = await browser.runtime.sendMessage({
+      action: "addHighlight",
+      data: {
+        ...info,
+        urlId: storedWebsiteID,
+      },
+    });
+
+    if (!highlightRes.success) {
+      console.warn("⚠️ Failed to save highlight:", highlightRes.error);
+      return false;
+    }
+
+    console.log("✅ Highlight saved successfully.");
+    return true;
+  } catch (error) {
+    console.error("❌ Error saving highlight:", error);
+    return false;
+  }
 }

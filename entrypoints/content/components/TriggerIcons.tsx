@@ -21,18 +21,21 @@ const TriggerIcons = () => {
 
     const color = "yellow";
     const textColor = "black";
-    const highlightIndex = Date.now();
+    const createdAt = Date.now();
+    const id = crypto.randomUUID();
+    const urlId = "324-234234-234-23";
 
     const success = highlight({
+      id,
+      urlId,
       container,
       selection,
       color,
       textColor,
-      highlightIndex,
+      createdAt,
     });
 
     if (success) {
-      console.log("Highlighted: done");
       setButtonPos(null);
     } else {
       console.log("Failed to highlight");

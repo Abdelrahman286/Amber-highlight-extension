@@ -1,7 +1,7 @@
 import Select, { Option } from "../SelectComponent/Select";
 import Tooltip from "../CustomToolTip/Tooltip";
 
-import { Settings, AArrowDownIcon } from "lucide-react";
+import { Settings, AArrowDownIcon, Expand } from "lucide-react";
 const HighlighterTab = () => {
   const highlightColors = ["#facc15", "#f87171", "#34d399", "#60a5fa"];
   const [fruit, setFruit] = useState("apple");
@@ -26,11 +26,11 @@ const HighlighterTab = () => {
         placeholder="Mode"
       />
 
-      <Tooltip text="Tooltip above" position="bottom">
-        <Settings size={16}></Settings>
+      <Tooltip text="Expand View" position="bottom">
+        <Expand size={16}></Expand>
       </Tooltip>
 
-      <Tooltip text="Tooltip above" position="bottom">
+      <Tooltip text="Save" position="bottom">
         <AArrowDownIcon size={16}></AArrowDownIcon>
       </Tooltip>
     </div>

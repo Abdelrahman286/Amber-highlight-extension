@@ -1,5 +1,13 @@
 import { browser } from "wxt/browser";
 import { db } from "./src/db";
+import {
+  getAllHighlightsDB,
+  addHighlightDB,
+  deleteAllHighlightsDB,
+  addWebsiteDB,
+} from "./src/dbFunction";
+
+console.log("background script");
 
 // Define handlers map
 const messageHandlers: Record<
@@ -31,19 +39,45 @@ const messageHandlers: Record<
     });
   },
 
-  // --- Add Dummy Website ---
-  addDummyWebsite: (message, sender, sendResponse) => {
-    db.websites
-      .add({
-        id: String(Math.random()),
-        createdAt: Date.now(),
-        url: "asadsad",
-      })
-      .then(() => sendResponse({ success: true }))
-      .catch((err) => {
-        console.error("Error adding website:", err);
-        sendResponse({ success: false, error: err.message });
-      });
+  // --- Get All Highlights ---
+  getAllHighlights: async (message, sender, sendResponse) => {
+    try {
+      const data = await getAllHighlightsDB();
+      sendResponse(data);
+    } catch (err: any) {
+      sendResponse(err);
+    }
+  },
+
+  // --- Add Highlight ---
+  addHighlight: async (message, sender, sendResponse) => {
+    try {
+      const res = await addHighlightDB(message.data);
+      sendResponse(res);
+    } catch (err: any) {
+      sendResponse(err);
+    }
+  },
+
+  // --- Delete All Highlights ---
+  deleteAllHighlights: async (message, sender, sendResponse) => {
+    try {
+      const res = await deleteAllHighlightsDB();
+      sendResponse(res);
+    } catch (err: any) {
+      sendResponse(err);
+    }
+  },
+
+  // --- Save Website ----
+
+  addWebsite: async (message, sender, sendResponse) => {
+    try {
+      const res = await addWebsiteDB(message.data);
+      sendResponse(res);
+    } catch (err: any) {
+      sendResponse(err);
+    }
   },
 };
 

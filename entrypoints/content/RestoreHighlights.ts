@@ -33,7 +33,7 @@ export function restoreHighlights() {
       recursiveWrapper(document.body, {
         color: h.color,
         textColor: h.textColor,
-        highlightIndex: h.highlightIndex,
+        createdAt: h.createdAt,
         selectionString: h.selectionString,
         anchor: anchorNode,
         anchorOffset,

@@ -15,8 +15,8 @@ export class AmberDatabase extends Dexie {
       websites: "id,createdAt,url,[createdAt+id]",
     });
     this.version(1).stores({
-      websites:
-        "id,createdAt,urlId,color,textColor,highlightIndex,selectionString,anchorOffset,focusOffset,anchorPath,focusPath,anchorContext,focusContext,[createdAt+id]",
+      highlights:
+        "id,createdAt,urlId,color,textColor,selectionString,anchorOffset,focusOffset,anchorPath,focusPath,anchorContext,focusContext,[createdAt+id]",
     });
   }
 }

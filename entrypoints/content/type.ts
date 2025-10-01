@@ -1,9 +1,11 @@
 export type HighlightArgs = {
+  id: string;
+  urlId: string;
   container: HTMLElement | Document;
   selection: Selection;
   color?: string;
   textColor?: string;
-  highlightIndex: number;
+  createdAt: number;
 };
 
 type ContextText = {
@@ -15,7 +17,7 @@ type ContextText = {
 export type RecursiveWrapperArgs = {
   color: string;
   textColor: string;
-  highlightIndex: number;
+  createdAt: number;
   selectionString: string;
 
   anchorOffset: number;
@@ -30,9 +32,11 @@ export type RecursiveWrapperArgs = {
 };
 
 export type StoredHighlight = {
+  id: string;
+
   color: string;
   textColor: string;
-  highlightIndex: number;
+  createdAt: number;
   selectionString: string;
 
   urlId: string;

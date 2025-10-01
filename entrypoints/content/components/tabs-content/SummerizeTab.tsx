@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Select, { Option } from "../SelectComponent/Select";
 import Tooltip from "../CustomToolTip/Tooltip";
-import { Save, AlignLeft } from "lucide-react"; // AlignLeft as a clearer "text length" icon
+import { Save, AlignLeft, Expand } from "lucide-react"; // AlignLeft as a clearer "text length" icon
 import Button from "../Button/Button";
 
 const SummerizeTab = () => {
@@ -53,7 +53,8 @@ const SummerizeTab = () => {
             placeholder="Choose length"
           />
         </div>
-        <Tooltip text="Maximize view" position="bottom">
+
+        <Tooltip text="Save your selection" position="bottom">
           <Button
             size={"sm"}
             variant={"ghost"}
@@ -63,13 +64,13 @@ const SummerizeTab = () => {
           </Button>
         </Tooltip>
 
-        <Tooltip text="Save your selection" position="bottom">
+        <Tooltip text="Maximize view" position="bottom">
           <Button
             size={"sm"}
             variant={"ghost"}
             className="trigger-button-no-hover"
           >
-            <Save className="icon" />
+            <Expand className="icon" />
           </Button>
         </Tooltip>
       </div>

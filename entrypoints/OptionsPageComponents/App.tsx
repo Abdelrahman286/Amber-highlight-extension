@@ -5,6 +5,9 @@ import { Settings } from "lucide-react";
 import IndexedDBPlayground from "./IndexedDBPlayground";
 import Tooltip from "../content/components/CustomToolTip/Tooltip";
 
+import { db } from "../src/db";
+import { deleteAllHighlightsFunc } from "../src/dbFunction";
+
 import Select, { Option } from "../content/components/SelectComponent/Select";
 const App = () => {
   const [fruit, setFruit] = useState("");
@@ -13,8 +16,21 @@ const App = () => {
     { value: "banana", label: "Banana 🍌" },
     { value: "orange", label: "Orange 🍊" },
   ];
+  
+  
+  const deleteAllDB = async () => {
+    try {
+      await deleteAllHighlightsFunc();
+    } catch (err) {
+      console.error("❌ Failed to delete highlights:", err);
+    }
+  };
+
   return (
     <div className="p-3">
+      <Button onClick={deleteAllDB}>Delete All DB</Button>
+
+      <hr></hr>
       <Tooltip text="Tooltip above" position="bottom">
         <button>Hover me (top)</button>
       </Tooltip>
