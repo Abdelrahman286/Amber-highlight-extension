@@ -11,6 +11,8 @@ export async function restoreHighlights() {
       action: "getWebsiteHighlights",
       data: window.location.href,
     });
+    
+
 
     if (res.success && Array.isArray(res.data) && res.data.length > 0) {
       res.data.forEach((h: StoredHighlight) => {
@@ -38,6 +40,7 @@ export async function restoreHighlights() {
             throw new Error("Node resolution failed");
 
           recursiveWrapper(document.body, {
+            id: h.id,
             color: h.color,
             textColor: h.textColor,
             createdAt: h.createdAt,

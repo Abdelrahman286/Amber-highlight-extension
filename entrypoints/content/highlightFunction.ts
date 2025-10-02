@@ -60,7 +60,7 @@ export function highlight({
 
 export function recursiveWrapper(
   container: HTMLElement | Document,
-  highlightInfo: any
+  highlightInfo: RecursiveWrapperArgs
 ) {
   return _recursiveWrapper(container, highlightInfo, false, 0);
 }

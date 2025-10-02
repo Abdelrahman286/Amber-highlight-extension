@@ -14,6 +14,8 @@ const MainTab = () => {
   // Track which highlight is being deleted
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
+  const [num, setNum] = useState(0);
+
   const handleDelete = async (id: string) => {
     try {
       setDeletingId(id);
@@ -27,6 +29,13 @@ const MainTab = () => {
       });
 
       if (res.success) {
+        // send message to content script to delete the highlight from dom
+        await browser.runtime.sendMessage({
+          action: "deleteHighlightFromDocumentToBgScript",
+          data: id,
+        });
+
+
         setHighlights((prev) => prev.filter((h) => h.id !== id));
         setLostHighlights((prev) => prev.filter((h) => h.id !== id));
       } else {
@@ -157,6 +166,7 @@ const MainTab = () => {
 
   return (
     <div className="p-2">
+      <h1>{num}</h1>
       <div className="flex items-center justify-between mb-4">
         <h1 className="text-xl font-bold">Highlights</h1>
         <button

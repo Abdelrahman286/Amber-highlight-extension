@@ -130,6 +130,11 @@ export const getWebsiteHighlightsDB = async (
       .equals(website.id)
       .toArray();
 
+    // 3. Sort by createdAt
+    highlights.sort((a, b) => Number(a.createdAt) - Number(b.createdAt));
+
+    console.log(highlights);
+
     return { success: true, data: highlights };
   } catch (err: any) {
     console.error("Error fetching highlights:", err);

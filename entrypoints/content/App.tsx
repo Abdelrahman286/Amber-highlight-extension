@@ -4,6 +4,8 @@ import { restoreHighlights } from "./RestoreHighlights";
 import { useAppContext } from "./context/AppContext";
 import TriggerIcons from "./components/TriggerIcons";
 import ActionsBox from "./components/ActionsBox";
+import { useDeleteHighlightListener } from "./hooks/useDomDeleteHighlightListener";
+import { useRestoreHighlights } from "./hooks/useRestoreHighlights";
 
 const App = () => {
   const {
@@ -16,7 +18,7 @@ const App = () => {
   } = useAppContext();
 
   useEffect(() => {
-    console.log(3);
+    console.log(7);
     function handleMouseUp(e: MouseEvent) {
       if (
         (e.target as HTMLElement).tagName == "AMBER-HIGHLIGHTER" &&
@@ -73,22 +75,11 @@ const App = () => {
     };
   }, [showActionsBox]);
 
-  // Restore highlights
-  useEffect(() => {
-    function handleDOMContentLoaded() {
-      restoreHighlights();
-    }
+  // Restore highlights on document intial load
+  useRestoreHighlights();
 
-    if (document.readyState === "loading") {
-      document.addEventListener("DOMContentLoaded", handleDOMContentLoaded);
-    } else {
-      restoreHighlights();
-    }
-
-    return () => {
-      document.removeEventListener("DOMContentLoaded", handleDOMContentLoaded);
-    };
-  }, []); // remove showActionsBox from dep
+  // Remove highlight from the document in response to a message from the side panel
+  useDeleteHighlightListener();
   return (
     <div
       style={{

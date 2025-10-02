@@ -23,11 +23,12 @@ export type RecursiveWrapperArgs = {
 
   anchorOffset: number;
   focusOffset: number;
-  anchorPath: string | null;
-  focusPath: string | null;
 
-  anchorContext: ContextText;
-  focusContext: ContextText;
+  anchorPath?: string | null;
+  focusPath?: string | null;
+  anchorContext?: ContextText;
+  focusContext?: ContextText;
+
   anchor: Node | null;
   focus: Node | null;
 };

@@ -99,6 +99,26 @@ const messageHandlers: Record<
       sendResponse(err);
     }
   },
+
+  deleteHighlightFromDocumentToBgScript: (message, sender, sendResponse) => {
+    try {
+      browser.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+        if (tabs[0]?.id) {
+          browser.tabs.sendMessage(tabs[0].id, {
+            action: "deleteHighlightFromDocumentToContentScript",
+            data: message.data,
+          });
+        }
+        // ✅ respond once done
+        sendResponse({ success: true });
+      });
+    } catch (err: any) {
+      sendResponse({ success: false, error: err.message });
+    }
+
+    // ✅ keep channel open until sendResponse is called
+    return true;
+  },
 };
 
 export default defineBackground(() => {
