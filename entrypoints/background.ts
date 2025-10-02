@@ -1,5 +1,4 @@
 import { browser } from "wxt/browser";
-import { db } from "./src/db";
 import {
   getAllHighlightsDB,
   addHighlightDB,
@@ -8,8 +7,6 @@ import {
   getWebsiteHighlightsDB,
   deleteHighlightDB,
 } from "./src/dbFunction";
-
-console.log("background script");
 
 // Define handlers map
 const messageHandlers: Record<
