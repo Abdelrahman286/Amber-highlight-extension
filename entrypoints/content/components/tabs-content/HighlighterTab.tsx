@@ -1,6 +1,8 @@
 import { browser } from "wxt/browser";
+import { HIGHLIGHT_CLASS } from "../../CONTANTS";
 import React, { useState, useEffect } from "react";
 import { Plus } from "lucide-react";
+import { useAppContext } from "../../context/AppContext";
 
 const fixedColors = [
   "#F7DC6F", // Yellow
@@ -12,13 +14,16 @@ const fixedColors = [
   "#F8B88B", // Peach
 ];
 const RECENT_COLORS_KEY = "recentColors";
-const ColorPickerButtons: React.FC = () => {
+const ColorPickerButtons = () => {
+  const { selectionRef, selectHighlightId, setShowActionsBox } =
+    useAppContext();
   const [recentColors, setRecentColors] = useState<string[]>([]);
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
   const [tempColor, setTempColor] = useState<string | null>(null);
 
   // Load stored colors
   useEffect(() => {
+    // if you have selectHighlightId then it's already highligted
     try {
       browser.storage.local.get([RECENT_COLORS_KEY], (result) => {
         if (result[RECENT_COLORS_KEY]) {
@@ -56,6 +61,60 @@ const ColorPickerButtons: React.FC = () => {
     setSelectedColor(color);
     setTempColor(null);
   };
+
+  // select the intial color
+  useEffect(() => {
+    if (!selectHighlightId) return;
+
+    const fetchHighlight = async () => {
+      try {
+        const res = await browser.runtime.sendMessage({
+          action: "getSingleHighlight",
+          data: selectHighlightId,
+        });
+
+        if (res?.data?.color) {
+          setSelectedColor(res.data.color);
+        }
+      } catch (err) {
+        console.error("Failed to get highlight:", err);
+      }
+    };
+
+    fetchHighlight();
+  }, []);
+
+  // placing the selected color
+  useEffect(() => {
+    const applyColor = async () => {
+      // 1 - place the selected color on the highlight record
+      if (selectHighlightId && selectedColor) {
+        const highlights = document.querySelectorAll<HTMLElement>(
+          `[data-amberhighlightid="${selectHighlightId}"]`
+        );
+
+        highlights.forEach((el) => {
+          el.style.background = selectedColor as string;
+        });
+
+        try {
+          const res = await browser.runtime.sendMessage({
+            action: "updateHighlight",
+            data: {
+              id: selectHighlightId,
+              updates: {
+                color: selectedColor,
+              },
+            },
+          });
+        } catch (err) {
+          console.error("Failed to update highlight:", err);
+        }
+      }
+    };
+
+    applyColor();
+  }, [selectedColor]);
 
   return (
     <div className="color-picker-container">

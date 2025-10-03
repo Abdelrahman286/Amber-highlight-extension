@@ -20,7 +20,7 @@ const TriggerIcons = () => {
         ? (range.commonAncestorContainer as HTMLElement)
         : (range.commonAncestorContainer.parentElement as HTMLElement);
 
-    const color = "yellow";
+    const color = "#F7DC6F";
     const textColor = "black";
     const createdAt = Date.now();
     const id = crypto.randomUUID();

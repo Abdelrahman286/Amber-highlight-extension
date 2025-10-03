@@ -1,8 +1,6 @@
 /* ----------------  highlight style */
 
-.highlighter--highlighted {
-  background: yellow;
-}
+
 
 .highlighter--deleted {
   text-decoration: line-through;

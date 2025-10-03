@@ -39,10 +39,9 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
 
   const [selectHighlightId, setSelectedHighlightId] = useState<string>("");
 
-  
-  const [actionBoxState, setActionBoxState] = useState<
-    "beforeHighlight" | "afterHighlight" | null
-  >(null);
+  //   const [actionBoxState, setActionBoxState] = useState<
+  //     "beforeHighlight" | "afterHighlight" | null
+  //   >(null);
 
   return (
     <AppContext.Provider

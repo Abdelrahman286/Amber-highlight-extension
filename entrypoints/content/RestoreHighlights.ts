@@ -11,8 +11,6 @@ export async function restoreHighlights() {
       action: "getWebsiteHighlights",
       data: window.location.href,
     });
-    
-
 
     if (res.success && Array.isArray(res.data) && res.data.length > 0) {
       res.data.forEach((h: StoredHighlight) => {
@@ -57,8 +55,7 @@ export async function restoreHighlights() {
       });
 
       // 🔔 Send lost IDs back if any
-      console.log("restore call");
-      if (lostIds.length > 0) {
+      if (lostIds?.length > 0) {
         await browser.runtime.sendMessage({
           action: "lostHighlights",
           data: lostIds,

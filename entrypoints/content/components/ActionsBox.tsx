@@ -5,7 +5,8 @@ import ActionsBoxContent from "./ActionsBox/ActionsBoxContent";
 import { ACTIONS_BOX_WIDTH, ACTIONS_BOX_HEIGHT } from "../CONTANTS";
 import { getActionsBoxCoord } from "../PositioningUtils";
 const ActionsBox = () => {
-  const { buttonPos, setButtonPos, setShowActionsBox } = useAppContext();
+  const { buttonPos, setButtonPos, setShowActionsBox, setSelectedHighlightId } =
+    useAppContext();
   const boxRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -15,6 +16,7 @@ const ActionsBox = () => {
         return;
       } else {
         setShowActionsBox(false);
+        setSelectedHighlightId("");
         setButtonPos(null);
       }
     }

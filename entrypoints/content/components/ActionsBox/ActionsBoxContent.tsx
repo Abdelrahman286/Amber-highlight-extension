@@ -19,7 +19,12 @@ import MoreOptionsRow from "../MoreOptionsRow";
 import { useAppContext } from "../../context/AppContext";
 
 const Test = () => {
-  const { setButtonPos, selectionRef, setShowActionsBox } = useAppContext();
+  const {
+    setButtonPos,
+    selectionRef,
+    setShowActionsBox,
+    setSelectedHighlightId,
+  } = useAppContext();
   const tabs: TabItem[] = [
     {
       label: <Highlighter className="size-16"></Highlighter>,
@@ -49,6 +54,7 @@ const Test = () => {
     setButtonPos(null);
     setShowActionsBox(false);
     selectionRef.current = null;
+    setSelectedHighlightId("");
   };
 
   return (

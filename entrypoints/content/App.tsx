@@ -18,7 +18,7 @@ const App = () => {
   } = useAppContext();
 
   useEffect(() => {
-    console.log(2);
+    console.log(1);
     function handleMouseUp(e: MouseEvent) {
       if (
         (e.target as HTMLElement).tagName == "AMBER-HIGHLIGHTER" &&
@@ -34,6 +34,7 @@ const App = () => {
           x: e.clientX,
           y: e.clientY + 8,
         });
+
         return;
       }
       if (showActionsBox) return;
@@ -57,6 +58,7 @@ const App = () => {
           setButtonPos(null);
           setShowActionsBox(false);
           selectionRef.current = null;
+          setSelectedHighlightId("");
         }
       }, 40);
     }
@@ -64,6 +66,7 @@ const App = () => {
     function handleScroll() {
       setButtonPos(null);
       setShowActionsBox(false);
+      setSelectedHighlightId("");
     }
 
     document.addEventListener("mouseup", handleMouseUp);

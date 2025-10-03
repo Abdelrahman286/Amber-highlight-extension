@@ -6,6 +6,8 @@ import {
   addWebsiteDB,
   getWebsiteHighlightsDB,
   deleteHighlightDB,
+  updateHighlightDB,
+  getHighlightDB,
 } from "./src/dbFunction";
 
 // Define handlers map
@@ -115,6 +117,25 @@ const messageHandlers: Record<
 
     // ✅ keep channel open until sendResponse is called
     return true;
+  },
+
+  updateHighlight: async (message, sender, sendResponse) => {
+    try {
+      const { id, updates } = message.data;
+      const res = await updateHighlightDB(id, updates);
+      sendResponse(res);
+    } catch (err: any) {
+      sendResponse({ success: false, error: err.message });
+    }
+  },
+
+  getSingleHighlight: async (message, sender, sendResponse) => {
+    try {
+      const res = await getHighlightDB(message.data);
+      sendResponse(res);
+    } catch (err: any) {
+      sendResponse({ success: false, error: err.message });
+    }
   },
 };
 

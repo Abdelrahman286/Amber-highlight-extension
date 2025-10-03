@@ -18,7 +18,7 @@ export function highlight({
   const highlightInfo = {
     id: id,
     urlId: urlId,
-    color: color || "yellow",
+    color: color || "#F7DC6F", // Yellow
     textColor: textColor || "inherit",
     createdAt,
     selectionString: selString,
