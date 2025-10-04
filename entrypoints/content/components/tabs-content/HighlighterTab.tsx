@@ -3,6 +3,9 @@ import { HIGHLIGHT_CLASS } from "../../CONTANTS";
 import React, { useState, useEffect } from "react";
 import { Plus } from "lucide-react";
 import { useAppContext } from "../../context/AppContext";
+import { placeHighlight } from "../../highlightFunction";
+import { ChevronDown, ChevronRight } from "lucide-react";
+import FontSettingsSection from "./FontSettingsSection";
 
 const fixedColors = [
   "#F7DC6F", // Yellow
@@ -15,11 +18,12 @@ const fixedColors = [
 ];
 const RECENT_COLORS_KEY = "recentColors";
 const ColorPickerButtons = () => {
-  const { selectionRef, selectHighlightId, setShowActionsBox } =
+  const { selectionRef, selectHighlightId, setShowActionsBox, setButtonPos } =
     useAppContext();
   const [recentColors, setRecentColors] = useState<string[]>([]);
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
   const [tempColor, setTempColor] = useState<string | null>(null);
+  const [isOpen, setIsOpen] = useState(false);
 
   // Load stored colors
   useEffect(() => {
@@ -84,79 +88,131 @@ const ColorPickerButtons = () => {
     fetchHighlight();
   }, []);
 
-  // placing the selected color
-  useEffect(() => {
-    const applyColor = async () => {
-      // 1 - place the selected color on the highlight record
-      if (selectHighlightId && selectedColor) {
-        const highlights = document.querySelectorAll<HTMLElement>(
-          `[data-amberhighlightid="${selectHighlightId}"]`
-        );
+  function getValidSelection(): Selection | null {
+    const selection = window.getSelection();
+    if (
+      selection &&
+      selection.toString().trim().length > 0 &&
+      !selection.isCollapsed &&
+      selection.rangeCount > 0
+    ) {
+      return selection;
+    }
+    return null;
+  }
 
-        highlights.forEach((el) => {
-          el.style.background = selectedColor as string;
-        });
+  async function updateExistingHighlight(id: string, color: string) {
+    try {
+      // Update highlight color in the DOM
+      const highlights = document.querySelectorAll<HTMLElement>(
+        `[data-amberhighlightid="${id}"]`
+      );
+      highlights.forEach((el) => (el.style.background = color));
 
-        try {
-          const res = await browser.runtime.sendMessage({
-            action: "updateHighlight",
-            data: {
-              id: selectHighlightId,
-              updates: {
-                color: selectedColor,
-              },
-            },
-          });
-        } catch (err) {
-          console.error("Failed to update highlight:", err);
-        }
-      }
-    };
+      // Update in storage (via background script)
+      await browser.runtime.sendMessage({
+        action: "updateHighlight",
+        data: {
+          id,
+          updates: { color },
+        },
+      });
+    } catch (err) {
+      console.error("Failed to update highlight:", err);
+    }
+  }
 
-    applyColor();
-  }, [selectedColor]);
+  const handleClick = async (color: string) => {
+    setSelectedColor(color);
+
+    // --- 1. Update existing highlight ---
+    if (selectHighlightId) {
+      updateExistingHighlight(selectHighlightId, color);
+      return;
+    }
+
+    // --- 2. Create new highlight if valid selection ---
+    const selection = getValidSelection();
+    if (!selection) return;
+
+    const success = placeHighlight(selection, color);
+
+    if (success) {
+      setButtonPos(null);
+      setShowActionsBox(false);
+    } else {
+      console.error("Failed to create highlight");
+    }
+  };
 
   return (
-    <div className="color-picker-container">
-      {/* Fixed colors */}
-      {fixedColors.map((color, index) => (
-        <button
-          key={`fixed-${index}`}
-          className={`color-button ${
-            selectedColor === color ? "selected" : ""
-          }`}
-          style={{ backgroundColor: color }}
-          onClick={() => setSelectedColor(color)}
-        />
-      ))}
+    <div>
+      <div className="color-picker-container">
+        {/* Fixed colors */}
+        {fixedColors.map((color, index) => (
+          <button
+            key={`fixed-${index}`}
+            className={`color-button ${
+              selectedColor === color ? "selected" : ""
+            }`}
+            style={{ backgroundColor: color }}
+            onClick={() => {
+              handleClick(color);
+            }}
+          />
+        ))}
+        {/* Recent colors */}
+        {recentColors.map((color, index) => (
+          <button
+            key={`recent-${index}`}
+            className={`color-button ${
+              selectedColor === color ? "selected" : ""
+            }`}
+            style={{ backgroundColor: color }}
+            onClick={() => {
+              handleClick(color);
+            }}
+          />
+        ))}
+        {/* Plus icon with live preview */}
+        <label
+          className={`color-picker-label ${tempColor ? "previewing" : ""}`}
+          style={{ background: tempColor ?? "" }}
+        >
+          {!tempColor && <Plus size={18} color="#555" />}
+          <input
+            type="color"
+            value={tempColor ?? "#000000"}
+            // Live preview (just for the plus button)
+            onInput={(e) => setTempColor((e.target as HTMLInputElement).value)}
+            // Commit only after user closes/releases
+            onBlur={(e) => handleCommitColor(e.target.value)}
+          />
+        </label>
+      </div>
+      {/* Font Settings Section */}
 
-      {/* Recent colors */}
-      {recentColors.map((color, index) => (
-        <button
-          key={`recent-${index}`}
-          className={`color-button ${
-            selectedColor === color ? "selected" : ""
-          }`}
-          style={{ backgroundColor: color }}
-          onClick={() => setSelectedColor(color)}
-        />
-      ))}
+      {selectHighlightId && (
+        <div className="font-accordion">
+          {/* Header */}
+          <div
+            className="accordion-header"
+            onClick={() => setIsOpen((prev) => !prev)}
+          >
+            <span className="accordion-title">Font Settings</span>
+            <span className={`accordion-arrow ${isOpen ? "open" : ""}`}>
+              {isOpen ? <ChevronDown size={18} /> : <ChevronRight size={18} />}
+            </span>
+          </div>
 
-      {/* Plus icon with live preview */}
-      <label
-        className={`color-picker-label ${tempColor ? "previewing" : ""}`}
-        style={{ background: tempColor ?? "" }}
-      >
-        {!tempColor && <Plus size={18} color="#555" />}
-        <input
-          type="color"
-          value={tempColor ?? "#000000"}
-          // Live preview (just for the plus button)
-          onInput={(e) => setTempColor((e.target as HTMLInputElement).value)}
-          // Commit only after user closes/releases
-          onBlur={(e) => handleCommitColor(e.target.value)}
-        />
-      </label>
+          {/* Content — rendered only when open */}
+          {isOpen && (
+            <div className="accordion-content">
+              <FontSettingsSection></FontSettingsSection>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 };

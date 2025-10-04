@@ -4,7 +4,7 @@ export type HighlightArgs = {
   container: HTMLElement | Document;
   selection: Selection;
   color?: string;
-  textColor?: string;
+  fontSettings?: FontSettings;
   createdAt: number;
 };
 
@@ -17,7 +17,7 @@ type ContextText = {
 export type RecursiveWrapperArgs = {
   id: string;
   color: string;
-  textColor: string;
+  fontSettings?: FontSettings;
   createdAt: number;
   selectionString: string;
 
@@ -37,7 +37,7 @@ export type StoredHighlight = {
   id: string;
 
   color: string;
-  textColor: string;
+  fontSettings?: FontSettings;
   createdAt: number;
   selectionString: string;
 
@@ -57,4 +57,13 @@ export interface Websites {
   id: string;
   createdAt: number;
   url: string;
+}
+
+export interface FontSettings {
+  color?: string;
+  bold?: boolean;
+  italic?: boolean;
+  underline?: boolean;
+  lineThrough?: boolean;
+  textSize?: "sm" | "md" | "lg";
 }

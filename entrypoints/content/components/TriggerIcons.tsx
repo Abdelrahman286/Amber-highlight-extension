@@ -1,5 +1,5 @@
 import { browser } from "wxt/browser";
-import { highlight } from "../highlightFunction";
+import { highlight, placeHighlight } from "../highlightFunction";
 import { useAppContext } from "../context/AppContext";
 import Button from "./Button/Button";
 import { Highlighter, Logs } from "lucide-react";
@@ -12,29 +12,7 @@ const TriggerIcons = () => {
   const handleHighlightText = () => {
     const selection = selectionRef.current;
     if (!selection || selection.rangeCount === 0) return;
-
-    const range = selection.getRangeAt(0);
-
-    const container =
-      range.commonAncestorContainer.nodeType === Node.ELEMENT_NODE
-        ? (range.commonAncestorContainer as HTMLElement)
-        : (range.commonAncestorContainer.parentElement as HTMLElement);
-
-    const color = "#F7DC6F";
-    const textColor = "black";
-    const createdAt = Date.now();
-    const id = crypto.randomUUID();
-    const urlId = "324-234234-234-23";
-
-    const success = highlight({
-      id,
-      urlId,
-      container,
-      selection,
-      color,
-      textColor,
-      createdAt,
-    });
+    const success = placeHighlight(selection, null);
 
     if (success) {
       setButtonPos(null);

@@ -1,5 +1,10 @@
 import { HIGHLIGHT_CLASS, DELETED_CLASS } from "./CONTANTS";
-import { HighlightArgs, RecursiveWrapperArgs, StoredHighlight } from "./type";
+import {
+  HighlightArgs,
+  RecursiveWrapperArgs,
+  StoredHighlight,
+  FontSettings,
+} from "./type";
 import { getNodePath, getContextText } from "./DomUtils";
 import { browser } from "wxt/browser";
 // ===== HIGHLIGHTING =====
@@ -9,7 +14,7 @@ export function highlight({
   container,
   selection,
   color,
-  textColor,
+  fontSettings,
   createdAt,
 }: HighlightArgs) {
   const selString = selection.toString() as string;
@@ -19,7 +24,7 @@ export function highlight({
     id: id,
     urlId: urlId,
     color: color || "#F7DC6F", // Yellow
-    textColor: textColor || "inherit",
+    fontSettings: fontSettings,
     createdAt,
     selectionString: selString,
 
@@ -58,6 +63,37 @@ export function highlight({
   return true;
 }
 
+// ===== Place Highlight =====
+
+export function placeHighlight(
+  selection: Selection,
+  highlightColor: string | null,
+  fontSettings?: FontSettings
+): boolean {
+  const range: Range = selection.getRangeAt(0);
+
+  const container: HTMLElement =
+    range.commonAncestorContainer.nodeType === Node.ELEMENT_NODE
+      ? (range.commonAncestorContainer as HTMLElement)
+      : (range.commonAncestorContainer.parentElement as HTMLElement);
+
+  const color: string = highlightColor || "#F7DC6F";
+  const createdAt: number = Date.now();
+  const id: string = crypto.randomUUID();
+  const urlId: string = window.location.href;
+
+  const success: boolean = highlight({
+    id,
+    urlId,
+    container,
+    selection,
+    color,
+    fontSettings,
+    createdAt,
+  });
+
+  return success;
+}
 export function recursiveWrapper(
   container: HTMLElement | Document,
   highlightInfo: RecursiveWrapperArgs
@@ -79,7 +115,7 @@ function _recursiveWrapper(
     anchorOffset,
     focusOffset,
     color,
-    textColor,
+    fontSettings,
     createdAt,
     selectionString,
   } = highlightInfo;
@@ -161,7 +197,7 @@ function _recursiveWrapper(
     );
 
     highlightNode.style.backgroundColor = color;
-    highlightNode.style.color = textColor;
+    highlightNode.style.color = fontSettings?.color || "black";
     highlightNode.dataset.amberhighlightid = uuid;
     highlightNode.textContent = highlightText ?? "";
 

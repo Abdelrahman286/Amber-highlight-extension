@@ -239,4 +239,91 @@
   margin: 0;
 }
 
+.font-accordion {
+  width: 100%;
+  margin-top: 8px;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+/* Header */
+.accordion-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  color: #f4f4f5;
+  user-select: none;
+  transition: background-color 0.2s ease;
+}
+
+.accordion-header:hover {
+  background-color: #52525b;
+}
+
+.accordion-title {
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.accordion-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease;
+}
+
+.accordion-arrow.open {
+  transform: rotate(0deg);
+}
+
+/* Content */
+.accordion-content {
+  padding: 6px 0;
+}
+
 /* Font Settings Tab  */
+.selected-font-setting {
+  background: var(--zinc-800) !important;
+  border-radius: 6px !important;
+}
+.font-tab {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  .font-style-group,
+  .font-size-group {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .divider {
+    width: 1px;
+    height: 20px;
+    background-color: #3f3f46; /* zinc-700 equivalent */
+    margin: 0 6px;
+  }
+
+  .trigger-button-no-hover {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 6px;
+  }
+
+  .trigger-button-no-hover:hover {
+    background-color: rgba(255, 255, 255, 0.08);
+  }
+
+  .selected-font-setting {
+    background-color: #3f3f46;
+  }
+
+  .font-size-label {
+    font-size: 12px;
+    font-weight: 500;
+    color: #e4e4e7;
+  }
+}

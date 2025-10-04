@@ -89,12 +89,14 @@ const MoreOptionsRow = () => {
           onClick={() => handleCopy()}
         ></Button>
 
-        <Button
-          onClick={handleDeleteHighlight}
-          variant="icon"
-          size="sm"
-          icon={<Trash2 className="size-18 text-red-400" />}
-        ></Button>
+        {selectHighlightId ? (
+          <Button
+            onClick={handleDeleteHighlight}
+            variant="icon"
+            size="sm"
+            icon={<Trash2 className="size-18 text-red-400" />}
+          ></Button>
+        ) : null}
       </div>
     </div>
   );
