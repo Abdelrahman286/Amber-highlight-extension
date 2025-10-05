@@ -1,7 +1,6 @@
 import { browser } from "wxt/browser";
-import { HIGHLIGHT_CLASS } from "../../CONTANTS";
-import React, { useState, useEffect } from "react";
-import { Plus } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Plus, Type } from "lucide-react";
 import { useAppContext } from "../../context/AppContext";
 import { placeHighlight } from "../../highlightFunction";
 import { ChevronDown, ChevronRight } from "lucide-react";
@@ -199,12 +198,14 @@ const ColorPickerButtons = () => {
             className="accordion-header"
             onClick={() => setIsOpen((prev) => !prev)}
           >
-            <span className="accordion-title">Font Settings</span>
+            <div className="accordion-left">
+              <Type className="accordion-icon" />
+              <span className="accordion-title">Font Settings</span>
+            </div>
             <span className={`accordion-arrow ${isOpen ? "open" : ""}`}>
               {isOpen ? <ChevronDown size={18} /> : <ChevronRight size={18} />}
             </span>
           </div>
-
           {/* Content — rendered only when open */}
           {isOpen && (
             <div className="accordion-content">

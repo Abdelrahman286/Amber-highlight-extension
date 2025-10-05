@@ -23,6 +23,7 @@ const Test = () => {
     selectionRef,
     setShowActionsBox,
     setSelectedHighlightId,
+    selectHighlightId,
   } = useAppContext();
   const tabs: TabItem[] = [
     {
@@ -37,10 +38,15 @@ const Test = () => {
       label: <Languages className="size-16" />,
       content: <TranslateTab></TranslateTab>,
     },
-    {
-      label: <StickyNote className="size-16" />,
-      content: <NotesTab></NotesTab>,
-    },
+    // Only include NotesTab if a highlight is selected
+    ...(selectHighlightId
+      ? [
+          {
+            label: <StickyNote className="size-16" />,
+            content: <NotesTab />,
+          },
+        ]
+      : []),
   ];
 
   const handleCloseActionsBox = (e: React.MouseEvent<HTMLButtonElement>) => {

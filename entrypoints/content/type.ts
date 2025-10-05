@@ -1,6 +1,7 @@
 export type HighlightArgs = {
   id: string;
   urlId: string;
+  notes: string;
   container: HTMLElement | Document;
   selection: Selection;
   color?: string;
@@ -18,6 +19,7 @@ export type RecursiveWrapperArgs = {
   id: string;
   color: string;
   fontSettings?: FontSettings;
+  notes: string;
   createdAt: number;
   selectionString: string;
 
@@ -40,6 +42,7 @@ export type StoredHighlight = {
   fontSettings?: FontSettings;
   createdAt: number;
   selectionString: string;
+  notes: string;
 
   urlId: string;
 

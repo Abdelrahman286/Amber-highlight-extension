@@ -6,6 +6,7 @@ import TriggerIcons from "./components/TriggerIcons";
 import ActionsBox from "./components/ActionsBox";
 import { useDeleteHighlightListener } from "./hooks/useDomDeleteHighlightListener";
 import { useRestoreHighlights } from "./hooks/useRestoreHighlights";
+import { useWebFonts } from "./hooks/injectFont";
 
 const App = () => {
   const {
@@ -18,7 +19,7 @@ const App = () => {
   } = useAppContext();
 
   useEffect(() => {
-    console.log(2);
+    console.log(1);
     function handleMouseUp(e: MouseEvent) {
       if (
         (e.target as HTMLElement).tagName == "AMBER-HIGHLIGHTER" &&
@@ -83,6 +84,9 @@ const App = () => {
 
   // Remove highlight from the document in response to a message from the side panel
   useDeleteHighlightListener();
+
+  // inject google font to the main document to be used in shadow root document
+  useWebFonts();
   return (
     <div
       style={{

@@ -16,7 +16,7 @@ export class AmberDatabase extends Dexie {
     });
     this.version(1).stores({
       highlights:
-        "id,createdAt,urlId,color,textColor,selectionString,anchorOffset,focusOffset,anchorPath,focusPath,anchorContext,focusContext,[createdAt+id]",
+        "id,createdAt,urlId,color,fontSettings,notes,selectionString,anchorOffset,focusOffset,anchorPath,focusPath,anchorContext,focusContext,[createdAt+id]",
     });
   }
 }

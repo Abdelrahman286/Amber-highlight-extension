@@ -15,6 +15,7 @@ export function highlight({
   selection,
   color,
   fontSettings,
+  notes,
   createdAt,
 }: HighlightArgs) {
   const selString = selection.toString() as string;
@@ -25,6 +26,7 @@ export function highlight({
     urlId: urlId,
     color: color || "#F7DC6F", // Yellow
     fontSettings: fontSettings,
+    notes: notes,
     createdAt,
     selectionString: selString,
 
@@ -81,6 +83,7 @@ export function placeHighlight(
   const createdAt: number = Date.now();
   const id: string = crypto.randomUUID();
   const urlId: string = window.location.href;
+  const notes = "";
 
   const success: boolean = highlight({
     id,
@@ -89,6 +92,7 @@ export function placeHighlight(
     selection,
     color,
     fontSettings,
+    notes,
     createdAt,
   });
 
