@@ -1,28 +1,32 @@
 import { useState, useEffect } from "react";
 import Select, { Option } from "../SelectComponent/Select";
 import Tooltip from "../CustomToolTip/Tooltip";
-import { Save, AlignLeft, Expand, Info, Minimize2 } from "lucide-react";
+import { Save, AlignLeft, Info, Minimize2, Maximize2 } from "lucide-react";
 import Button from "../Button/Button";
 import { useAppContext } from "../../context/AppContext";
 import { useAlert } from "../../context/AlertContext";
 import { expandActionsBox, minimizeActionsBox } from "../../DomUtils";
+import ShimmerText from "../shimmerText/ShimmerText";
 
 const SummarizeTab = () => {
-  const { selectionRef } = useAppContext();
   const { showAlert } = useAlert();
+  const { selectionRef, selectHighlightId } = useAppContext();
   const [level, setLevel] = useState("short");
   const [isAvailable, setIsAvailable] = useState(false);
   const [summary, setSummary] = useState("Checking availability...");
   const [loading, setLoading] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
-
-  //   const { showAlert } = useAlert();
+  const [hasRealSummary, setHasRealSummary] = useState(false);
+  const [generateMarkdown, setGenerateMarkdown] = useState(true); // ✅ default true
 
   const options: Option[] = [
     { value: "short", label: "Short" },
     { value: "medium", label: "Medium" },
     { value: "long", label: "Detailed" },
   ];
+  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setGenerateMarkdown(e.target.checked);
+  };
 
   // --- Check if Summarizer API is supported ---
   useEffect(() => {
@@ -35,7 +39,7 @@ const SummarizeTab = () => {
 
       try {
         const availability = await (window as any).Summarizer.availability();
-        if (availability === "available" || availability === "downloadable") {
+        if (availability === "available") {
           setIsAvailable(true);
           setSummary("Ready to summarize text.");
         } else {
@@ -54,50 +58,104 @@ const SummarizeTab = () => {
 
   // --- Run summarization (streaming) when level changes ---
   useEffect(() => {
-    const summarizeText = async () => {
-      if (!isAvailable || !selectionRef?.current) return;
+    let isCancelled = false;
+    let summarizer: any = null;
 
-      const text = selectionRef.current.toString().trim();
+    const summarizeText = async () => {
+      if (!isAvailable) return;
+
+      let text = "";
+
+      // --- CASE 1: If a highlight is selected, summarize its content ---
+      if (selectHighlightId) {
+        const highlightElements = document.querySelectorAll(
+          `[data-amberhighlightid="${selectHighlightId}"]`
+        );
+
+        highlightElements.forEach((el) => {
+          text += el.textContent?.trim() + " ";
+        });
+
+        text = text.trim();
+      }
+
+      // --- CASE 2: Otherwise, summarize the currently selected text ---
+      if (!selectHighlightId && selectionRef?.current) {
+        text = selectionRef.current.toString().trim();
+      }
+
+      // --- No text available ---
       if (!text) {
-        setSummary("No text selected to summarize.");
+        if (!isCancelled) {
+          setSummary("No text selected to summarize.");
+          setHasRealSummary(false);
+        }
         return;
       }
 
-      setLoading(true);
-      setSummary("");
+      if (!isCancelled) {
+        setLoading(true);
+        setSummary("");
+      }
 
       try {
-        const summarizer = await (window as any).Summarizer.create({
-          type: "tldr", // options: 'key-points', 'tldr', 'teaser', 'headline'
-          format: "plain-text",
+        summarizer = await (window as any).Summarizer.create({
+          type: "tldr",
+          format: `${generateMarkdown ? "markdown" : "plain-text"}`,
           length: level,
           inputLanguage: "en",
           outputLanguage: "en",
         });
 
-        // --- STREAMING VERSION ---
+        if (isCancelled) {
+          summarizer.destroy?.();
+          return;
+        }
+
+        // --- STREAMING SUMMARY ---
         const stream = await summarizer.summarizeStreaming(text, {
           context: "Summarize this text clearly and concisely.",
         });
 
         let fullSummary = "";
         for await (const chunk of stream) {
+          if (isCancelled) break;
+
           fullSummary += chunk;
-          setSummary(fullSummary); // update UI in real-time
+          setSummary(fullSummary);
         }
 
-        summarizer.destroy?.();
+        if (isCancelled) return;
+
+        // --- Detect if no meaningful summary was produced ---
+        if (!fullSummary.trim() || fullSummary.trim().length < 4) {
+          setHasRealSummary(false);
+          setSummary("No meaningful summary could be generated.");
+        } else {
+          setHasRealSummary(true);
+        }
       } catch (err) {
-        console.error("Summarization error:", err);
-        setSummary("Failed to summarize text.");
+        if (!isCancelled) {
+          console.error("Summarization error:", err);
+          setSummary("Failed to summarize text.");
+          setHasRealSummary(false);
+        }
       } finally {
-        setLoading(false);
+        summarizer?.destroy?.();
+        if (!isCancelled) {
+          setLoading(false);
+        }
       }
     };
 
     summarizeText();
-  }, [level, isAvailable, selectionRef]);
 
+    // Cleanup function
+    return () => {
+      isCancelled = true;
+      summarizer?.destroy?.();
+    };
+  }, [level, isAvailable, selectionRef, selectHighlightId, generateMarkdown]);
   const handleToggleExpand = async () => {
     if (isExpanded) {
       setIsExpanded(false);
@@ -108,11 +166,79 @@ const SummarizeTab = () => {
     }
   };
 
-  const Icon = isExpanded ? Minimize2 : Expand;
+  const Icon = isExpanded ? Minimize2 : Maximize2;
   const tooltipText = isExpanded ? "Minimize view" : "Maximize view";
+
+  const saveSummaryToNotes = async (): Promise<boolean> => {
+    if (!summary?.trim() || !selectHighlightId) {
+      console.warn("Missing summary or highlight ID.");
+      return false;
+    }
+
+    try {
+      const res = await browser.runtime.sendMessage({
+        action: "getSingleHighlight",
+        data: selectHighlightId,
+      });
+
+      const currentNotes = res?.data?.notes || "";
+      const newNotes = currentNotes + summary;
+
+      const updateResponse = await browser.runtime.sendMessage({
+        action: "updateHighlight",
+        data: {
+          id: selectHighlightId,
+          updates: { notes: newNotes },
+        },
+      });
+
+      // Optional: check if update succeeded based on response
+      if (updateResponse?.success) {
+        return true;
+      }
+
+      return true; // assume success if no explicit flag is returned
+    } catch (err) {
+      console.error("Failed to save summary to notes:", err);
+      return false;
+    }
+  };
+
+  const handleSaveSummary = async () => {
+    // Case 1: No text is highlighted yet
+    if (!selectHighlightId) {
+      showAlert(
+        "Please highlight the text first before saving the summary to your notes.",
+        "error"
+      );
+      return;
+    }
+
+    // Case 2: No summary was generated (likely missing Gemini Nano)
+    if (!hasRealSummary) {
+      showAlert(
+        "No summary has been generated. Please enable Gemini Nano in your browser settings and try again.",
+        "info"
+      );
+      return;
+    }
+
+    // Case 3: Try saving the summary
+    const success = await saveSummaryToNotes();
+
+    if (success) {
+      showAlert(
+        "Summary successfully saved to your highlighted note.",
+        "success"
+      );
+    } else {
+      showAlert("Failed to save the summary. Please try again.", "error");
+    }
+  };
 
   return (
     <div style={{ padding: 0, margin: 0 }}>
+      {/* --- Header Row --- */}
       <div
         style={{
           display: "flex",
@@ -149,13 +275,7 @@ const SummarizeTab = () => {
         <div>
           <Tooltip text="Save your selection" position="bottom">
             <Button
-              onClick={() => {
-                console.log("done");
-                showAlert(
-                  "You have to highlight text before saving notes",
-                  "info"
-                );
-              }}
+              onClick={handleSaveSummary}
               size={"sm"}
               variant={"ghost"}
               className="trigger-button-no-hover"
@@ -163,6 +283,7 @@ const SummarizeTab = () => {
               <Save className="icon" />
             </Button>
           </Tooltip>
+
           <Tooltip text={tooltipText} position="bottom">
             <Button
               onClick={handleToggleExpand}
@@ -176,9 +297,22 @@ const SummarizeTab = () => {
         </div>
       </div>
 
+      <div className="markdown-toggle">
+        <input
+          type="checkbox"
+          id="generateMarkdown"
+          className="markdown-checkbox"
+          checked={generateMarkdown}
+          onChange={handleCheckboxChange}
+        />
+        <label htmlFor="generateMarkdown" className="markdown-label">
+          Generate summary in Markdown
+        </label>
+      </div>
+      {/* --- Summary Output --- */}
       <div
         style={{
-          marginTop: "12px",
+          //   marginTop: "12px",
           fontSize: "14px",
           lineHeight: "1.5",
           maxHeight: isExpanded ? "40vh" : "130px",
@@ -194,15 +328,14 @@ const SummarizeTab = () => {
               alignItems: "center",
               gap: "6px",
               flexWrap: "wrap",
-              marginTop: "8px",
             }}
           >
             <Info size={16} />
             <span
               style={{
-                display: "block", // ensures proper wrapping and no flex overflow
-                whiteSpace: "pre-wrap", // preserves spacing but allows wrapping
-                wordBreak: "break-word", // breaks long words
+                display: "block",
+                whiteSpace: "pre-wrap",
+                wordBreak: "break-word",
                 padding: "2px",
               }}
             >
@@ -225,7 +358,12 @@ const SummarizeTab = () => {
             </a>
           </div>
         ) : loading && summary === "" ? (
-          <span>Summarizing...</span>
+          <ShimmerText
+            text="Summarizing ..."
+            textSize={14}
+            color="oklch(87.1% 0.006 286.286)"
+            staggerMs={70}
+          />
         ) : (
           summary
         )}

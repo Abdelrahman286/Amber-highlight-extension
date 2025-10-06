@@ -18,8 +18,6 @@ const App = () => {
     setSelectedHighlightId,
   } = useAppContext();
 
-
-
   useEffect(() => {
     console.log(2);
     function handleMouseUp(e: MouseEvent) {
@@ -28,7 +26,6 @@ const App = () => {
         (e.target as HTMLElement)?.dataset?.amberhighlightid
       ) {
         const target = e.target as HTMLElement;
-        console.log((e.target as HTMLElement)?.dataset?.amberhighlightid);
 
         setSelectedHighlightId(String(target?.dataset?.amberhighlightid));
         // show actions box

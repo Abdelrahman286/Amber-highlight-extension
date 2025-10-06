@@ -1,0 +1,60 @@
+/* container */
+.shimmer-text {
+  display: inline-block;
+  line-height: 1;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+  /* choose a subtle default color for the 'resting' text */
+  color: rgba(0, 0, 0, 0.08);
+}
+
+/* each character gets its own animated block */
+.shimmer-char {
+  display: inline-block;
+  /* make characters visible but faint by default */
+  opacity: 0.08;
+  transform: translateY(0);
+  will-change: opacity, transform;
+  animation-name: shimmerFlash;
+  animation-duration: 1100ms;
+  animation-fill-mode: both;
+  animation-timing-function: cubic-bezier(0.2, 0.9, 0.2, 1);
+  animation-iteration-count: infinite;
+}
+
+/* Keyframes: quick bright flash then return */
+@keyframes shimmerFlash {
+  0% {
+    opacity: 0.08;
+    filter: blur(0px);
+  }
+  35% {
+    opacity: 1;
+    filter: blur(0px);
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.12);
+  }
+  60% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 0.08;
+  }
+}
+
+/* Optional: better appearance on dark backgrounds
+   You can toggle this by adding the class `shimmer-dark` to the root element */
+.shimmer-text.shimmer-dark {
+  color: rgba(255, 255, 255, 0.08);
+}
+.shimmer-text.shimmer-dark .shimmer-char {
+  text-shadow: none;
+}
+
+/* Accessibility: reduce motion respects */
+@media (prefers-reduced-motion: reduce) {
+  .shimmer-char {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
