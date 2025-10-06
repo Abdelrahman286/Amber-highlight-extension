@@ -18,6 +18,8 @@ const App = () => {
     setSelectedHighlightId,
   } = useAppContext();
 
+
+
   useEffect(() => {
     console.log(1);
     function handleMouseUp(e: MouseEvent) {

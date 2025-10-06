@@ -4,13 +4,17 @@ import Tooltip from "../CustomToolTip/Tooltip";
 import { Save, AlignLeft, Expand, Info } from "lucide-react";
 import Button from "../Button/Button";
 import { useAppContext } from "../../context/AppContext";
+import { useAlert } from "../../context/AlertContext";
 
 const SummarizeTab = () => {
   const { selectionRef } = useAppContext();
+  const { showAlert } = useAlert();
   const [level, setLevel] = useState("short");
   const [isAvailable, setIsAvailable] = useState(false);
   const [summary, setSummary] = useState("Checking availability...");
   const [loading, setLoading] = useState(false);
+
+  //   const { showAlert } = useAlert();
 
   const options: Option[] = [
     { value: "short", label: "Short" },
@@ -129,6 +133,13 @@ const SummarizeTab = () => {
 
         <Tooltip text="Save your selection" position="bottom">
           <Button
+            onClick={() => {
+              console.log("done");
+              showAlert(
+                "You have to highlight text before saving notes",
+                "info"
+              );
+            }}
             size={"sm"}
             variant={"ghost"}
             className="trigger-button-no-hover"

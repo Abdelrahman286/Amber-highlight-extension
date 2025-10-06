@@ -2,6 +2,7 @@ import "./style.css";
 import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
 import { AppContextProvider } from "./context/AppContext.tsx";
+import { AlertProvider } from "./context/AlertContext.tsx";
 
 export default defineContentScript({
   matches: ["*://*/*"],
@@ -24,7 +25,9 @@ export default defineContentScript({
         const root = ReactDOM.createRoot(wrapper);
         root.render(
           <AppContextProvider>
-            <App></App>
+            <AlertProvider>
+              <App></App>
+            </AlertProvider>
           </AppContextProvider>
         );
         return { root, wrapper };

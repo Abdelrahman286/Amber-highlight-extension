@@ -1,0 +1,100 @@
+/* --- Base Alert --- */
+.alert {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 18px;
+  border-radius: 12px;
+  font-weight: 500;
+  color: var(--zinc-300);
+  background: color-mix(in oklch, var(--zinc-800), transparent 15%);
+  border: 1px solid var(--zinc-600);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  animation: fadeIn 0.3s ease-out;
+  max-width: 420px;
+  transition: all 0.3s ease-in-out;
+  user-select: none;
+}
+
+.alert:hover {
+  transform: translateY(-2px);
+}
+
+/* --- Icon Colors --- */
+.alert-icon {
+  flex-shrink: 0;
+}
+
+.alert-icon.error {
+  color: #ef4444;
+}
+
+.alert-icon.success {
+  color: #22c55e;
+}
+
+.alert-icon.info {
+  color: var(--yellow);
+}
+
+/* --- Close Button --- */
+.alert-close {
+  background: none;
+  border: none;
+  color: var(--zinc-400);
+  cursor: pointer;
+  padding: 2px;
+  transition: color 0.2s;
+}
+
+.alert-close:hover {
+  color: var(--zinc-300);
+}
+
+/* --- Positions --- */
+.top-right {
+  top: 24px;
+  right: 24px;
+}
+
+.top-left {
+  top: 24px;
+  left: 24px;
+}
+
+.bottom-right {
+  bottom: 24px;
+  right: 24px;
+}
+
+.bottom-left {
+  bottom: 24px;
+  left: 24px;
+}
+
+/* --- Alert Types --- */
+.alert.error {
+  border-left: 4px solid #ef4444;
+}
+
+.alert.success {
+  border-left: 4px solid #22c55e;
+}
+
+.alert.info {
+  border-left: 4px solid var(--yellow);
+}
+
+/* --- Animation --- */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

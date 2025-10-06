@@ -31,6 +31,7 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
     null
   );
 
+
   //   const [showTriggersIcons, setShowTriggersIcons] = useState(false);
   const [showActionsBox, setShowActionsBox] = useState(false);
 
