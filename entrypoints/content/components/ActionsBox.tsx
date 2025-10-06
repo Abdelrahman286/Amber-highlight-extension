@@ -43,6 +43,7 @@ const ActionsBox = () => {
     <AnimatePresence>
       {buttonPos && (
         <motion.div
+          id="amber-actions-box"
           ref={boxRef}
           key="trigger-icons"
           //   initial={{ opacity: 0, y: -12, scale: 0.75 }}

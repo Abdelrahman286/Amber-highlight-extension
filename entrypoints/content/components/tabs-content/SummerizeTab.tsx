@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 import Select, { Option } from "../SelectComponent/Select";
 import Tooltip from "../CustomToolTip/Tooltip";
-import { Save, AlignLeft, Expand, Info } from "lucide-react";
+import { Save, AlignLeft, Expand, Info, Minimize2 } from "lucide-react";
 import Button from "../Button/Button";
 import { useAppContext } from "../../context/AppContext";
 import { useAlert } from "../../context/AlertContext";
+import { expandActionsBox, minimizeActionsBox } from "../../DomUtils";
 
 const SummarizeTab = () => {
   const { selectionRef } = useAppContext();
@@ -13,6 +14,7 @@ const SummarizeTab = () => {
   const [isAvailable, setIsAvailable] = useState(false);
   const [summary, setSummary] = useState("Checking availability...");
   const [loading, setLoading] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
 
   //   const { showAlert } = useAlert();
 
@@ -96,6 +98,19 @@ const SummarizeTab = () => {
     summarizeText();
   }, [level, isAvailable, selectionRef]);
 
+  const handleToggleExpand = async () => {
+    if (isExpanded) {
+      setIsExpanded(false);
+      await minimizeActionsBox();
+    } else {
+      await expandActionsBox();
+      setIsExpanded(true);
+    }
+  };
+
+  const Icon = isExpanded ? Minimize2 : Expand;
+  const tooltipText = isExpanded ? "Minimize view" : "Maximize view";
+
   return (
     <div style={{ padding: 0, margin: 0 }}>
       <div
@@ -131,32 +146,34 @@ const SummarizeTab = () => {
           />
         </div>
 
-        <Tooltip text="Save your selection" position="bottom">
-          <Button
-            onClick={() => {
-              console.log("done");
-              showAlert(
-                "You have to highlight text before saving notes",
-                "info"
-              );
-            }}
-            size={"sm"}
-            variant={"ghost"}
-            className="trigger-button-no-hover"
-          >
-            <Save className="icon" />
-          </Button>
-        </Tooltip>
-
-        <Tooltip text="Maximize view" position="bottom">
-          <Button
-            size={"sm"}
-            variant={"ghost"}
-            className="trigger-button-no-hover"
-          >
-            <Expand className="icon" />
-          </Button>
-        </Tooltip>
+        <div>
+          <Tooltip text="Save your selection" position="bottom">
+            <Button
+              onClick={() => {
+                console.log("done");
+                showAlert(
+                  "You have to highlight text before saving notes",
+                  "info"
+                );
+              }}
+              size={"sm"}
+              variant={"ghost"}
+              className="trigger-button-no-hover"
+            >
+              <Save className="icon" />
+            </Button>
+          </Tooltip>
+          <Tooltip text={tooltipText} position="bottom">
+            <Button
+              onClick={handleToggleExpand}
+              size="sm"
+              variant="ghost"
+              className="trigger-button-no-hover"
+            >
+              <Icon className="icon" />
+            </Button>
+          </Tooltip>
+        </div>
       </div>
 
       <div
@@ -164,7 +181,7 @@ const SummarizeTab = () => {
           marginTop: "12px",
           fontSize: "14px",
           lineHeight: "1.5",
-          maxHeight: "130px",
+          maxHeight: isExpanded ? "40vh" : "130px",
           overflowY: "auto",
           color: isAvailable ? "#e4e4e7" : "#a1a1aa",
         }}
@@ -177,10 +194,20 @@ const SummarizeTab = () => {
               alignItems: "center",
               gap: "6px",
               flexWrap: "wrap",
+              marginTop: "8px",
             }}
           >
             <Info size={16} />
-            <span>{summary}</span>
+            <span
+              style={{
+                display: "block", // ensures proper wrapping and no flex overflow
+                whiteSpace: "pre-wrap", // preserves spacing but allows wrapping
+                wordBreak: "break-word", // breaks long words
+                padding: "2px",
+              }}
+            >
+              {summary}
+            </span>
             <a
               href="https://developer.chrome.com/docs/ai/summarizer-api/"
               target="_blank"

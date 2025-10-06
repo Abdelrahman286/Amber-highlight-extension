@@ -77,7 +77,7 @@
 .trigger-icons-container {
   direction: ltr !important;
   position: fixed;
-  z-index: 999999;
+  z-index: 99999999;
   display: flex;
   gap: 8px;
   border-radius: 16px;
