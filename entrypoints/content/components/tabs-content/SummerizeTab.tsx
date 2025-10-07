@@ -5,8 +5,8 @@ import { Save, AlignLeft, Info, Minimize2, Maximize2 } from "lucide-react";
 import Button from "../Button/Button";
 import { useAppContext } from "../../context/AppContext";
 import { useAlert } from "../../context/AlertContext";
-import { expandActionsBox, minimizeActionsBox } from "../../DomUtils";
 import ShimmerText from "../shimmerText/ShimmerText";
+import ExpandButton from "../ExpandButton";
 
 const SummarizeTab = () => {
   const { showAlert } = useAlert();
@@ -44,7 +44,7 @@ const SummarizeTab = () => {
           setSummary("Ready to summarize text.");
         } else {
           setIsAvailable(false);
-          setSummary("Summarizer model not available.");
+          setSummary("Summarizer model is not available.");
         }
       } catch (err) {
         console.error(err);
@@ -156,18 +156,6 @@ const SummarizeTab = () => {
       summarizer?.destroy?.();
     };
   }, [level, isAvailable, selectionRef, selectHighlightId, generateMarkdown]);
-  const handleToggleExpand = async () => {
-    if (isExpanded) {
-      setIsExpanded(false);
-      await minimizeActionsBox();
-    } else {
-      await expandActionsBox();
-      setIsExpanded(true);
-    }
-  };
-
-  const Icon = isExpanded ? Minimize2 : Maximize2;
-  const tooltipText = isExpanded ? "Minimize view" : "Maximize view";
 
   const saveSummaryToNotes = async (): Promise<boolean> => {
     if (!summary?.trim() || !selectHighlightId) {
@@ -284,16 +272,10 @@ const SummarizeTab = () => {
             </Button>
           </Tooltip>
 
-          <Tooltip text={tooltipText} position="bottom">
-            <Button
-              onClick={handleToggleExpand}
-              size="sm"
-              variant="ghost"
-              className="trigger-button-no-hover"
-            >
-              <Icon className="icon" />
-            </Button>
-          </Tooltip>
+          <ExpandButton
+            isExpanded={isExpanded}
+            setIsExpanded={setIsExpanded}
+          ></ExpandButton>
         </div>
       </div>
 
