@@ -384,7 +384,6 @@
   font-size: 14px;
   outline: none;
   resize: vertical;
-  transition: all 0.2s ease;
 }
 
 .notes-textarea::placeholder {
@@ -427,5 +426,112 @@
 
 .markdown-label {
   cursor: pointer;
+  color: white;
+}
+
+/* Folders viewer */
+/* General Layout */
+.folder-manager {
+  width: 350px;
+  max-height: 300px;
+  overflow: auto;
+  margin: 16px;
+  background-color: var(--zinc-800);
   color: var(--zinc-300);
+  border-radius: 8px;
+  padding: 8px;
+}
+
+.folder-container {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Folder Row */
+.folder-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 6px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.folder-row.hovered {
+  background-color: var(--zinc-800);
+}
+
+.folder-row.selected {
+  background-color: var(--zinc-700);
+}
+
+/* Icons */
+.icon-folder {
+  width: 14px;
+  height: 14px;
+  color: var(--zinc-500);
+}
+
+.icon-folder.icon-selected {
+  color: var(--zinc-300);
+}
+
+.icon-chevron {
+  width: 14px;
+  height: 14px;
+  color: var(--zinc-500);
+}
+
+.toggle-button {
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.toggle-button:hover {
+  background-color: var(--zinc-800);
+}
+
+.toggle-spacer {
+  width: 14px;
+  height: 14px;
+}
+
+/* Folder Name */
+.folder-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--zinc-400);
+}
+
+.folder-name.text-selected {
+  color: var(--zinc-300);
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  color: var(--zinc-500);
+  padding: 40px 0;
+}
+
+.empty-icon {
+  width: 48px;
+  height: 48px;
+  margin: 0 auto 8px;
+  opacity: 0.6;
+}
+
+.empty-title {
+  font-size: 16px;
+  color: var(--zinc-400);
+  margin-bottom: 4px;
+}
+
+.empty-subtitle {
+  font-size: 12px;
+  color: var(--zinc-600);
 }

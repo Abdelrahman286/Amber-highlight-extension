@@ -12,6 +12,9 @@ export class AmberDatabase extends Dexie {
 
     // Define schema (versioned)
     this.version(1).stores({
+      folders: "id,createdAt,name,icon,color,[createdAt+id]",
+    });
+    this.version(1).stores({
       websites: "id,createdAt,url,[createdAt+id]",
     });
     this.version(1).stores({

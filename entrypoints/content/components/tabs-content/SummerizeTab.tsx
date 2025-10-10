@@ -300,6 +300,9 @@ const SummarizeTab = () => {
           maxHeight: isExpanded ? "40vh" : "130px",
           overflowY: "auto",
           color: isAvailable ? "#e4e4e7" : "#a1a1aa",
+
+          whiteSpace: "pre-wrap",
+          wordBreak: "break-word",
         }}
         className="thin-scrollbar"
       >

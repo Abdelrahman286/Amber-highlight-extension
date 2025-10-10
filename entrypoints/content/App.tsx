@@ -19,7 +19,7 @@ const App = () => {
   } = useAppContext();
 
   useEffect(() => {
-    console.log(11);
+    console.log(1);
     function handleMouseUp(e: MouseEvent) {
       if (
         (e.target as HTMLElement).tagName == "AMBER-HIGHLIGHTER" &&

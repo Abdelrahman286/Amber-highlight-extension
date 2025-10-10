@@ -10,43 +10,16 @@ import { ChevronDown, ChevronRight } from "lucide-react";
 
 import { db } from "../src/db";
 import ActionsBox from "../content/components/ActionsBox/ActionsBoxContent";
+import FoldersCrud from "../src/FoldersManager/FoldersManager";
+import ContentScriptFoldersViewer from "../src/FoldersManager/ContentScriptFoldersViewer";
 const App = () => {
-  const [isEnabled, setIsEnabled] = useState(false);
-
-  const [isOpen, setIsOpen] = useState(false);
   return (
-    <div className="p-3">
-      <div
-        style={{
-          margin: "100px",
-        }}
-      >
-        <div className="font-accordion">
-          {/* Header */}
-          <div
-            className="accordion-header"
-            onClick={() => setIsOpen((prev) => !prev)}
-          >
-            <span className="accordion-title">Font Settings</span>
-            <span className={`accordion-arrow ${isOpen ? "open" : ""}`}>
-              {isOpen ? <ChevronDown size={18} /> : <ChevronRight size={18} />}
-            </span>
-          </div>
+    <div className="p-3 bg-slate-400 h-[200vh]">
+      {/* <FoldersCrud></FoldersCrud> */}
 
-          {/* Content — rendered only when open */}
-          {isOpen && (
-            <div className="accordion-content">
-              <p>aa</p>
-              <p>aa</p>
-            </div>
-          )}
-        </div>
-      </div>
-      <hr></hr>
-      <h1 className="underline flex flex-row gap-2">
-        <Settings></Settings> Settings Page
-      </h1>
-      <IndexedDBPlayground></IndexedDBPlayground>
+      <h1>Folders View in content script</h1>
+      <ContentScriptFoldersViewer></ContentScriptFoldersViewer>
+      {/* <IndexedDBPlayground></IndexedDBPlayground> */}
     </div>
   );
 };
