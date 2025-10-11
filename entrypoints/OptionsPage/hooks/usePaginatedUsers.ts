@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
-import { db } from "./db";
-import { User } from "./types";
+import { db } from "../../src/db";
 
 export function usePaginatedUsers(pageSize = 100) {
-  const [users, setUsers] = useState<User[]>([]);
+  const [users, setUsers] = useState<any[]>([]);
   const [last, setLast] = useState<{ createdAt: number; id: string } | null>(
     null
   );
@@ -14,7 +13,7 @@ export function usePaginatedUsers(pageSize = 100) {
   async function fetchUsers(last?: { createdAt: number; id: string }) {
     if (!last) {
       // First page
-      return await db.users
+      return await db.highlights
         .orderBy("[createdAt+id]")
         // .reverse() // newest first
         .limit(pageSize)
@@ -22,7 +21,7 @@ export function usePaginatedUsers(pageSize = 100) {
     }
 
     // Next pages: strictly above last
-    return await db.users
+    return await db.highlights
       .where("[createdAt+id]")
       .above([last.createdAt, last.id])
       .limit(pageSize)

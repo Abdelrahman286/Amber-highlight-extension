@@ -164,7 +164,12 @@ const FolderItem: React.FC<FolderItemProps> = ({
           />
         ) : (
           <span
-            className={`flex-1 text-sm font-medium ${
+            onDoubleClick={(e) => {
+              e.stopPropagation();
+              setIsEditing(true);
+              setEditName(folder.name);
+            }}
+            className={`flex-1 text-sm font-medium cursor-text ${
               isSelected ? "text-blue-700" : "text-slate-700"
             }`}
           >

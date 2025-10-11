@@ -1,18 +1,19 @@
 // src/db.ts
 import Dexie, { Table } from "dexie";
-import { Websites, StoredHighlight } from "../content/type";
+import { Websites, StoredHighlight, Folder } from "../content/type";
 
 // Extend Dexie with typed tables
 export class AmberDatabase extends Dexie {
   websites!: Table<Websites>;
   highlights!: Table<StoredHighlight>;
+  folders!: Table<Folder>;
 
   constructor() {
     super("AMBER_DATABASE");
 
     // Define schema (versioned)
     this.version(1).stores({
-      folders: "id,createdAt,name,icon,color,[createdAt+id]",
+      folders: "id,createdAt,name,parentId,[createdAt+id]",
     });
     this.version(1).stores({
       websites: "id,createdAt,url,[createdAt+id]",

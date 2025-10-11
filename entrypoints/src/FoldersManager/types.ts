@@ -2,8 +2,14 @@ export interface FolderNode {
   id: string;
   name: string;
   children: FolderNode[];
+  createdAt: number;
 }
-
+export interface Folder {
+  id: string;
+  name: string;
+  parentId: string | null;
+  createdAt: number;
+}
 export interface FolderItemProps {
   folder: FolderNode;
   onAddChild: any;

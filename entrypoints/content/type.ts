@@ -19,7 +19,7 @@ export type RecursiveWrapperArgs = {
   id: string;
   color: string;
   fontSettings?: FontSettings;
-  notes: string;
+  notes?: string;
   createdAt: number;
   selectionString: string;
 
@@ -69,4 +69,11 @@ export interface FontSettings {
   underline?: boolean;
   lineThrough?: boolean;
   textSize?: "sm" | "md" | "lg";
+}
+
+export interface Folder {
+  id: string;
+  name: string;
+  parentId: string | null;
+  createdAt: number;
 }

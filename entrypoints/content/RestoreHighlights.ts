@@ -40,7 +40,7 @@ export async function restoreHighlights() {
           recursiveWrapper(document.body, {
             id: h.id,
             color: h.color,
-            textColor: h.textColor,
+            fontSettings: h.fontSettings,
             createdAt: h.createdAt,
             selectionString: h.selectionString,
             anchor: anchorNode,

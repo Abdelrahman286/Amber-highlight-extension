@@ -1,7 +1,7 @@
 import { browser } from "wxt/browser";
 
 import { Settings } from "lucide-react";
-import IndexedDBPlayground from "./IndexedDBPlayground";
+
 import Tooltip from "../content/components/CustomToolTip/Tooltip";
 
 import { useState } from "react";
@@ -15,10 +15,10 @@ import ContentScriptFoldersViewer from "../src/FoldersManager/ContentScriptFolde
 const App = () => {
   return (
     <div className="p-3 bg-slate-400 h-[200vh]">
-      {/* <FoldersCrud></FoldersCrud> */}
+      <FoldersCrud></FoldersCrud>
 
       <h1>Folders View in content script</h1>
-      <ContentScriptFoldersViewer></ContentScriptFoldersViewer>
+      {/* <ContentScriptFoldersViewer></ContentScriptFoldersViewer> */}
       {/* <IndexedDBPlayground></IndexedDBPlayground> */}
     </div>
   );

@@ -30,6 +30,10 @@ const ActionsBox = () => {
   let x = 0;
   let y = 0;
 
+  useEffect(() => {
+    console.log("actions box called");
+  }, []);
+
   if (buttonPos) {
     ({ x, y } = getActionsBoxCoord(
       buttonPos.x,
