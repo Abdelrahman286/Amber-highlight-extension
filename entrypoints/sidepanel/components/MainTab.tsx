@@ -35,7 +35,6 @@ const MainTab = () => {
           data: id,
         });
 
-
         setHighlights((prev) => prev.filter((h) => h.id !== id));
         setLostHighlights((prev) => prev.filter((h) => h.id !== id));
       } else {
@@ -134,11 +133,11 @@ const MainTab = () => {
       className="rounded-xl shadow-md border p-4 flex flex-col gap-2"
       style={{
         backgroundColor: site.color,
-        color: site.textColor,
+        color: "black",
       }}
     >
       <Button
-        size={"iconSm"}
+        size={"sm"}
         onClick={() => handleDelete(site.id)}
         disabled={deletingId === site.id}
       >

@@ -66,12 +66,10 @@ export default function SettingsPage() {
             </SidebarGroupContent>
           </SidebarGroup>
         </SidebarContent>
-
-   
       </Sidebar>
 
       {/* Main Area */}
-      <main className="flex-1 flex flex-col">
+      <main className="flex-1 flex flex-col ">
         {/* 🔹 Top Header */}
         <header className="flex items-center justify-between px-4 py-3 border-b bg-background">
           <div className="flex items-center gap-3">
@@ -104,7 +102,7 @@ export default function SettingsPage() {
         </header>
 
         {/* Page Content */}
-        <div className="flex-1 p-3 bg-background overflow-auto">
+        <div className="flex-1 p-3 bg-background ">
           {activeSection === "websites" && <WebsitesSection />}
           {activeSection === "folders" && <EmptySection title="Folders" />}
           {activeSection === "import" && (

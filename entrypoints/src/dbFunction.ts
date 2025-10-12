@@ -194,3 +194,18 @@ export const updateHighlightDB = async (
     return { success: false, error: err.message };
   }
 };
+
+// get all websites list
+export const getAllWebsitesDB = async (): Promise<{
+  success: boolean;
+  error?: string;
+  data?: Websites[];
+}> => {
+  try {
+    const data = await db.websites.toArray(); // fetch all websites
+    return { success: true, data };
+  } catch (err: any) {
+    console.error("Error fetching websites:", err);
+    return { success: false, error: err.message };
+  }
+};

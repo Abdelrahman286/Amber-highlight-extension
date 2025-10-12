@@ -8,6 +8,7 @@ import {
   deleteHighlightDB,
   updateHighlightDB,
   getHighlightDB,
+  getAllWebsitesDB,
 } from "./src/dbFunction";
 
 // Define handlers map
@@ -75,6 +76,14 @@ const messageHandlers: Record<
   addWebsite: async (message, sender, sendResponse) => {
     try {
       const res = await addWebsiteDB(message.data);
+      sendResponse(res);
+    } catch (err: any) {
+      sendResponse(err);
+    }
+  },
+  getWebsites: async (message, sender, sendResponse) => {
+    try {
+      const res = await getAllWebsitesDB();
       sendResponse(res);
     } catch (err: any) {
       sendResponse(err);
