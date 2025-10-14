@@ -9,6 +9,9 @@ const MoreOptionsRow = () => {
     setButtonPos,
     setShowActionsBox,
     setSelectedHighlightId,
+    setShowFolders,
+    selectedFolder,
+    setSelectedFolder,
   } = useAppContext();
   const handleOpenSidebar = async () => {
     try {
@@ -19,15 +22,14 @@ const MoreOptionsRow = () => {
   };
 
   const handleCopy = async () => {
-    try {
-      const response = await browser.runtime.sendMessage({
-        action: "addDummyWebsite",
-      });
-
-      console.log(response);
-    } catch (error) {
-      console.error("Error opening sidebar:", error);
-    }
+    // try {
+    //   const response = await browser.runtime.sendMessage({
+    //     action: "addDummyWebsite",
+    //   });
+    //   console.log(response);
+    // } catch (error) {
+    //   console.error("Error opening sidebar:", error);
+    // }
   };
 
   const handleDeleteHighlight = async () => {
@@ -63,11 +65,36 @@ const MoreOptionsRow = () => {
           color: "white",
         }}
       >
-        <Button
-          variant="icon"
-          size="sm"
-          icon={<Folder className="size-18" />}
-        ></Button>
+        {selectHighlightId && (
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "8px",
+            }}
+          >
+            <Button
+              onClick={() => {
+                setShowFolders((curr) => !curr);
+              }}
+              variant="icon"
+              size="sm"
+              icon={<Folder className="size-18" />}
+            ></Button>
+            <div
+              style={{
+                fontSize: "12px",
+                width: "140px",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
+                color: "var(--zinc-300)",
+              }}
+            >
+              {selectedFolder?.name || ""}
+            </div>
+          </div>
+        )}
       </div>
       <div
         style={{

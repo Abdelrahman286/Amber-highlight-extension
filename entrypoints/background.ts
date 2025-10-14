@@ -9,6 +9,8 @@ import {
   updateHighlightDB,
   getHighlightDB,
   getAllWebsitesDB,
+  deleteWebsiteDB,
+  getAllFoldersDb,
 } from "./src/dbFunction";
 
 // Define handlers map
@@ -121,7 +123,7 @@ const messageHandlers: Record<
         sendResponse({ success: true });
       });
     } catch (err: any) {
-      sendResponse({ success: false, error: err.message });
+      sendResponse({ success: false, error: err });
     }
 
     // ✅ keep channel open until sendResponse is called
@@ -134,7 +136,7 @@ const messageHandlers: Record<
       const res = await updateHighlightDB(id, updates);
       sendResponse(res);
     } catch (err: any) {
-      sendResponse({ success: false, error: err.message });
+      sendResponse({ success: false, error: err });
     }
   },
 
@@ -143,7 +145,25 @@ const messageHandlers: Record<
       const res = await getHighlightDB(message.data);
       sendResponse(res);
     } catch (err: any) {
-      sendResponse({ success: false, error: err.message });
+      sendResponse({ success: false, error: err });
+    }
+  },
+
+  deleteWebsite: async (message, sender, sendResponse) => {
+    try {
+      const res = await deleteWebsiteDB(message.data);
+      sendResponse(res);
+    } catch (err: any) {
+      sendResponse({ success: false, error: err });
+    }
+  },
+
+  getFolders: async (message, sender, sendResponse) => {
+    try {
+      const res = await getAllFoldersDb();
+      sendResponse(res);
+    } catch (err: any) {
+      sendResponse(err);
     }
   },
 };

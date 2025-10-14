@@ -1,21 +1,26 @@
 import { db } from "./db";
-import { StoredHighlight } from "../content/type";
+import { Folder, StoredHighlight } from "../content/type";
 import { Websites } from "../content/type";
+
+// --- Test Delay ---
+export const delay = (ms: number): Promise<void> => {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+};
 
 // --- Get All Highlights ---
 export const getAllHighlightsDB = async (): Promise<{
   success: boolean;
   data?: StoredHighlight[];
-  error?: string;
+  error?: string | Error;
 }> => {
   return db.highlights
     .toArray()
     .then((data) => {
       return { success: true, data };
     })
-    .catch((err) => {
-      console.error("Error loading highlights:", err);
-      return { success: false, error: err.message };
+    .catch((err: unknown) => {
+      const errorMessage = err instanceof Error ? err : new Error(String(err));
+      return { success: false, error: errorMessage };
     });
 };
 
@@ -25,7 +30,7 @@ export const getHighlightDB = async (
 ): Promise<{
   success: boolean;
   data?: StoredHighlight;
-  error?: string;
+  error?: string | Error;
 }> => {
   try {
     const highlight = await db.highlights.get(id);
@@ -35,31 +40,31 @@ export const getHighlightDB = async (
     }
 
     return { success: true, data: highlight };
-  } catch (err: any) {
-    console.error("Error fetching highlight:", err);
-    return { success: false, error: err.message };
+  } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err : new Error(String(err));
+    return { success: false, error: errorMessage };
   }
 };
 
 // --- Add Highlight ---
 export const addHighlightDB = async (
   data: StoredHighlight
-): Promise<{ success: boolean; error?: string }> => {
+): Promise<{ success: boolean; error?: string | Error }> => {
   return db.highlights
     .add(data)
     .then(() => {
       return { success: true };
     })
     .catch((err) => {
-      console.error("Error adding new highlight:", err);
-      return { success: false, error: err.message };
+      const errorMessage = err instanceof Error ? err : new Error(String(err));
+      return { success: false, error: errorMessage };
     });
 };
 
 // --- Delete All Highlights ---
 export const deleteAllHighlightsDB = async (): Promise<{
   success: boolean;
-  error?: string;
+  error?: string | Error;
 }> => {
   return db.highlights
     .clear()
@@ -68,8 +73,8 @@ export const deleteAllHighlightsDB = async (): Promise<{
       return { success: true };
     })
     .catch((err) => {
-      console.error("Error deleting highlights:", err);
-      return { success: false, error: err.message };
+      const errorMessage = err instanceof Error ? err : new Error(String(err));
+      return { success: false, error: errorMessage };
     });
 };
 // --- Delete Single Highlight ---
@@ -114,7 +119,7 @@ export const addWebsiteDB = async (
   data: Websites
 ): Promise<{
   success: boolean;
-  error?: string;
+  error?: string | Error;
   skipped?: boolean;
   websiteID?: string;
 }> => {
@@ -128,16 +133,20 @@ export const addWebsiteDB = async (
 
     await db.websites.add(data);
     return { success: true, websiteID: data.id };
-  } catch (err: any) {
-    console.error("Error adding new website:", err);
-    return { success: false, error: err.message };
+  } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err : new Error(String(err));
+    return { success: false, error: errorMessage };
   }
 };
 
 // --- get website highlights ---
 export const getWebsiteHighlightsDB = async (
   url: string
-): Promise<{ success: boolean; error?: string; data?: StoredHighlight[] }> => {
+): Promise<{
+  success: boolean;
+  error?: string | Error;
+  data?: StoredHighlight[];
+}> => {
   try {
     // 1. Find the website entry by its url
     const website = await db.websites.where("url").equals(url).first();
@@ -155,18 +164,11 @@ export const getWebsiteHighlightsDB = async (
     // 3. Sort by createdAt
     highlights.sort((a, b) => Number(a.createdAt) - Number(b.createdAt));
 
-    console.log(highlights);
-
     return { success: true, data: highlights };
-  } catch (err: any) {
-    console.error("Error fetching highlights:", err);
-    return { success: false, error: err.message };
+  } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err : new Error(String(err));
+    return { success: false, error: errorMessage };
   }
-};
-
-// --- Test Delay ---
-export const delay = (ms: number): Promise<void> => {
-  return new Promise((resolve) => setTimeout(resolve, ms));
 };
 
 // --- update property in highlights ---
@@ -175,7 +177,7 @@ export const updateHighlightDB = async (
   updates: Partial<StoredHighlight>
 ): Promise<{
   success: boolean;
-  error?: string;
+  error?: string | Error;
   updated?: boolean;
 }> => {
   try {
@@ -185,27 +187,69 @@ export const updateHighlightDB = async (
     if (!existing) {
       return { success: false, error: "Highlight not found" };
     }
-    console.log(id, updates);
+
     // Update only the given fields
     const result = await db.highlights.update(id, updates);
     return { success: true, updated: result > 0 };
-  } catch (err: any) {
-    console.error("Error updating highlight:", err);
-    return { success: false, error: err.message };
+  } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err : new Error(String(err));
+    return { success: false, error: errorMessage };
   }
 };
 
 // get all websites list
 export const getAllWebsitesDB = async (): Promise<{
   success: boolean;
-  error?: string;
+  error?: string | Error;
   data?: Websites[];
 }> => {
   try {
     const data = await db.websites.toArray(); // fetch all websites
     return { success: true, data };
+  } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err : new Error(String(err));
+    return { success: false, error: errorMessage };
+  }
+};
+
+// delete website and it's own highlights
+
+export const deleteWebsiteDB = async (
+  id: string
+): Promise<{ success: boolean; error?: string }> => {
+  try {
+    // Check if the website exists
+    const website = await db.websites.get(id);
+    if (!website) {
+      return { success: false, error: `Website with id ${id} not found.` };
+    }
+
+    // Delete all highlights linked to this website
+    await db.highlights.where("urlId").equals(id).delete();
+
+    // Delete the website itself
+    await db.websites.delete(id);
+    return { success: true };
   } catch (err: any) {
-    console.error("Error fetching websites:", err);
+    console.error("Error deleting website and its highlights:", err);
     return { success: false, error: err.message };
   }
+};
+
+// get all folders
+
+export const getAllFoldersDb = async (): Promise<{
+  success: boolean;
+  data?: Folder[];
+  error?: string | Error;
+}> => {
+  return db.folders
+    .toArray()
+    .then((data) => {
+      return { success: true, data };
+    })
+    .catch((err: unknown) => {
+      const errorMessage = err instanceof Error ? err : new Error(String(err));
+      return { success: false, error: errorMessage };
+    });
 };

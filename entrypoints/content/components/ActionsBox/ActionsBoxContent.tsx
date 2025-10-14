@@ -16,6 +16,7 @@ import TranslateTab from "../tabs-content/TranslateTab";
 import NotesTab from "../tabs-content/NotesTab";
 import MoreOptionsRow from "../MoreOptionsRow";
 import { useAppContext } from "../../context/AppContext";
+import FolderExplorer from "../FoldersExplorer/FolderExplorer";
 
 const Test = () => {
   const {
@@ -24,6 +25,7 @@ const Test = () => {
     setShowActionsBox,
     setSelectedHighlightId,
     selectHighlightId,
+    showFolders,
   } = useAppContext();
   const tabs: TabItem[] = [
     {
@@ -70,6 +72,8 @@ const Test = () => {
       ></Button>
       <Tabs tabs={tabs} defaultActive={0} />
       <MoreOptionsRow></MoreOptionsRow>
+
+      {showFolders && <FolderExplorer></FolderExplorer>}
     </div>
   );
 };

@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 import { FolderNode, FolderItemProps } from "./types";
+import { cn } from "@/lib/utils";
 const FolderItem: React.FC<FolderItemProps> = ({
   folder,
   onAddChild,
@@ -103,28 +104,32 @@ const FolderItem: React.FC<FolderItemProps> = ({
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
-        className={`flex items-center gap-2 py-2 px-3 rounded-lg${
-          isDragOver ? "bg-blue-100 border border-blue-400 border-dashed" : ""
-        } ${isSelected ? "bg-blue-50 " : "hover:bg-slate-100"} ${
-          isHovered && !isDragOver && !isSelected ? "bg-slate-50" : ""
-        }`}
+        className={cn("flex items-center gap-2 py-2 px-3", {
+          "border border-dashed border-muted-foreground": isDragOver,
+          "bg-accent/80": isSelected && !isDragOver,
+          "hover:bg-accent/90": !isSelected && !isDragOver,
+          "bg-muted/30": isHovered && !isDragOver && !isSelected,
+        })}
         style={{ paddingLeft: `${level * 20 + 12}px` }}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
         onClick={() => !isEditing && onSelect(folder)}
       >
+        {/* Drag Handle */}
         <div
           draggable
           onDragStart={handleDragStart}
           onDragEnd={handleDragEnd}
-          className={`cursor-grab active:cursor-grabbing p-1 rounded hover:bg-slate-200 transition-colors ${
-            isDragging ? "opacity-30" : ""
-          }`}
           onClick={(e) => e.stopPropagation()}
+          className={cn(
+            "cursor-grab active:cursor-grabbing p-1 rounded transition-colors hover:bg-accent/40",
+            { "opacity-30": isDragging }
+          )}
         >
-          <GripVertical className="w-4 h-4 text-slate-400" />
+          <GripVertical className="w-4 h-4 text-muted-foreground" />
         </div>
 
+        {/* Expand / Collapse Button */}
         <div className="flex items-center">
           {folder.children.length > 0 ? (
             <button
@@ -132,25 +137,28 @@ const FolderItem: React.FC<FolderItemProps> = ({
                 e.stopPropagation();
                 setIsExpanded(!isExpanded);
               }}
-              className=" hover:bg-slate-200 rounded "
+              className="rounded hover:bg-accent/40 transition-colors"
             >
               {isExpanded ? (
-                <ChevronDown className="w-4 h-4 text-slate-600" />
+                <ChevronDown className="w-4 h-4 text-muted-foreground" />
               ) : (
-                <ChevronRight className="w-4 h-4 text-slate-600" />
+                <ChevronRight className="w-4 h-4 text-muted-foreground" />
               )}
             </button>
           ) : (
-            <div className="w-4 h-4" /> // plain spacer, no hover
+            <div className="w-4 h-4" />
           )}
         </div>
 
+        {/* Folder Icon */}
         <Folder
-          className={`w-5 h-5 flex-shrink-0 ${
-            isSelected ? "text-blue-600" : "text-blue-500"
-          }`}
+          className={cn("w-5 h-5 flex-shrink-0", {
+            "text-accent-foreground": isSelected,
+            "text-muted-foreground": !isSelected,
+          })}
         />
 
+        {/* Folder Name or Input */}
         {isEditing ? (
           <Input
             value={editName}
@@ -169,18 +177,24 @@ const FolderItem: React.FC<FolderItemProps> = ({
               setIsEditing(true);
               setEditName(folder.name);
             }}
-            className={`flex-1 text-sm font-medium cursor-text ${
-              isSelected ? "text-blue-700" : "text-slate-700"
-            }`}
+            className={cn(
+              "flex-1 text-sm font-medium cursor-text truncate transition-colors",
+              {
+                "text-accent-foreground font-medium": isSelected,
+                "text-foreground": !isSelected,
+              }
+            )}
           >
             {folder.name}
           </span>
         )}
 
+        {/* Actions Menu */}
         <div
-          className={`flex items-center ${
+          className={cn(
+            "flex items-center transition-opacity",
             isHovered || isEditing ? "opacity-100" : "opacity-0"
-          } transition-opacity`}
+          )}
         >
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -190,7 +204,7 @@ const FolderItem: React.FC<FolderItemProps> = ({
                 className="h-7 w-7 p-0"
                 onClick={(e) => e.stopPropagation()}
               >
-                <MoreVertical className="w-4 h-4" />
+                <MoreVertical className="w-4 h-4 text-muted-foreground" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" sideOffset={4}>
@@ -219,7 +233,7 @@ const FolderItem: React.FC<FolderItemProps> = ({
                   e.stopPropagation();
                   onDelete(folder.id);
                 }}
-                className="text-red-600 focus:bg-red-50"
+                className="text-destructive focus:bg-destructive/10"
               >
                 <Trash2 className="w-4 h-4 mr-2" />
                 Delete
@@ -229,6 +243,7 @@ const FolderItem: React.FC<FolderItemProps> = ({
         </div>
       </div>
 
+      {/* Nested Children */}
       {isExpanded && folder.children.length > 0 && (
         <div>
           {folder.children.map((child) => (

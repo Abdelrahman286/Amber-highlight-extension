@@ -1,4 +1,5 @@
 // src/contexts/AppContext.tsx
+import { FolderNode } from "@/entrypoints/src/FoldersManager/types";
 import {
   createContext,
   useContext,
@@ -21,6 +22,11 @@ type AppContextType = {
 
   selectHighlightId: string;
   setSelectedHighlightId: Dispatch<SetStateAction<string>>;
+
+  showFolders: boolean;
+  setShowFolders: Dispatch<SetStateAction<boolean>>;
+  selectedFolder: FolderNode | null;
+  setSelectedFolder: React.Dispatch<React.SetStateAction<FolderNode | null>>;
 };
 
 // Create the context with a default (undefined)
@@ -31,18 +37,14 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
     null
   );
 
-
-  //   const [showTriggersIcons, setShowTriggersIcons] = useState(false);
   const [showActionsBox, setShowActionsBox] = useState(false);
 
   // store selection globally inside this ref
   const selectionRef = useRef<Selection | null>(null);
 
   const [selectHighlightId, setSelectedHighlightId] = useState<string>("");
-
-  //   const [actionBoxState, setActionBoxState] = useState<
-  //     "beforeHighlight" | "afterHighlight" | null
-  //   >(null);
+  const [showFolders, setShowFolders] = useState<boolean>(false);
+  const [selectedFolder, setSelectedFolder] = useState<FolderNode | null>(null);
 
   return (
     <AppContext.Provider
@@ -55,6 +57,10 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
         setShowActionsBox,
         selectHighlightId,
         setSelectedHighlightId,
+        showFolders,
+        setShowFolders,
+        selectedFolder,
+        setSelectedFolder,
       }}
     >
       {children}

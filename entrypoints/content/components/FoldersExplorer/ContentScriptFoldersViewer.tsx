@@ -1,7 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Folder, ChevronRight, ChevronDown } from "lucide-react";
-import { dummyData } from "./data";
-import { FolderNode } from "./types";
+
+import { FolderNode } from "../../../src/FoldersManager/types";
+export interface FolderExplorerProps {
+  folders: FolderNode[];
+  setFolders: React.Dispatch<React.SetStateAction<FolderNode[]>>;
+  selectedFolder: FolderNode | null;
+  setSelectedFolder: React.Dispatch<React.SetStateAction<FolderNode | null>>;
+}
 
 const FolderItem: React.FC<{
   folder: FolderNode;
@@ -69,14 +75,12 @@ const FolderItem: React.FC<{
   );
 };
 
-export default function FolderManager() {
-  const [folders, setFolders] = useState<FolderNode[]>(dummyData);
-  const [selectedFolder, setSelectedFolder] = useState<FolderNode | null>(null);
-
-  useEffect(() => {
-    console.log(selectedFolder);
-  }, [selectedFolder]);
-
+export default function FolderManager({
+  folders,
+  setFolders,
+  selectedFolder,
+  setSelectedFolder,
+}: FolderExplorerProps) {
   return (
     <div className="folder-manager thin-scrollbar">
       <div className="folder-container">
