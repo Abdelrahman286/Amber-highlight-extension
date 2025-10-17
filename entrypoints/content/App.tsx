@@ -16,6 +16,8 @@ const App = () => {
     showActionsBox,
     setShowActionsBox,
     setSelectedHighlightId,
+    setShowFolders,
+    setSelectedFolder,
   } = useAppContext();
 
   useEffect(() => {
@@ -57,6 +59,8 @@ const App = () => {
         } else {
           setButtonPos(null);
           setShowActionsBox(false);
+          setShowFolders(false);
+          setSelectedFolder(null);
           selectionRef.current = null;
           setSelectedHighlightId("");
         }
@@ -66,6 +70,8 @@ const App = () => {
     function handleScroll() {
       setButtonPos(null);
       setShowActionsBox(false);
+      setShowFolders(false);
+
       setSelectedHighlightId("");
     }
 

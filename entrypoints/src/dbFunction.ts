@@ -237,7 +237,6 @@ export const deleteWebsiteDB = async (
 };
 
 // get all folders
-
 export const getAllFoldersDb = async (): Promise<{
   success: boolean;
   data?: Folder[];
@@ -252,4 +251,40 @@ export const getAllFoldersDb = async (): Promise<{
       const errorMessage = err instanceof Error ? err : new Error(String(err));
       return { success: false, error: errorMessage };
     });
+};
+
+// get folder data of a single highlight
+export const getFolderByHighlightIdDB = async (
+  highlightId: string
+): Promise<{
+  success: boolean;
+  data?: Folder;
+  error?: string | Error;
+}> => {
+  try {
+    // 1️⃣ Get the highlight first
+    const highlight = await db.highlights.get(highlightId);
+
+    if (!highlight) {
+      return { success: false, error: "Highlight not found" };
+    }
+
+    // 2️⃣ Extract folderId
+    const folderId = highlight.folderId;
+    if (!folderId) {
+      return { success: false, error: "Highlight has no folderId" };
+    }
+
+    // 3️⃣ Fetch the folder
+    const folder = await db.folders.get(folderId);
+    if (!folder) {
+      return { success: false, error: "Folder not found" };
+    }
+
+    // 4️⃣ Return success
+    return { success: true, data: folder };
+  } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err : new Error(String(err));
+    return { success: false, error: errorMessage };
+  }
 };

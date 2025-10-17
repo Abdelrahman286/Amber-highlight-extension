@@ -17,8 +17,14 @@ const fixedColors = [
 ];
 const RECENT_COLORS_KEY = "recentColors";
 const ColorPickerButtons = () => {
-  const { selectionRef, selectHighlightId, setShowActionsBox, setButtonPos } =
-    useAppContext();
+  const {
+    selectionRef,
+    selectHighlightId,
+    setShowActionsBox,
+    setButtonPos,
+    setShowFolders,
+    setSelectedFolder,
+  } = useAppContext();
   const [recentColors, setRecentColors] = useState<string[]>([]);
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
   const [tempColor, setTempColor] = useState<string | null>(null);
@@ -139,6 +145,8 @@ const ColorPickerButtons = () => {
     if (success) {
       setButtonPos(null);
       setShowActionsBox(false);
+      setShowFolders(false);
+      setSelectedFolder(null);
     } else {
       console.error("Failed to create highlight");
     }

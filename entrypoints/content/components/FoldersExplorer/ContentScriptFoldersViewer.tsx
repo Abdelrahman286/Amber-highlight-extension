@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Folder, ChevronRight, ChevronDown } from "lucide-react";
-
+import { browser } from "wxt/browser";
 import { FolderNode } from "../../../src/FoldersManager/types";
+
 export interface FolderExplorerProps {
   folders: FolderNode[];
   setFolders: React.Dispatch<React.SetStateAction<FolderNode[]>>;
   selectedFolder: FolderNode | null;
   setSelectedFolder: React.Dispatch<React.SetStateAction<FolderNode | null>>;
+  searchTerm: string;
 }
 
 const FolderItem: React.FC<{
@@ -14,10 +16,16 @@ const FolderItem: React.FC<{
   onSelect: (folder: FolderNode) => void;
   selectedId: string | null;
   level: number;
-}> = ({ folder, onSelect, selectedId, level }) => {
-  const [isExpanded, setIsExpanded] = useState(false);
+  forceExpand?: boolean;
+}> = ({ folder, onSelect, selectedId, level, forceExpand = false }) => {
+  const [isExpanded, setIsExpanded] = useState(forceExpand);
   const [isHovered, setIsHovered] = useState(false);
   const isSelected = selectedId === folder.id;
+
+  // Expand automatically when forceExpand changes
+  React.useEffect(() => {
+    if (forceExpand) setIsExpanded(true);
+  }, [forceExpand]);
 
   return (
     <div className="folder-item">
@@ -67,6 +75,7 @@ const FolderItem: React.FC<{
               onSelect={onSelect}
               selectedId={selectedId}
               level={level + 1}
+              forceExpand={forceExpand}
             />
           ))}
         </div>
@@ -75,32 +84,73 @@ const FolderItem: React.FC<{
   );
 };
 
+// Recursive helper: returns filtered folders and expansion flags
+function filterFoldersBySearchTerm(
+  folders: FolderNode[],
+  searchTerm: string
+): FolderNode[] {
+  const lower = searchTerm.toLowerCase();
+
+  return folders
+    .map((folder) => {
+      const matches = folder.name.toLowerCase().includes(lower);
+      const filteredChildren = filterFoldersBySearchTerm(
+        folder.children,
+        searchTerm
+      );
+
+      if (matches || filteredChildren.length > 0) {
+        return {
+          ...folder,
+          children: filteredChildren,
+          // mark this folder for expansion if it contains a match
+          _match: matches,
+          _expand: matches || filteredChildren.length > 0,
+        } as FolderNode & { _expand?: boolean; _match?: boolean };
+      }
+      return null;
+    })
+    .filter(Boolean) as FolderNode[];
+}
+
+const openFoldersManager = () => {
+  try {
+    browser.runtime.sendMessage({ action: "openFoldersManager" });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 export default function FolderManager({
   folders,
   setFolders,
   selectedFolder,
   setSelectedFolder,
+  searchTerm,
 }: FolderExplorerProps) {
+  const filteredFolders =
+    searchTerm.trim() === ""
+      ? folders
+      : filterFoldersBySearchTerm(folders, searchTerm);
+
   return (
     <div className="folder-manager thin-scrollbar">
       <div className="folder-container">
-        {folders.length === 0 ? (
+        {filteredFolders.length === 0 ? (
           <div className="empty-state">
             <Folder className="empty-icon" />
-            <p className="empty-title">No folders yet</p>
-            <p className="empty-subtitle">
-              Create your first folder to get started
-            </p>
+            <p className="empty-title">No folders found</p>
           </div>
         ) : (
           <div className="folder-list">
-            {folders.map((folder) => (
+            {filteredFolders.map((folder) => (
               <FolderItem
                 key={folder.id}
                 folder={folder}
                 onSelect={setSelectedFolder}
                 selectedId={selectedFolder?.id || null}
                 level={0}
+                forceExpand={!!searchTerm}
               />
             ))}
           </div>

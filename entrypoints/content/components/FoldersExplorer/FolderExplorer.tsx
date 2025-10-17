@@ -1,18 +1,46 @@
 import React, { useState } from "react";
-import { FolderOpen, Clock, Search, X } from "lucide-react";
+import { Search, X, Ban, ReceiptEuro } from "lucide-react";
 import FolderManager from "./ContentScriptFoldersViewer";
 import { useAppContext } from "../../context/AppContext";
 import { FolderNode } from "../../../src/FoldersManager/types";
 import { db } from "../../../src/db";
 import { buildFolderTree } from "@/entrypoints/src/FoldersManager/FoldersDB";
+import Tooltip from "../CustomToolTip/Tooltip";
+import { getFolderPath } from "../../../src/FoldersManager/FolderUtils";
 
 const FolderExplorer: React.FC = () => {
-  const { setShowFolders, selectedFolder, setSelectedFolder } = useAppContext();
+  const {
+    setShowFolders,
+    selectedFolder,
+    setSelectedFolder,
+    selectHighlightId,
+  } = useAppContext();
 
   const [showSearch, setShowSearch] = useState(false);
-  const [activeTab, setActiveTab] = useState<"folders" | "recent">("folders");
   const [searchTerm, setSearchTerm] = useState("");
   const [folders, setFolders] = useState<FolderNode[]>([]);
+
+  // saving highlight to the selected folder
+
+  useEffect(() => {
+    if (selectHighlightId && selectedFolder?.id) {
+      const updateHighlight = async () => {
+        try {
+          await browser.runtime.sendMessage({
+            action: "updateHighlight",
+            data: {
+              id: selectHighlightId,
+              updates: { folderId: selectedFolder.id },
+            },
+          });
+        } catch (err) {
+          console.error("Failed to update notes:", err);
+        }
+      };
+
+      updateHighlight();
+    }
+  }, [selectedFolder]);
 
   useEffect(() => {
     const loadFolders = async (): Promise<void> => {
@@ -61,28 +89,72 @@ const FolderExplorer: React.FC = () => {
     loadFolders();
   }, [setFolders]);
 
+  const removeFolderSelection = async () => {
+    if (!selectedFolder?.id || !selectHighlightId) return;
+    try {
+      const res = await browser.runtime.sendMessage({
+        action: "updateHighlight",
+        data: {
+          id: selectHighlightId,
+          updates: { folderId: "" },
+        },
+      });
+      if (res.success) {
+        setSelectedFolder(null);
+      }
+      console.log("Highlight updated successfully:", selectedFolder);
+    } catch (err) {
+      console.error("Failed to update notes:", err);
+    }
+  };
+
   return (
     <div className="folder-explorer thin-scrollbar">
       {/* Header */}
       <div className="folder-header">
         <div className="folder-actions">
-          <button
-            className={`icon-btn ${activeTab === "folders" ? "active" : ""}`}
-            title="Open Folders"
-            onClick={() => setActiveTab("folders")}
-          >
-            <FolderOpen className="icon" />
-            <span>Folders</span>
-          </button>
+          <Tooltip text="Unselect Folder" position="bottom">
+            <button
+              className={`icon-btn ${selectedFolder ? "active" : ""}`}
+              onClick={removeFolderSelection}
+            >
+              <Ban className="icon" />
+            </button>
+          </Tooltip>
 
-          <button
-            className={`icon-btn ${activeTab === "recent" ? "active" : ""}`}
-            title="Recent Folders"
-            onClick={() => setActiveTab("recent")}
-          >
-            <Clock className="icon" />
-            <span>Recent</span>
-          </button>
+          {/* Search section */}
+          <div className="folder-search">
+            {!showSearch ? (
+              <button
+                className="icon-btn search-toggle"
+                title="Search"
+                onClick={() => setShowSearch(true)}
+              >
+                <Search className="icon" />
+                <span>Search</span>
+              </button>
+            ) : (
+              <div className="search-box">
+                <input
+                  type="text"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="search-input"
+                  placeholder="Search folders..."
+                  autoFocus
+                />
+                <button
+                  className="close-search-btn"
+                  onClick={() => {
+                    setSearchTerm("");
+                    setShowSearch(false);
+                  }}
+                >
+                  <X className="icon" />
+                </button>
+              </div>
+            )}
+          </div>
         </div>
 
         <button
@@ -96,51 +168,13 @@ const FolderExplorer: React.FC = () => {
 
       {/* Content */}
       <div className="folder-content thin-scrollbar">
-        {activeTab === "folders" ? (
-          <div>
-            {/* Search section */}
-            <div className="folder-search">
-              {!showSearch ? (
-                <button
-                  className="icon-btn search-toggle"
-                  title="Search"
-                  onClick={() => setShowSearch(true)}
-                >
-                  <Search className="icon" />
-                  <span>Search</span>
-                </button>
-              ) : (
-                <div className="search-box">
-                  <input
-                    type="text"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className="search-input"
-                    placeholder="Search folders..."
-                    autoFocus
-                  />
-                  <button
-                    className="close-search-btn"
-                    onClick={() => {
-                      setSearchTerm("");
-                      setShowSearch(false);
-                    }}
-                  >
-                    <X className="icon" />
-                  </button>
-                </div>
-              )}
-            </div>
-            <FolderManager
-              folders={folders}
-              setFolders={setFolders}
-              selectedFolder={selectedFolder}
-              setSelectedFolder={setSelectedFolder}
-            />
-          </div>
-        ) : (
-          <div className="coming-soon">Coming soon...</div>
-        )}
+        <FolderManager
+          searchTerm={searchTerm}
+          folders={folders}
+          setFolders={setFolders}
+          selectedFolder={selectedFolder}
+          setSelectedFolder={setSelectedFolder}
+        />
       </div>
     </div>
   );

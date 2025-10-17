@@ -24,6 +24,7 @@ export function highlight({
   const highlightInfo = {
     id: id,
     urlId: urlId,
+    folderId: "",
     color: color || "#F7DC6F", // Yellow
     fontSettings: fontSettings,
     notes: notes,
@@ -84,10 +85,12 @@ export function placeHighlight(
   const id: string = crypto.randomUUID();
   const urlId: string = window.location.href;
   const notes = "";
+  const folderId = "";
 
   const success: boolean = highlight({
     id,
     urlId,
+    folderId,
     container,
     selection,
     color,

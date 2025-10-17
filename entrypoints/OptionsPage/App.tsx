@@ -42,9 +42,21 @@ import { useTheme } from "./theme-provider";
 
 export default function SettingsPage() {
   const { state } = useSidebar();
-  const [activeSection, setActiveSection] = useState<Section>("websites");
+  const [activeSection, setActiveSection] = useState<Section>();
 
   const { setTheme, theme } = useTheme();
+
+  // change the activeSection based on url parameter
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const section = params.get("section");
+
+    if (section == "folders") {
+      setActiveSection("folders");
+    } else {
+      setActiveSection("websites");
+    }
+  }, []);
 
   return (
     <div className="flex min-h-screen w-full ">

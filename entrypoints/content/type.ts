@@ -1,6 +1,7 @@
 export type HighlightArgs = {
   id: string;
   urlId: string;
+  folderId: string;
   notes: string;
   container: HTMLElement | Document;
   selection: Selection;
@@ -45,6 +46,7 @@ export type StoredHighlight = {
   notes: string;
 
   urlId: string;
+  folderId: string;
 
   anchorOffset: number;
   focusOffset: number;

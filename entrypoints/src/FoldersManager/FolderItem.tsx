@@ -178,7 +178,7 @@ const FolderItem: React.FC<FolderItemProps> = ({
               setEditName(folder.name);
             }}
             className={cn(
-              "flex-1 text-sm font-medium cursor-text truncate transition-colors",
+              "flex-1 text-sm font-medium cursor-text truncate transition-colors w-[100px]",
               {
                 "text-accent-foreground font-medium": isSelected,
                 "text-foreground": !isSelected,

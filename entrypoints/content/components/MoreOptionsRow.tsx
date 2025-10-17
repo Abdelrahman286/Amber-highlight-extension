@@ -44,12 +44,37 @@ const MoreOptionsRow = () => {
       removeHighlightById(selectHighlightId);
       setButtonPos(null);
       setShowActionsBox(false);
+      setShowFolders(false);
+      setSelectedFolder(null);
       setSelectedHighlightId("");
       await browser.runtime.sendMessage({
         action: "invalidateSidepanelHighlights",
       });
     }
   };
+
+  // get in which folder this highlight is saved
+  useEffect(() => {
+    if (selectHighlightId) {
+      const getFolder = async () => {
+        try {
+          const res = await browser.runtime.sendMessage({
+            action: "getFolderByHighlightId",
+            data: {
+              id: selectHighlightId,
+            },
+          });
+          if (res.success && res?.data) {
+            setSelectedFolder(res.data);
+          }
+        } catch (err) {
+          console.error("Failed to get the folder of this highlight:", err);
+        }
+      };
+
+      getFolder();
+    }
+  }, [selectHighlightId]);
 
   return (
     <div

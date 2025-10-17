@@ -11,6 +11,7 @@ import {
   getAllWebsitesDB,
   deleteWebsiteDB,
   getAllFoldersDb,
+  getFolderByHighlightIdDB,
 } from "./src/dbFunction";
 
 // Define handlers map
@@ -161,6 +162,28 @@ const messageHandlers: Record<
   getFolders: async (message, sender, sendResponse) => {
     try {
       const res = await getAllFoldersDb();
+      sendResponse(res);
+    } catch (err: any) {
+      sendResponse(err);
+    }
+  },
+
+  openFoldersManager: async (message, sender, sendResponse) => {
+    try {
+      const url =
+        browser.runtime.getURL("amberOptionsPage.html" as any) +
+        "?section=folders";
+
+      browser.tabs.create({ url });
+      sendResponse({ success: true });
+    } catch (err: any) {
+      sendResponse(err);
+    }
+  },
+
+  getFolderByHighlightId: async (message, sender, sendResponse) => {
+    try {
+      const res = await getFolderByHighlightIdDB(message.data);
       sendResponse(res);
     } catch (err: any) {
       sendResponse(err);

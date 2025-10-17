@@ -71,7 +71,7 @@ const App = () => {
       <div className="border m-2 p-2 bg-slate-300 h-[500px] overflow-y-auto rounded-2xl">
         <div className="flex flex-row items-center justify-between">
           <h1 className="bold underline text-xl">Highlighrs</h1>
-          <Button size={"iconSm"} onClick={loadHighlights}>
+          <Button size={"icon-sm"} onClick={loadHighlights}>
             <RefreshCcw></RefreshCcw>
           </Button>
         </div>
@@ -85,7 +85,7 @@ const App = () => {
                 className="rounded-xl shadow-md border p-4 flex flex-col gap-2"
                 style={{
                   backgroundColor: site.color,
-                  color: site.textColor,
+                  color: site.fontSettings?.color,
                 }}
               >
                 <div className="flex justify-between items-center flex-col gap-4">
