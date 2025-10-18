@@ -22,7 +22,7 @@ const CUSTOM_FONTS = `
  */
 export const useWebFonts = () => {
   useEffect(() => {
-    const STYLE_ID = "dameg-custom-font-loader-style";
+    const STYLE_ID = "amber-custom-font-loader-style";
 
     if (document.getElementById(STYLE_ID)) return;
 

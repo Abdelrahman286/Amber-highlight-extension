@@ -192,6 +192,7 @@ const messageHandlers: Record<
 };
 
 export default defineBackground(() => {
+  // Handle Messages
   browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
     const handler = messageHandlers[message?.action];
     if (handler) {

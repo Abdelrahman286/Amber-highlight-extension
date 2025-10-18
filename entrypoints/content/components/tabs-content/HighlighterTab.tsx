@@ -24,6 +24,7 @@ const ColorPickerButtons = () => {
     setButtonPos,
     setShowFolders,
     setSelectedFolder,
+    setExpandView,
   } = useAppContext();
   const [recentColors, setRecentColors] = useState<string[]>([]);
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
@@ -145,6 +146,7 @@ const ColorPickerButtons = () => {
     if (success) {
       setButtonPos(null);
       setShowActionsBox(false);
+      setExpandView(false);
       setShowFolders(false);
       setSelectedFolder(null);
     } else {

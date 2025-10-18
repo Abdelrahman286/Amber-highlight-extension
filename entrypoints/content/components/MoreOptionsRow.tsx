@@ -12,6 +12,7 @@ const MoreOptionsRow = () => {
     setShowFolders,
     selectedFolder,
     setSelectedFolder,
+    setExpandView
   } = useAppContext();
   const handleOpenSidebar = async () => {
     try {
@@ -44,6 +45,7 @@ const MoreOptionsRow = () => {
       removeHighlightById(selectHighlightId);
       setButtonPos(null);
       setShowActionsBox(false);
+      setExpandView(false);
       setShowFolders(false);
       setSelectedFolder(null);
       setSelectedHighlightId("");

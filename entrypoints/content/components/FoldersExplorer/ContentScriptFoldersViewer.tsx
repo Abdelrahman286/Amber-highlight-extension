@@ -23,7 +23,7 @@ const FolderItem: React.FC<{
   const isSelected = selectedId === folder.id;
 
   // Expand automatically when forceExpand changes
-  React.useEffect(() => {
+  useEffect(() => {
     if (forceExpand) setIsExpanded(true);
   }, [forceExpand]);
 
@@ -140,6 +140,16 @@ export default function FolderManager({
           <div className="empty-state">
             <Folder className="empty-icon" />
             <p className="empty-title">No folders found</p>
+            <div
+              onClick={openFoldersManager}
+              style={{
+                color: "#3b82f6", // Tailwind's blue-500
+                cursor: "pointer",
+                fontSize: "12px",
+              }}
+            >
+              Manage Folders
+            </div>
           </div>
         ) : (
           <div className="folder-list">

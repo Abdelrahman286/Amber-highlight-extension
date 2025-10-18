@@ -12,6 +12,8 @@ const ActionsBox = () => {
     setSelectedHighlightId,
     setShowFolders,
     setSelectedFolder,
+    expandView,
+    setExpandView,
   } = useAppContext();
   const boxRef = useRef<HTMLDivElement | null>(null);
 
@@ -22,6 +24,7 @@ const ActionsBox = () => {
         return;
       } else {
         setShowActionsBox(false);
+        setExpandView(false);
         setShowFolders(false);
         setSelectedFolder(null);
         setSelectedHighlightId("");
@@ -38,10 +41,6 @@ const ActionsBox = () => {
   let x = 0;
   let y = 0;
 
-  useEffect(() => {
-    console.log("actions box called");
-  }, []);
-
   if (buttonPos) {
     ({ x, y } = getActionsBoxCoord(
       buttonPos.x,
@@ -53,27 +52,39 @@ const ActionsBox = () => {
 
   return (
     <AnimatePresence>
-      {buttonPos && (
+      <div
+        ref={boxRef}
+        style={
+          expandView
+            ? {
+                display: "block",
+                position: "fixed",
+                top: "50%",
+                left: "50%",
+                width: "60vw",
+                maxHeight: "60vh",
+                transform: "translate(-50%, -60%)",
+                zIndex: 999999,
+              }
+            : {
+                position: "fixed",
+                top: `${y}px`,
+                left: `${x}px`,
+                width: `${ACTIONS_BOX_WIDTH}px`,
+              }
+        }
+      >
         <motion.div
           id="amber-actions-box"
-          ref={boxRef}
           key="trigger-icons"
           initial={{ opacity: 0, y: -12, scale: 0.75 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: -8, scale: 0.95 }}
           transition={{ duration: 0.1, ease: "easeOut" }}
-          style={{
-            top: `${y}px`,
-            left: `${x}px`,
-            position: "fixed",
-            width: `${ACTIONS_BOX_WIDTH}px`,
-            // transform: "translateX(-50%)",
-            // height: `${ACTIONS_BOX_HEIGHT}px`,
-          }}
         >
-          <ActionsBoxContent></ActionsBoxContent>
+          <ActionsBoxContent />
         </motion.div>
-      )}
+      </div>
     </AnimatePresence>
   );
 };

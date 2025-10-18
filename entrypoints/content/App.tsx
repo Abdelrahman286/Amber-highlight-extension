@@ -18,6 +18,7 @@ const App = () => {
     setSelectedHighlightId,
     setShowFolders,
     setSelectedFolder,
+    setExpandView,
   } = useAppContext();
 
   useEffect(() => {
@@ -59,6 +60,7 @@ const App = () => {
         } else {
           setButtonPos(null);
           setShowActionsBox(false);
+          setExpandView(false);
           setShowFolders(false);
           setSelectedFolder(null);
           selectionRef.current = null;
@@ -70,6 +72,7 @@ const App = () => {
     function handleScroll() {
       setButtonPos(null);
       setShowActionsBox(false);
+      setExpandView(false);
       setShowFolders(false);
 
       setSelectedHighlightId("");
@@ -92,6 +95,7 @@ const App = () => {
 
   // inject google font to the main document to be used in shadow root document
   useWebFonts();
+
   return (
     <div
       style={{

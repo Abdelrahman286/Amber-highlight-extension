@@ -102,7 +102,6 @@ const FolderExplorer: React.FC = () => {
       if (res.success) {
         setSelectedFolder(null);
       }
-      console.log("Highlight updated successfully:", selectedFolder);
     } catch (err) {
       console.error("Failed to update notes:", err);
     }
@@ -122,7 +121,6 @@ const FolderExplorer: React.FC = () => {
             </button>
           </Tooltip>
 
-          {/* Search section */}
           <div className="folder-search">
             {!showSearch ? (
               <button

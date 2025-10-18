@@ -1,28 +1,20 @@
-import { Dispatch, SetStateAction, useState, useEffect } from "react";
 import Tooltip from "./CustomToolTip/Tooltip";
 import { Minimize2, Maximize2 } from "lucide-react";
 import Button from "./Button/Button";
-import { expandActionsBox, minimizeActionsBox } from "../DomUtils";
+import { useAppContext } from "../context/AppContext";
 
-const ExpandButton = ({
-  isExpanded,
-  setIsExpanded,
-}: {
-  isExpanded: boolean;
-  setIsExpanded: Dispatch<SetStateAction<boolean>>;
-}) => {
+const ExpandButton = () => {
+  const { setExpandView, expandView } = useAppContext();
   const handleToggleExpand = async () => {
-    if (isExpanded) {
-      setIsExpanded(false);
-      await minimizeActionsBox();
+    if (expandView) {
+      setExpandView(false);
     } else {
-      await expandActionsBox();
-      setIsExpanded(true);
+      setExpandView(true);
     }
   };
 
-  const Icon = isExpanded ? Minimize2 : Maximize2;
-  const tooltipText = isExpanded ? "Minimize view" : "Maximize view";
+  const Icon = expandView ? Minimize2 : Maximize2;
+  const tooltipText = expandView ? "Minimize view" : "Maximize view";
   return (
     <>
       <Tooltip text={tooltipText} position="bottom">

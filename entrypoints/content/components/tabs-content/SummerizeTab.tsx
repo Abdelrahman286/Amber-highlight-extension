@@ -10,12 +10,12 @@ import ExpandButton from "../ExpandButton";
 
 const SummarizeTab = () => {
   const { showAlert } = useAlert();
-  const { selectionRef, selectHighlightId } = useAppContext();
+  const { selectionRef, selectHighlightId, expandView } = useAppContext();
   const [level, setLevel] = useState("short");
   const [isAvailable, setIsAvailable] = useState(false);
   const [summary, setSummary] = useState("Checking availability...");
   const [loading, setLoading] = useState(false);
-  const [isExpanded, setIsExpanded] = useState(false);
+
   const [hasRealSummary, setHasRealSummary] = useState(false);
   const [generateMarkdown, setGenerateMarkdown] = useState(true); // ✅ default true
 
@@ -272,10 +272,7 @@ const SummarizeTab = () => {
             </Button>
           </Tooltip>
 
-          <ExpandButton
-            isExpanded={isExpanded}
-            setIsExpanded={setIsExpanded}
-          ></ExpandButton>
+          <ExpandButton></ExpandButton>
         </div>
       </div>
 
@@ -297,7 +294,7 @@ const SummarizeTab = () => {
           //   marginTop: "12px",
           fontSize: "14px",
           lineHeight: "1.5",
-          maxHeight: isExpanded ? "40vh" : "130px",
+          maxHeight: expandView ? "40vh" : "130px",
           overflowY: "auto",
           color: isAvailable ? "#e4e4e7" : "#a1a1aa",
 

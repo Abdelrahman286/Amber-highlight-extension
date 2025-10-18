@@ -26,6 +26,9 @@ const Test = () => {
     setSelectedHighlightId,
     selectHighlightId,
     showFolders,
+    setExpandView,
+    activeIndex,
+    setActiveIndex,
   } = useAppContext();
   const tabs: TabItem[] = [
     {
@@ -56,6 +59,7 @@ const Test = () => {
     e.stopPropagation();
     setButtonPos(null);
     setShowActionsBox(false);
+    setExpandView(false);
     selectionRef.current = null;
     setSelectedHighlightId("");
   };
@@ -70,7 +74,7 @@ const Test = () => {
         icon={<X className="size-16" />}
         className="close-actions-btn"
       ></Button>
-      <Tabs tabs={tabs} defaultActive={0} />
+      <Tabs tabs={tabs} />
       <MoreOptionsRow></MoreOptionsRow>
 
       {showFolders && <FolderExplorer></FolderExplorer>}

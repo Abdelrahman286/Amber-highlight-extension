@@ -10,7 +10,7 @@ import ExpandButton from "../ExpandButton";
 
 const TranslateTab = () => {
   const WIDTH = 100;
-  const { selectionRef, selectHighlightId } = useAppContext();
+  const { selectionRef, selectHighlightId, expandView } = useAppContext();
   const { showAlert } = useAlert();
 
   const [inputLang, setInputLang] = useState("en");
@@ -20,7 +20,6 @@ const TranslateTab = () => {
     "Checking translation availability..."
   );
   const [loading, setLoading] = useState(false);
-  const [isExpanded, setIsExpanded] = useState(false);
   const [hasRealTranslation, setHasRealTranslation] = useState(false);
 
   const langs: Option[] = [
@@ -88,7 +87,7 @@ const TranslateTab = () => {
 
         console.log("Translate API availability:", availability);
 
-        if (availability === "available") {
+        if (availability === "available" || availability === "downloadable") {
           setIsAvailable(true);
           setTranslation("Ready to translate text.");
         } else {
@@ -330,7 +329,7 @@ const TranslateTab = () => {
           </Button>
         </Tooltip>
 
-        <ExpandButton isExpanded={isExpanded} setIsExpanded={setIsExpanded} />
+        <ExpandButton />
       </div>
 
       {/* --- Translation Output --- */}
@@ -338,7 +337,7 @@ const TranslateTab = () => {
         style={{
           fontSize: "14px",
           lineHeight: "1.5",
-          maxHeight: isExpanded ? "40vh" : "130px",
+          maxHeight: expandView ? "40vh" : "130px",
           overflowY: "auto",
           color: isAvailable ? "#e4e4e7" : "#a1a1aa",
         }}

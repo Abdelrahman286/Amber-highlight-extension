@@ -27,6 +27,12 @@ type AppContextType = {
   setShowFolders: Dispatch<SetStateAction<boolean>>;
   selectedFolder: FolderNode | null;
   setSelectedFolder: React.Dispatch<React.SetStateAction<FolderNode | null>>;
+
+  expandView: boolean;
+  setExpandView: Dispatch<SetStateAction<boolean>>;
+
+  activeIndex: number;
+  setActiveIndex: Dispatch<SetStateAction<number>>;
 };
 
 // Create the context with a default (undefined)
@@ -45,6 +51,9 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
   const [selectHighlightId, setSelectedHighlightId] = useState<string>("");
   const [showFolders, setShowFolders] = useState<boolean>(false);
   const [selectedFolder, setSelectedFolder] = useState<FolderNode | null>(null);
+  const [expandView, setExpandView] = useState(false);
+
+  const [activeIndex, setActiveIndex] = useState<number>(0);
 
   return (
     <AppContext.Provider
@@ -61,6 +70,11 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
         setShowFolders,
         selectedFolder,
         setSelectedFolder,
+        expandView,
+        setExpandView,
+
+        activeIndex,
+        setActiveIndex,
       }}
     >
       {children}

@@ -8,12 +8,12 @@ export type TabItem = {
 
 type TabsProps = {
   tabs: TabItem[];
-  defaultActive?: number;
   className?: string;
 };
+import { useAppContext } from "../../context/AppContext";
 
-const Tabs: React.FC<TabsProps> = ({ tabs, defaultActive = 0, className }) => {
-  const [activeIndex, setActiveIndex] = useState(defaultActive);
+const Tabs: React.FC<TabsProps> = ({ tabs, className }) => {
+  const { activeIndex, setActiveIndex } = useAppContext();
 
   return (
     <div className={`tabs-container ${className || ""}`}>
