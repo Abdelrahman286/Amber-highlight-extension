@@ -12,7 +12,7 @@ const MoreOptionsRow = () => {
     setShowFolders,
     selectedFolder,
     setSelectedFolder,
-    setExpandView
+    setExpandView,
   } = useAppContext();
   const handleOpenSidebar = async () => {
     try {
@@ -20,17 +20,6 @@ const MoreOptionsRow = () => {
     } catch (error) {
       console.error("Error opening sidebar:", error);
     }
-  };
-
-  const handleCopy = async () => {
-    // try {
-    //   const response = await browser.runtime.sendMessage({
-    //     action: "addDummyWebsite",
-    //   });
-    //   console.log(response);
-    // } catch (error) {
-    //   console.error("Error opening sidebar:", error);
-    // }
   };
 
   const handleDeleteHighlight = async () => {
@@ -135,12 +124,6 @@ const MoreOptionsRow = () => {
           size="sm"
           icon={<PanelRightOpen className="size-18" />}
           onClick={() => handleOpenSidebar()}
-        ></Button>
-        <Button
-          variant="icon"
-          size="sm"
-          icon={<Copy className="size-18" />}
-          onClick={() => handleCopy()}
         ></Button>
 
         {selectHighlightId ? (

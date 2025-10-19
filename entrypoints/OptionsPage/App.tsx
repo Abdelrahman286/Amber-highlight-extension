@@ -23,10 +23,10 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { Separator } from "@/components/ui/separator";
+import { Toaster } from "sonner";
 
 import WebsitesSection from "./Tabs/WebsiteHighlights/WebsiteHighlights";
 import FoldersPage from "./Tabs/FoldersTab/FoldersPage";
-import amberIcon from "../../assets/amber-icon.png";
 
 type Section = "websites" | "folders" | "import" | "help" | "about";
 
@@ -39,6 +39,7 @@ const menuItems = [
 ];
 
 import { useTheme } from "./theme-provider";
+import ImportExportPage from "./Tabs/ImportExport/ImportExportPage";
 
 export default function SettingsPage() {
   const { state } = useSidebar();
@@ -60,6 +61,13 @@ export default function SettingsPage() {
 
   return (
     <div className="flex min-h-screen w-full ">
+      <Toaster
+        closeButton
+        richColors
+        duration={3000}
+        position="top-center"
+        theme="system"
+      />
       {/* Sidebar */}
       <Sidebar collapsible="icon">
         <SidebarContent>
@@ -83,7 +91,6 @@ export default function SettingsPage() {
           </SidebarGroup>
         </SidebarContent>
       </Sidebar>
-
       {/* Main Area */}
       <main className="flex-1 flex flex-col ">
         {/* 🔹 Top Header */}
@@ -93,7 +100,11 @@ export default function SettingsPage() {
             <SidebarTrigger />
 
             <div className="flex items-center gap-2">
-              <img src={amberIcon} alt="Amber Logo" className="w-7 h-7" />
+              <img
+                src={browser.runtime.getURL("icon-128.png" as any)}
+                alt="Amber Logo"
+                className="w-7 h-7"
+              />
               <span className="font-semibold text-lg">Amber</span>
             </div>
           </div>
@@ -115,9 +126,8 @@ export default function SettingsPage() {
         <div className="flex-1 p-3 bg-background ">
           {activeSection === "websites" && <WebsitesSection />}
           {activeSection === "folders" && <FoldersPage></FoldersPage>}
-          {activeSection === "import" && (
-            <EmptySection title="Import / Export" />
-          )}
+          {activeSection === "import" && <ImportExportPage></ImportExportPage>}
+
           {activeSection === "help" && <EmptySection title="Help" />}
           {activeSection === "about" && <EmptySection title="About" />}
         </div>

@@ -219,6 +219,30 @@ const messageHandlers: Record<
 };
 
 export default defineBackground(() => {
+  // on install guide
+  browser.runtime.onInstalled.addListener(async (details) => {
+    // 1. Only run on fresh install (not update)
+    if (details.reason === "install") {
+      console.log("Extension installed — refreshing tabs and opening guide...");
+
+      try {
+        // 2. Refresh all open tabs
+        const tabs = await browser.tabs.query({});
+        for (const tab of tabs) {
+          if (tab.id && tab.url?.startsWith("http")) {
+            browser.tabs.reload(tab.id);
+          }
+        }
+
+        // 3. Open your guide URL
+        const guideUrl = browser.runtime.getURL("AmberGuide.html" as any);
+        await browser.tabs.create({ url: guideUrl });
+      } catch (error) {
+        console.error("Error during install handling:", error);
+      }
+    }
+  });
+
   // Handle Messages
   browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
     const handler = messageHandlers[message?.action];
