@@ -199,6 +199,23 @@ const messageHandlers: Record<
       sendResponse(err);
     }
   },
+
+  scrollToHighlight: async (message, sender, sendResponse) => {
+    try {
+      const [tab] = await browser.tabs.query({
+        active: true,
+        currentWindow: true,
+      });
+      if (tab?.id) {
+        await browser.tabs.sendMessage(tab.id, {
+          action: "scrollToHighlight",
+          data: message.data,
+        });
+      }
+    } catch (err: any) {
+      sendResponse(err);
+    }
+  },
 };
 
 export default defineBackground(() => {

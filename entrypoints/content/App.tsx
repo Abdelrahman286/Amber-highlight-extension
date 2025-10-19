@@ -1,12 +1,12 @@
 import "@/assets/contentScript.css";
 import { useEffect } from "react";
-import { restoreHighlights } from "./RestoreHighlights";
 import { useAppContext } from "./context/AppContext";
 import TriggerIcons from "./components/TriggerIcons";
 import ActionsBox from "./components/ActionsBox";
 import { useDeleteHighlightListener } from "./hooks/useDomDeleteHighlightListener";
 import { useRestoreHighlights } from "./hooks/useRestoreHighlights";
 import { useWebFonts } from "./hooks/injectFont";
+import { useScrollToHighlight } from "./hooks/useScrollToHighlight";
 
 const App = () => {
   const {
@@ -20,6 +20,9 @@ const App = () => {
     setSelectedFolder,
     setExpandView,
   } = useAppContext();
+
+  // inject google font to the main document to be used in shadow root document
+  useWebFonts();
 
   useEffect(() => {
     console.log(1);
@@ -93,8 +96,8 @@ const App = () => {
   // Remove highlight from the document in response to a message from the side panel
   useDeleteHighlightListener();
 
-  // inject google font to the main document to be used in shadow root document
-  useWebFonts();
+  // scroll to highlight
+  useScrollToHighlight();
 
   return (
     <div

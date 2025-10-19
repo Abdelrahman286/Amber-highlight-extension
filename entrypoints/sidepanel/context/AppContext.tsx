@@ -10,20 +10,13 @@ import {
   RefObject,
 } from "react";
 
-type AppContextType = {
-  myRandomNumber: number;
-};
+type AppContextType = {};
 
 // Create the context with a default (undefined)
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export function AppContextProvider({ children }: { children: ReactNode }) {
-  const [myRandomNumber, setRandomNumber] = useState(1);
-  return (
-    <AppContext.Provider value={{ myRandomNumber }}>
-      {children}
-    </AppContext.Provider>
-  );
+  return <AppContext.Provider value={{}}>{children}</AppContext.Provider>;
 }
 
 export function useAppContext() {
