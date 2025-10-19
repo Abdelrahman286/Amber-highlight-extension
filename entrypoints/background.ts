@@ -12,6 +12,7 @@ import {
   deleteWebsiteDB,
   getAllFoldersDb,
   getFolderByHighlightIdDB,
+  getFolderHighlightsDB,
 } from "./src/dbFunction";
 
 // Define handlers map
@@ -184,6 +185,15 @@ const messageHandlers: Record<
   getFolderByHighlightId: async (message, sender, sendResponse) => {
     try {
       const res = await getFolderByHighlightIdDB(message.data);
+      sendResponse(res);
+    } catch (err: any) {
+      sendResponse(err);
+    }
+  },
+
+  getFolderHighlights: async (message, sender, sendResponse) => {
+    try {
+      const res = await getFolderHighlightsDB(message.data);
       sendResponse(res);
     } catch (err: any) {
       sendResponse(err);

@@ -70,7 +70,7 @@ export interface FontSettings {
   italic?: boolean;
   underline?: boolean;
   lineThrough?: boolean;
-  textSize?: "sm" | "md" | "lg";
+  textSize?: "sm" | "md" | "lg" | "";
 }
 
 export interface Folder {

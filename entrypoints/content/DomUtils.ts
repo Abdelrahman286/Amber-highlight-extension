@@ -1,3 +1,5 @@
+import { FontSettings } from "./type";
+
 type ContextText = {
   prefix: string;
   exact: string;
@@ -76,4 +78,63 @@ export function findNodeByContext(context: ContextText) {
     }
   }
   return null;
+}
+
+/**
+ * Applies font settings to one or more elements safely.
+ * Only applies properties that exist in the provided settings.
+ * @param elements HTMLElement or NodeListOf<HTMLElement>
+ * @param settings FontSettings to apply (optional or partial)
+ */
+export function applyFontSettings(
+  elements: HTMLElement | NodeListOf<HTMLElement>,
+  settings?: Partial<FontSettings>
+) {
+  if (!elements) return;
+
+  const elList =
+    elements instanceof HTMLElement ? [elements] : Array.from(elements);
+
+  elList.forEach((el) => {
+    if (!el) return;
+
+    // --- Font weight ---
+    if ("bold" in (settings || {}))
+      el.style.fontWeight = settings?.bold ? "bold" : "inherit";
+
+    // --- Italic ---
+    if ("italic" in (settings || {}))
+      el.style.fontStyle = settings?.italic ? "italic" : "inherit";
+
+    // --- Text decorations ---
+    if ("underline" in (settings || {}) || "lineThrough" in (settings || {})) {
+      const decorations: string[] = [];
+      if (settings?.underline) decorations.push("underline");
+      if (settings?.lineThrough) decorations.push("line-through");
+      el.style.textDecoration = decorations.length
+        ? decorations.join(" ")
+        : "inherit";
+    }
+
+    // --- Font size ---
+    if ("textSize" in (settings || {})) {
+      switch (settings?.textSize) {
+        case "sm":
+          el.style.fontSize = "12px";
+          break;
+        case "md":
+          el.style.fontSize = "16px";
+          break;
+        case "lg":
+          el.style.fontSize = "20px";
+          break;
+        default:
+          el.style.fontSize = "inherit";
+      }
+    }
+
+    // --- Color ---
+    if ("color" in (settings || {}))
+      el.style.color = settings?.color ?? "inherit";
+  });
 }

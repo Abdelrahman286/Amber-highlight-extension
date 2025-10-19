@@ -288,3 +288,29 @@ export const getFolderByHighlightIdDB = async (
     return { success: false, error: errorMessage };
   }
 };
+
+// --- get folder highlights ---
+export const getFolderHighlightsDB = async (
+  id: string
+): Promise<{
+  success: boolean;
+  error?: string | Error;
+  data?: StoredHighlight[];
+}> => {
+  try {
+    // 1. Get all highlights where folderId equals the given id
+    const highlights = await db.highlights
+      .where("folderId")
+      .equals(id)
+      .toArray();
+
+    // 2. Sort by createdAt
+    highlights.sort((a, b) => Number(a.createdAt) - Number(b.createdAt));
+
+    // 3. Return the result
+    return { success: true, data: highlights };
+  } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err : new Error(String(err));
+    return { success: false, error: errorMessage };
+  }
+};

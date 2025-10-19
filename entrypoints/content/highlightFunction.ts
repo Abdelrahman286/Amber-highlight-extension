@@ -5,7 +5,7 @@ import {
   StoredHighlight,
   FontSettings,
 } from "./type";
-import { getNodePath, getContextText } from "./DomUtils";
+import { getNodePath, getContextText, applyFontSettings } from "./DomUtils";
 import { browser } from "wxt/browser";
 // ===== HIGHLIGHTING =====
 export function highlight({
@@ -208,6 +208,9 @@ function _recursiveWrapper(
     highlightNode.dataset.amberhighlightid = uuid;
     highlightNode.textContent = highlightText ?? "";
 
+    // applying font styles
+    applyFontSettings(highlightNode, fontSettings);
+
     highlightTextEl.remove();
     parent.insertBefore(highlightNode, insertBeforeElement);
   });
@@ -226,8 +229,14 @@ export function removeHighlightById(id: string) {
   highlights.forEach((el) => {
     el.classList.remove(HIGHLIGHT_CLASS);
     el.style.backgroundColor = "inherit";
-    el.style.color = "inherit";
     el.dataset.amberhighlightid = "";
+
+    // Reset all font-related styles
+    el.style.color = "inherit";
+    el.style.fontWeight = "inherit";
+    el.style.fontStyle = "inherit";
+    el.style.textDecoration = "inherit";
+    el.style.fontSize = "inherit";
   });
 }
 

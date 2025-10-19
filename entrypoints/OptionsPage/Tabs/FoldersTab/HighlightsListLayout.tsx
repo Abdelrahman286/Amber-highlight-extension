@@ -17,19 +17,20 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
-import { StoredHighlight, Websites } from "../../../content/type";
+import { Folder, StoredHighlight, Websites } from "../../../content/type";
+import { FolderNode } from "@/entrypoints/src/FoldersManager/types";
 
 interface WebsiteHighlightsListProps {
-  selectedWebsite: Websites | null;
-  websiteHighlights: StoredHighlight[];
-  setWebsiteHighlights: React.Dispatch<React.SetStateAction<StoredHighlight[]>>;
+  selectedFolder: FolderNode | null;
+  folderHighlights: StoredHighlight[];
+  setFolderHighlights: React.Dispatch<React.SetStateAction<StoredHighlight[]>>;
   handleDeleteHighlight: (highlightId: string) => Promise<void>;
 }
 
 export default function WebsiteHighlightsList({
-  selectedWebsite,
-  websiteHighlights,
-  setWebsiteHighlights,
+  selectedFolder,
+  folderHighlights,
+  setFolderHighlights,
   handleDeleteHighlight,
 }: WebsiteHighlightsListProps) {
   const [editingHighlightId, setEditingHighlightId] = useState<string | null>(
@@ -50,7 +51,7 @@ export default function WebsiteHighlightsList({
       });
 
       if (res?.success) {
-        setWebsiteHighlights((prev) =>
+        setFolderHighlights((prev) =>
           prev.map((h) =>
             h.id === highlightId ? { ...h, notes: tempNote } : h
           )
@@ -71,15 +72,15 @@ export default function WebsiteHighlightsList({
     setTempNote("");
   };
 
-  if (!selectedWebsite) {
+  if (!selectedFolder) {
     return (
       <div className="h-full flex items-center justify-center text-muted-foreground italic text-sm">
-        Select a website to view its highlights.
+        Select a folder to view its highlights.
       </div>
     );
   }
 
-  if (websiteHighlights.length === 0) {
+  if (folderHighlights.length === 0) {
     return (
       <div className="h-full flex items-center justify-center text-muted-foreground italic text-sm">
         No highlights yet.
@@ -90,7 +91,7 @@ export default function WebsiteHighlightsList({
   return (
     <ScrollArea className="flex-1 h-full p-4 max-h-screen pb-14 w-full">
       <div className="space-y-3 w-full">
-        {websiteHighlights.map((highlight) => (
+        {folderHighlights.map((highlight) => (
           <div
             key={highlight.id}
             className="bg-background group rounded-md border flex overflow-hidden"
@@ -121,7 +122,7 @@ export default function WebsiteHighlightsList({
                       <MoreVertical className="h-4 w-4" />
                     </Button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end" className="w-36">
+                  <DropdownMenuContent align="end" className="w-56">
                     {!highlight?.notes ? (
                       <DropdownMenuItem
                         onClick={() => handleAddOrEditNotes(highlight)}
@@ -139,7 +140,7 @@ export default function WebsiteHighlightsList({
                       onClick={() => handleDeleteHighlight(highlight.id)}
                       className="text-destructive focus:text-destructive"
                     >
-                      <Trash2 className="mr-2 h-4 w-4" /> Delete
+                      <Trash2 className="mr-2 h-4 w-4" /> Remove from Folder
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>

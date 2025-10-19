@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import { Folder, FolderPlus, Edit2, Trash2, FolderOpen } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -28,9 +28,16 @@ import {
 import FolderItem from "./FolderItem";
 import { buildFolderTree, flattenFolders } from "./FoldersDB";
 
-export default function FolderManager() {
+interface FolderProps {
+  selectedFolder: FolderNode | null;
+  setSelectedFolder: Dispatch<SetStateAction<FolderNode | null>>;
+}
+export default function FolderManager({
+  selectedFolder,
+  setSelectedFolder,
+}: FolderProps) {
   const [newFolderName, setNewFolderName] = useState("");
-  const [selectedFolder, setSelectedFolder] = useState<FolderNode | null>(null);
+
   const [folders, setFolders] = useState<FolderNode[]>([]);
 
   const [open, setOpen] = useState(false);
@@ -86,7 +93,6 @@ export default function FolderManager() {
         const toDelete = [...existingIds].filter((id) => !currentIds.has(id));
 
         if (toDelete?.length > 0) {
-          console.log(`🗑️ Removing ${toDelete.length} deleted folders`);
           await db.folders.bulkDelete(toDelete);
         }
 
