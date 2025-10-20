@@ -4,6 +4,7 @@ import { browser } from "wxt/browser";
 import "@/assets/tailwind.css";
 
 import { AppContextProvider } from "./context/AppContext.tsx";
+import { ThemeProvider } from "./theme-provider.tsx";
 
 document.addEventListener("DOMContentLoaded", () => {
   const dir = browser.i18n.getMessage("@@bidi_dir");
@@ -11,7 +12,9 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <AppContextProvider>
-    <App></App>
-  </AppContextProvider>
+  <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
+    <AppContextProvider>
+      <App></App>
+    </AppContextProvider>
+  </ThemeProvider>
 );

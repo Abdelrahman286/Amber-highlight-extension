@@ -27,6 +27,7 @@ import { Toaster } from "sonner";
 
 import WebsitesSection from "./Tabs/WebsiteHighlights/WebsiteHighlights";
 import FoldersPage from "./Tabs/FoldersTab/FoldersPage";
+import HelpPage from "./Tabs/Help/HelpPage";
 
 type Section = "websites" | "folders" | "import" | "help" | "about";
 
@@ -54,6 +55,8 @@ export default function SettingsPage() {
 
     if (section == "folders") {
       setActiveSection("folders");
+    } else if (section == "help") {
+      setActiveSection("help");
     } else {
       setActiveSection("websites");
     }
@@ -127,8 +130,7 @@ export default function SettingsPage() {
           {activeSection === "websites" && <WebsitesSection />}
           {activeSection === "folders" && <FoldersPage></FoldersPage>}
           {activeSection === "import" && <ImportExportPage></ImportExportPage>}
-
-          {activeSection === "help" && <EmptySection title="Help" />}
+          {activeSection === "help" && <HelpPage></HelpPage>}
           {activeSection === "about" && <EmptySection title="About" />}
         </div>
       </main>

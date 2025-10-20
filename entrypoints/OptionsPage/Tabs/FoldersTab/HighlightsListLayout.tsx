@@ -7,6 +7,7 @@ import {
   Pencil,
   Check,
   X,
+  SquareArrowOutUpRight,
 } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
@@ -88,6 +89,19 @@ export default function WebsiteHighlightsList({
     );
   }
 
+  const openHighlightLink = (highlight: any) => {
+    try {
+      const url = highlight?.website?.url;
+      if (!url) {
+        console.warn("No URL found for this highlight.");
+        return;
+      }
+
+      browser.tabs.create({ url });
+    } catch (err) {
+      console.error("Failed to open highlight link:", err);
+    }
+  };
   return (
     <ScrollArea className="flex-1 h-full p-4 max-h-screen pb-14 w-full">
       <div className="space-y-3 w-full">
@@ -123,6 +137,11 @@ export default function WebsiteHighlightsList({
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end" className="w-56">
+                    <DropdownMenuItem
+                      onClick={() => openHighlightLink(highlight)}
+                    >
+                      <SquareArrowOutUpRight className="mr-2 h-4 w-4" /> open
+                    </DropdownMenuItem>
                     {!highlight?.notes ? (
                       <DropdownMenuItem
                         onClick={() => handleAddOrEditNotes(highlight)}

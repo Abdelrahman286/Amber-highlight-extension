@@ -290,25 +290,40 @@ export const getFolderByHighlightIdDB = async (
 };
 
 // --- get folder highlights ---
+
 export const getFolderHighlightsDB = async (
-  id: string
+  folderId: string
 ): Promise<{
   success: boolean;
   error?: string | Error;
-  data?: StoredHighlight[];
+  data?: (StoredHighlight & { website?: Websites })[];
 }> => {
   try {
-    // 1. Get all highlights where folderId equals the given id
+    // 1. Get all highlights for the folder
     const highlights = await db.highlights
       .where("folderId")
-      .equals(id)
+      .equals(folderId)
       .toArray();
 
-    // 2. Sort by createdAt
-    highlights.sort((a, b) => Number(a.createdAt) - Number(b.createdAt));
+    // 2. Extract all unique urlIds
+    const urlIds = Array.from(new Set(highlights.map((h) => h.urlId)));
 
-    // 3. Return the result
-    return { success: true, data: highlights };
+    // 3. Get all related websites in one batch query
+    const websites = await db.websites.where("id").anyOf(urlIds).toArray();
+
+    // 4. Map websites by id for quick lookup
+    const websiteMap = Object.fromEntries(websites.map((w) => [w.id, w]));
+
+    // 5. Combine highlight + website data
+    const combined = highlights.map((h) => ({
+      ...h,
+      website: websiteMap[h.urlId],
+    }));
+
+    // 6. Sort by createdAt
+    combined.sort((a, b) => Number(a.createdAt) - Number(b.createdAt));
+
+    return { success: true, data: combined };
   } catch (err: unknown) {
     const errorMessage = err instanceof Error ? err : new Error(String(err));
     return { success: false, error: errorMessage };

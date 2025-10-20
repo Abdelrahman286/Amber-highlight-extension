@@ -6,7 +6,6 @@ import { AppContextProvider } from "./context/AppContext.tsx";
 import { SidebarProvider } from "@/components/ui/sidebar.tsx";
 import { ThemeProvider } from "./theme-provider.tsx";
 
-// import "@/assets/contentScript.css";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">

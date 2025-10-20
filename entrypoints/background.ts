@@ -182,6 +182,19 @@ const messageHandlers: Record<
     }
   },
 
+  openHelpPage: async (message, sender, sendResponse) => {
+    try {
+      const url =
+        browser.runtime.getURL("amberOptionsPage.html" as any) +
+        "?section=help";
+
+      browser.tabs.create({ url });
+      sendResponse({ success: true });
+    } catch (err: any) {
+      sendResponse(err);
+    }
+  },
+
   getFolderByHighlightId: async (message, sender, sendResponse) => {
     try {
       const res = await getFolderByHighlightIdDB(message.data);

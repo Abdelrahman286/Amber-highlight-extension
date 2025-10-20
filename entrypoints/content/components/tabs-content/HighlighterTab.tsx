@@ -7,13 +7,13 @@ import { ChevronDown, ChevronRight } from "lucide-react";
 import FontSettingsSection from "./FontSettingsSection";
 
 const fixedColors = [
-  "#F7DC6F", // Yellow
-  "#FF6B6B", // Red
-  "#4ECDC4", // Turquoise
-  "#FFA07A", // Orange
-  "#98D8C8", // Mint Green
-  "#BB8FCE", // Purple
-  "#F8B88B", // Peach
+  "rgba(247, 220, 111, 0.7)", // Yellow
+  "rgba(255, 107, 107, 0.7)", // Red
+  "rgba(78, 205, 196, 0.7)", // Turquoise
+  "rgba(255, 160, 122, 0.7)", // Orange
+  "rgba(152, 216, 200, 0.7)", // Mint Green
+  "rgba(187, 143, 206, 0.7)", // Purple
+  "rgba(248, 184, 139, 0.7)", // Peach
 ];
 const RECENT_COLORS_KEY = "recentColors";
 const ColorPickerButtons = () => {

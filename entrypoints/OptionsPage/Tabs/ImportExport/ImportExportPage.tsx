@@ -15,6 +15,7 @@ import {
   CheckSquare,
   XSquare,
   UploadCloud,
+  Import,
 } from "lucide-react";
 
 type FolderType = {
@@ -158,9 +159,15 @@ export default function ImportExportPage() {
 
   return (
     <div className="max-w-3xl mx-auto p-6 space-y-6">
-      <p className="text-center text-muted-foreground text-md font-bold ">
-        Backup or restore your Amber highlights, folders, and websites.
-      </p>
+      <div className="flex flex-col  space-y-3">
+        <div className="flex items-center gap-2">
+          <Import className="w-6 h-6 text-primary" />
+          <h1 className="text-2xl font-semibold">Import & Export Data</h1>
+        </div>
+        <p className="text-muted-foreground text-md max-w-md">
+          Backup or restore your Amber highlights, folders, and websites.
+        </p>
+      </div>
 
       {/* --- Export Section --- */}
       <Card>

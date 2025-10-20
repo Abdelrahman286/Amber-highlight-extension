@@ -25,7 +25,7 @@ export function highlight({
     id: id,
     urlId: urlId,
     folderId: "",
-    color: color || "#F7DC6F", // Yellow
+    color: color || "rgba(247, 220, 111, 0.7)", // Yellow
     fontSettings: fontSettings,
     notes: notes,
     createdAt,
@@ -80,7 +80,7 @@ export function placeHighlight(
       ? (range.commonAncestorContainer as HTMLElement)
       : (range.commonAncestorContainer.parentElement as HTMLElement);
 
-  const color: string = highlightColor || "#F7DC6F";
+  const color: string = highlightColor || "rgba(247, 220, 111, 0.7)";
   const createdAt: number = Date.now();
   const id: string = crypto.randomUUID();
   const urlId: string = window.location.href;

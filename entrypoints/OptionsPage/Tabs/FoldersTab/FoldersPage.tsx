@@ -10,6 +10,8 @@ import FolderHighlights from "./HighlightsListLayout";
 import FolderManager from "../../../src/FoldersManager/FoldersManager";
 import { FolderNode } from "@/entrypoints/src/FoldersManager/types";
 
+import CompactExportButtons from "../ExportButtons";
+
 export default function WebsitesHighlights() {
   const [folderHighlights, setFolderHighlights] = useState<StoredHighlight[]>(
     []
@@ -79,8 +81,13 @@ export default function WebsitesHighlights() {
           <div className="flex flex-col h-full bg-muted/55">
             <div className="flex items-center gap-2 px-4 py-3 shrink-0">
               <Star className="h-5 w-5 text-muted-foreground" />
-              <h2 className="text-sm font-medium uppercase tracking-wide text-muted-foreground">
+              <h2 className="text-sm w-full flex items-center justify-between font-medium uppercase tracking-wide text-muted-foreground">
                 Highlights
+                {folderHighlights?.length > 0 && (
+                  <CompactExportButtons
+                    highlights={folderHighlights}
+                  ></CompactExportButtons>
+                )}
               </h2>
             </div>
 

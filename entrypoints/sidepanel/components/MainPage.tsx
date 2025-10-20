@@ -258,9 +258,10 @@ const MainPage = () => {
                         />
                       </TooltipTrigger>
                       <TooltipContent side="top" className="max-w-xs text-sm">
-                        Some highlights couldn’t be restored on this page
-                        because the page’s content has changed since they were
-                        created.
+                        The page’s content has changed since the highlights were
+                        created. This could be due to changes in the page
+                        structure or deleted highlights. Please try to highlight
+                        the text again.
                       </TooltipContent>
                     </Tooltip>
                   </TooltipProvider>

@@ -268,6 +268,14 @@ const TranslateTab = () => {
     }
   };
 
+  const openHelpPage = () => {
+    try {
+      browser.runtime.sendMessage({ action: "openHelpPage" });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <div style={{ padding: 0, margin: 0 }}>
       {/* --- Dropdowns and Swap Button --- */}
@@ -374,10 +382,10 @@ const TranslateTab = () => {
               </span>
             </div>
 
-            <a
-              href="https://developer.chrome.com/docs/ai/translation-api/"
-              target="_blank"
-              rel="noopener noreferrer"
+            <div
+              onClick={() => {
+                openHelpPage();
+              }}
               style={{
                 color: "#60a5fa",
                 textDecoration: "none",
@@ -385,10 +393,11 @@ const TranslateTab = () => {
                 display: "flex",
                 alignItems: "center",
                 gap: "4px",
+                cursor: "pointer",
               }}
             >
               Learn more
-            </a>
+            </div>
           </div>
         ) : loading ? (
           <ShimmerText

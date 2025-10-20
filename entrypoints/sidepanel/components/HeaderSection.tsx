@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { RefreshCw, Globe, Moon, Sun } from "lucide-react";
+import { useTheme } from "../theme-provider";
 
 export default function HeaderSection({
   activeUrl,
@@ -10,16 +11,7 @@ export default function HeaderSection({
   loading: boolean;
   loadWebsiteHighlights: () => void;
 }) {
-  const [isDark, setIsDark] = useState(false);
-
-  // Sync dark mode with document body (for simplicity)
-  useEffect(() => {
-    if (isDark) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  }, [isDark]);
+  const { setTheme, theme } = useTheme();
 
   const faviconUrl = activeUrl
     ? `https://www.google.com/s2/favicons?domain=${
@@ -74,11 +66,13 @@ export default function HeaderSection({
         </button>
 
         <button
-          onClick={() => setIsDark((prev) => !prev)}
+          onClick={() => setTheme(theme === "light" ? "dark" : "light")}
           className="p-2 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 transition active:scale-[0.97]"
-          title={isDark ? "Switch to Light Mode" : "Switch to Dark Mode"}
+          title={
+            theme == "dark" ? "Switch to Light Mode" : "Switch to Dark Mode"
+          }
         >
-          {isDark ? (
+          {theme == "dark" ? (
             <Sun className="w-4 h-4 text-yellow-400" />
           ) : (
             <Moon className="w-4 h-4 text-gray-700" />
