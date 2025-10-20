@@ -16,6 +16,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Websites, StoredHighlight } from "../../../content/type";
 import WebsiteHighlightsList from "./HighlightsListLayout";
+import CompactExportButtons from "../ExportButtons";
 
 export default function WebsitesHighlights() {
   const [websites, setWebsites] = useState<Websites[]>([]);
@@ -173,8 +174,14 @@ export default function WebsitesHighlights() {
           <div className="flex flex-col h-full bg-muted/55">
             <div className="flex items-center gap-2 px-4 py-3 shrink-0">
               <Star className="h-5 w-5 text-muted-foreground" />
-              <h2 className="text-sm font-medium uppercase tracking-wide text-muted-foreground">
+
+              <h2 className="text-sm w-full flex items-center justify-between font-medium uppercase tracking-wide text-muted-foreground">
                 Highlights
+                {websiteHighlights?.length > 0 && (
+                  <CompactExportButtons
+                    highlights={websiteHighlights}
+                  ></CompactExportButtons>
+                )}
               </h2>
             </div>
             {/* Replaced content */}

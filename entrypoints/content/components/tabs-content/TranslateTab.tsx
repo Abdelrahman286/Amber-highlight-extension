@@ -28,6 +28,10 @@ const TranslateTab = () => {
     { value: "fr", label: "French" },
     { value: "es", label: "Spanish" },
     { value: "de", label: "German" },
+    { value: "it", label: "Italian" },
+    { value: "ru", label: "Russian" },
+    { value: "zh", label: "Chinese" },
+    { value: "ja", label: "Japanese" },
   ];
 
   // --- Load saved languages from Chrome storage on mount ---
