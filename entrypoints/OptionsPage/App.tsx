@@ -28,6 +28,7 @@ import { Toaster } from "sonner";
 import WebsitesSection from "./Tabs/WebsiteHighlights/WebsiteHighlights";
 import FoldersPage from "./Tabs/FoldersTab/FoldersPage";
 import HelpPage from "./Tabs/Help/HelpPage";
+import AboutPage from "./Tabs/AboutPage";
 
 type Section = "websites" | "folders" | "import" | "help" | "about";
 
@@ -50,16 +51,11 @@ export default function SettingsPage() {
 
   // change the activeSection based on url parameter
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const section = params.get("section");
-
-    if (section == "folders") {
-      setActiveSection("folders");
-    } else if (section == "help") {
-      setActiveSection("help");
-    } else {
-      setActiveSection("websites");
-    }
+    const section = new URLSearchParams(window.location.search).get(
+      "section"
+    ) as Section;
+    const validIds = menuItems.map((item) => item.id);
+    setActiveSection(validIds.includes(section) ? section : "websites");
   }, []);
 
   return (
@@ -80,7 +76,18 @@ export default function SettingsPage() {
                 {menuItems.map((item) => (
                   <SidebarMenuItem key={item.id}>
                     <SidebarMenuButton
-                      onClick={() => setActiveSection(item.id)}
+                      onClick={() => {
+                        setActiveSection(item.id);
+
+                        // Construct the new URL
+                        const baseUrl = browser.runtime.getURL(
+                          "amberOptionsPage.html" as any
+                        );
+                        const newUrl = `${baseUrl}?section=${item.id}`;
+
+                        // Update the URL in the address bar without navigation
+                        window.history.replaceState(null, "", newUrl);
+                      }}
                       isActive={activeSection === item.id}
                       tooltip={item.label}
                     >
@@ -131,7 +138,7 @@ export default function SettingsPage() {
           {activeSection === "folders" && <FoldersPage></FoldersPage>}
           {activeSection === "import" && <ImportExportPage></ImportExportPage>}
           {activeSection === "help" && <HelpPage></HelpPage>}
-          {activeSection === "about" && <EmptySection title="About" />}
+          {activeSection === "about" && <AboutPage></AboutPage>}
         </div>
       </main>
     </div>

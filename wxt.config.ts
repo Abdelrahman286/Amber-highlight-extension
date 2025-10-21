@@ -12,9 +12,10 @@ export default defineConfig({
       "tabs",
       "contextMenus",
     ],
-    name: "Amber",
-    version: "0.0.1",
-    description: "Text Hihglighting chrome extension",
+    name: "Amber - Highlight, Annotate, Summarize & Translate",
+    version: "1.0.0",
+    description:
+      "AI-powered text highlighting Chrome extension built with Gemini Nano",
   },
   // @ts-expect-error: vite is valid in WXT config but not typed
   vite: () => ({

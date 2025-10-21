@@ -7,6 +7,7 @@ import { useDeleteHighlightListener } from "./hooks/useDomDeleteHighlightListene
 import { useRestoreHighlights } from "./hooks/useRestoreHighlights";
 import { useWebFonts } from "./hooks/injectFont";
 import { useScrollToHighlight } from "./hooks/useScrollToHighlight";
+import { useAmberEnabled } from "./hooks/useAmberEnabled";
 
 const App = () => {
   const {
@@ -21,11 +22,12 @@ const App = () => {
     setExpandView,
   } = useAppContext();
 
+  const { enabled, loading } = useAmberEnabled();
+
   // inject google font to the main document to be used in shadow root document
   useWebFonts();
 
   useEffect(() => {
-    console.log(1);
     function handleMouseUp(e: MouseEvent) {
       if (
         (e.target as HTMLElement).tagName == "AMBER-HIGHLIGHTER" &&
@@ -99,6 +101,10 @@ const App = () => {
   // scroll to highlight
   useScrollToHighlight();
 
+  if (loading) return null; // wait until storage loads
+  if (!enabled) {
+    return null;
+  }
   return (
     <div
       style={{
