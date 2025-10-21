@@ -16,7 +16,7 @@ export function useAmberEnabled() {
       try {
         const result = await browser.storage.local.get("amberEnabled");
         if (isMounted) {
-          setEnabled(result.amberEnabled ?? false);
+          setEnabled(result?.amberEnabled ?? true);
           setLoading(false);
         }
       } catch (err) {
@@ -28,7 +28,7 @@ export function useAmberEnabled() {
     // 2️⃣ Listen for changes
     const handleChange = (changes: Record<string, any>, areaName: string) => {
       if (areaName === "local" && changes.amberEnabled) {
-        const newValue = changes.amberEnabled.newValue ?? false;
+        const newValue = changes?.amberEnabled?.newValue ?? true;
         if (isMounted) setEnabled(newValue);
       }
     };
