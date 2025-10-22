@@ -10,6 +10,7 @@ import {
   Power,
   Check,
   X,
+  FileText,
 } from "lucide-react";
 
 export default function Popup() {
@@ -199,6 +200,23 @@ export default function Popup() {
               <Folder className="h-4 w-4 text-amber-600" />
             </div>
             <span className="font-medium text-gray-700">Manage Folders</span>
+          </Button>
+
+          <Button
+            variant="outline"
+            className="w-full flex items-center justify-start gap-3 h-12 border-blue-200 hover:bg-blue-50 hover:border-blue-300 transition-all group"
+            onClick={() =>
+              browser.tabs.create({
+                url:
+                  browser.runtime.getURL("/amberOptionsPage.html") +
+                  "?section=flashcards",
+              })
+            }
+          >
+            <div className="p-1.5 rounded-lg bg-blue-100 group-hover:bg-blue-200 transition-colors">
+              <FileText className="h-4 w-4 text-blue-600" />
+            </div>
+            <span className="font-medium text-gray-700">Flashcards</span>
           </Button>
 
           <Button

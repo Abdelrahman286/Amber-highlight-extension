@@ -7,6 +7,7 @@ import {
   Info,
   Sun,
   Moon,
+  Layers,
 } from "lucide-react";
 
 import {
@@ -29,12 +30,20 @@ import WebsitesSection from "./Tabs/WebsiteHighlights/WebsiteHighlights";
 import FoldersPage from "./Tabs/FoldersTab/FoldersPage";
 import HelpPage from "./Tabs/Help/HelpPage";
 import AboutPage from "./Tabs/AboutPage";
+import FlashCards from "./Tabs/FlashCards/FlashCards";
 
-type Section = "websites" | "folders" | "import" | "help" | "about";
+type Section =
+  | "websites"
+  | "folders"
+  | "import"
+  | "help"
+  | "about"
+  | "flashcards";
 
 const menuItems = [
   { id: "websites" as Section, icon: Globe, label: "Highlighted Pages" },
   { id: "folders" as Section, icon: FolderTree, label: "Folders" },
+  { id: "flashcards" as Section, icon: Layers, label: "Flash Cards" },
   { id: "import" as Section, icon: Import, label: "Import / Export" },
   { id: "help" as Section, icon: HelpCircle, label: "Help" },
   { id: "about" as Section, icon: Info, label: "About" },
@@ -42,6 +51,7 @@ const menuItems = [
 
 import { useTheme } from "./theme-provider";
 import ImportExportPage from "./Tabs/ImportExport/ImportExportPage";
+import HighlightsSearch from "./SearchModal";
 
 export default function SettingsPage() {
   const { state } = useSidebar();
@@ -120,16 +130,19 @@ export default function SettingsPage() {
           </div>
 
           {/* Theme toggle */}
-          <button
-            onClick={() => setTheme(theme === "light" ? "dark" : "light")}
-            className="flex items-center gap-2 px-3 py-1.5 rounded-md border hover:bg-muted transition-colors"
-          >
-            {theme === "light" ? (
-              <Moon className="w-4 h-4" />
-            ) : (
-              <Sun className="w-4 h-4" />
-            )}
-          </button>
+          <div className="flex flex-row gap-2">
+            <HighlightsSearch></HighlightsSearch>
+            <button
+              onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+              className="flex items-center gap-2 px-3 py-1.5 rounded-md border hover:bg-muted transition-colors"
+            >
+              {theme === "light" ? (
+                <Moon className="w-4 h-4" />
+              ) : (
+                <Sun className="w-4 h-4" />
+              )}
+            </button>
+          </div>
         </header>
 
         {/* Page Content */}
@@ -139,6 +152,7 @@ export default function SettingsPage() {
           {activeSection === "import" && <ImportExportPage></ImportExportPage>}
           {activeSection === "help" && <HelpPage></HelpPage>}
           {activeSection === "about" && <AboutPage></AboutPage>}
+          {activeSection === "flashcards" && <FlashCards></FlashCards>}
         </div>
       </main>
     </div>

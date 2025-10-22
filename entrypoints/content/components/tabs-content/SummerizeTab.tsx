@@ -1,7 +1,14 @@
 import { useState, useEffect } from "react";
 import Select, { Option } from "../SelectComponent/Select";
 import Tooltip from "../CustomToolTip/Tooltip";
-import { Save, AlignLeft, Info, Minimize2, Maximize2 } from "lucide-react";
+import {
+  Save,
+  AlignLeft,
+  Info,
+  Minimize2,
+  Maximize2,
+  TextSelect,
+} from "lucide-react";
 import Button from "../Button/Button";
 import { useAppContext } from "../../context/AppContext";
 import { useAlert } from "../../context/AlertContext";
@@ -12,6 +19,7 @@ const SummarizeTab = () => {
   const { showAlert } = useAlert();
   const { selectionRef, selectHighlightId, expandView } = useAppContext();
   const [level, setLevel] = useState("short");
+  const [summaryType, setSummaryType] = useState("tldr");
   const [isAvailable, setIsAvailable] = useState(false);
   const [summary, setSummary] = useState("Checking availability...");
   const [loading, setLoading] = useState(false);
@@ -23,6 +31,12 @@ const SummarizeTab = () => {
     { value: "short", label: "Short" },
     { value: "medium", label: "Medium" },
     { value: "long", label: "Detailed" },
+  ];
+  const summaryTypes: Option[] = [
+    { value: "tldr", label: "TL;DR" },
+    { value: "teaser", label: "Teaser" },
+    { value: "key-points", label: "Key Points" },
+    { value: "headline", label: "Headline" },
   ];
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setGenerateMarkdown(e.target.checked);
@@ -100,7 +114,7 @@ const SummarizeTab = () => {
 
       try {
         summarizer = await (window as any).Summarizer.create({
-          type: "tldr",
+          type: summaryType,
           format: `${generateMarkdown ? "markdown" : "plain-text"}`,
           length: level,
           inputLanguage: "en",
@@ -155,7 +169,14 @@ const SummarizeTab = () => {
       isCancelled = true;
       summarizer?.destroy?.();
     };
-  }, [level, isAvailable, selectionRef, selectHighlightId, generateMarkdown]);
+  }, [
+    level,
+    summaryType,
+    isAvailable,
+    selectionRef,
+    selectHighlightId,
+    generateMarkdown,
+  ]);
 
   const saveSummaryToNotes = async (): Promise<boolean> => {
     if (!summary?.trim() || !selectHighlightId) {
@@ -283,6 +304,38 @@ const SummarizeTab = () => {
         </div>
       </div>
 
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: "10px",
+          marginTop: "4px",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "3px",
+            fontSize: "10px",
+            fontWeight: 500,
+            whiteSpace: "nowrap",
+          }}
+        >
+          <TextSelect size={16} />
+          <span>Type</span>
+        </div>
+
+        <Select
+          width={100}
+          value={summaryType}
+          onChange={setSummaryType}
+          options={summaryTypes}
+          placeholder="Choose Type"
+          disabled={!isAvailable}
+        />
+      </div>
+
       <div className="markdown-toggle">
         <input
           type="checkbox"
@@ -295,6 +348,7 @@ const SummarizeTab = () => {
           Generate summary in Markdown
         </label>
       </div>
+
       {/* --- Summary Output --- */}
       <div
         style={{
