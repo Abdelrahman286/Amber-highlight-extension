@@ -14,6 +14,7 @@ import { useAppContext } from "../../context/AppContext";
 import { useAlert } from "../../context/AlertContext";
 import ShimmerText from "../shimmerText/ShimmerText";
 import ExpandButton from "../ExpandButton";
+import ResultBox from "./ResultBox";
 
 const SummarizeTab = () => {
   const { showAlert } = useAlert();
@@ -352,13 +353,11 @@ const SummarizeTab = () => {
       {/* --- Summary Output --- */}
       <div
         style={{
-          //   marginTop: "12px",
           fontSize: "14px",
           lineHeight: "1.5",
           maxHeight: expandView ? "40vh" : "130px",
           overflowY: "auto",
           color: isAvailable ? "#e4e4e7" : "#a1a1aa",
-
           whiteSpace: "pre-wrap",
           wordBreak: "break-word",
         }}
@@ -407,7 +406,7 @@ const SummarizeTab = () => {
             staggerMs={70}
           />
         ) : (
-          summary
+          <ResultBox translation={summary} />
         )}
       </div>
     </div>

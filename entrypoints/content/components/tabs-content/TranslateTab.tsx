@@ -7,6 +7,7 @@ import { useAlert } from "../../context/AlertContext";
 import { useAppContext } from "../../context/AppContext";
 import Tooltip from "../CustomToolTip/Tooltip";
 import ExpandButton from "../ExpandButton";
+import ResultBox from "./ResultBox";
 
 const TranslateTab = () => {
   const WIDTH = 100;
@@ -411,7 +412,7 @@ const TranslateTab = () => {
             staggerMs={70}
           />
         ) : (
-          <span style={{ whiteSpace: "pre-wrap" }}>{translation}</span>
+          <ResultBox translation={translation}></ResultBox>
         )}
       </div>
     </div>
