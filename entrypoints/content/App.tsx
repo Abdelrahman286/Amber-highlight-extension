@@ -111,7 +111,7 @@ const App = () => {
         padding: 0,
         margin: 0,
         position: "fixed",
-        zIndex: 100,
+        zIndex: 999999,
       }}
     >
       {buttonPos && !showActionsBox ? <TriggerIcons /> : null}

@@ -40,7 +40,10 @@ export default function Popup() {
           currentWindow: true,
         });
         const currentUrl = tabs[0]?.url || "";
-        const isChromePage = currentUrl.startsWith("chrome");
+        const isChromePage =
+          currentUrl.startsWith("chrome") ||
+          currentUrl.startsWith("https://chromewebstore.google.com/");
+
         setIsBlockedPage(isChromePage);
         updateExtensionIcon(isChromePage || !enabled);
       } catch (err) {
