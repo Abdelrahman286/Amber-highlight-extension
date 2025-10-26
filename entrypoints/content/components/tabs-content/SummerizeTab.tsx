@@ -290,7 +290,7 @@ const SummarizeTab = () => {
         </div>
 
         <div>
-          <Tooltip text="Save your selection" position="bottom">
+          <Tooltip text="Save Summary" position="bottom">
             <Button
               onClick={handleSaveSummary}
               size={"sm"}

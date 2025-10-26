@@ -65,12 +65,12 @@ const FlashCards: React.FC = () => {
   };
 
   const openFlashcardsModal = async () => {
-    const h = await db.highlights
-      .where("folderId")
-      .anyOf(selectedFolders)
-      .or("urlId")
-      .anyOf(selectedWebsites)
-      .toArray();
+    const [byFolder, byWebsite] = await Promise.all([
+      db.highlights.where("folderId").anyOf(selectedFolders).toArray(),
+      db.highlights.where("urlId").anyOf(selectedWebsites).toArray(),
+    ]);
+
+    const h = [...byFolder, ...byWebsite];
     setHighlights(h);
     setOpenModal(true);
   };
@@ -90,6 +90,10 @@ const FlashCards: React.FC = () => {
       ),
     [websites, websiteSearch]
   );
+
+  useEffect(() => {
+    console.log(highlights);
+  }, [highlights]);
 
   if (loading) {
     return (
