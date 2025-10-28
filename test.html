@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amber - Text Highlighting Extension</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.8;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 60px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            color: #667eea;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 1.1em;
+            margin-bottom: 40px;
+            font-style: italic;
+        }
+
+        h2 {
+            color: #764ba2;
+            font-size: 1.8em;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            border-left: 4px solid #667eea;
+            padding-left: 15px;
+        }
+
+        p {
+            margin-bottom: 20px;
+            text-align: justify;
+            font-size: 1.05em;
+        }
+
+        .highlight-tip {
+            background: #f0f4ff;
+            border-left: 4px solid #667eea;
+            padding: 15px 20px;
+            margin: 30px 0;
+            border-radius: 5px;
+        }
+
+        .highlight-tip strong {
+            color: #667eea;
+        }
+
+        .feature-list {
+            background: #fafafa;
+            padding: 20px 30px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .feature-list ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .feature-list li {
+            padding: 8px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .feature-list li:before {
+            content: "✨";
+            position: absolute;
+            left: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>🖍️ Amber</h1>
+        <p class="subtitle">Your Smart Text Highlighting Companion</p>
+
+        <div class="highlight-tip">
+            <strong>Try it out!</strong> Select any text on this page to highlight it with the Amber extension. Your
+            highlights will be saved automatically and organized for easy access.
+        </div>
+
+        <h2>Intelligent Text Highlighting & Organization</h2>
+        <p>
+            Amber revolutionizes the way you interact with web content by providing a powerful yet intuitive text
+            highlighting system. Unlike traditional bookmarking tools that save entire pages, Amber allows you to
+            capture and preserve the exact passages that matter most to you. Every highlight you create is automatically
+            saved to your local device using IndexedDB, ensuring your data remains private and accessible even without
+            an internet connection. The extension seamlessly integrates into your browsing experience, allowing you to
+            highlight text with a simple selection and click. You can organize your highlights into custom folders,
+            making it effortless to categorize information by project, topic, or any system that works for you. Whether
+            you're conducting research, studying for exams, or simply collecting interesting ideas, Amber keeps
+            everything neatly organized and instantly searchable.
+        </p>
+
+        <h2>AI-Powered Summarization & Translation</h2>
+        <p>
+            Leveraging the cutting-edge Gemini Nano APIs built directly into Chrome, Amber brings advanced AI
+            capabilities to your fingertips without requiring external API keys or internet connectivity for processing.
+            The summarization feature intelligently condenses lengthy articles, research papers, or documentation into
+            concise, digestible summaries, saving you valuable time while ensuring you grasp the core concepts. This is
+            particularly useful when you're reviewing multiple sources or need to quickly determine if a document is
+            relevant to your needs. The translation feature breaks down language barriers instantly, allowing you to
+            translate highlighted text into your preferred language with a single click. Both features work offline once
+            the AI model is loaded, making Amber an indispensable tool for multilingual researchers, students, and
+            professionals who need to process information quickly and efficiently across different languages and content
+            volumes.
+        </p>
+
+        <h2>Flashcards & Active Learning</h2>
+        <p>
+            Transform your passive reading into active learning with Amber's integrated flashcard system. Any highlight
+            you save can be instantly converted into a flashcard, complete with the original text on the front and your
+            personal notes or key takeaways on the back. This feature is perfect for memorizing important definitions,
+            historical dates, foreign language vocabulary, programming syntax, or any information that requires
+            retention through spaced repetition. The flashcard interface allows you to review your saved content in a
+            focused, distraction-free environment, helping reinforce your memory through active recall. You can create
+            dedicated flashcard sets organized by topic or folder, making it easy to study specific subjects when
+            needed. Amber automatically tracks which keywords and concepts you've saved, helping you identify patterns
+            in your learning and ensuring that important information doesn't get lost in the endless scroll of web
+            content. Whether you're preparing for certification exams, learning a new skill, or building expertise in
+            your field, Amber's flashcard system turns your browsing research into lasting knowledge.
+        </p>
+
+        <div class="feature-list">
+            <h2 style="margin-top: 0; border: none; padding: 0;">Key Features at a Glance</h2>
+            <ul>
+                <li><strong>Smart Highlighting:</strong> Save important text passages with context</li>
+                <li><strong>Folder Organization:</strong> Categorize highlights into custom collections</li>
+                <li><strong>AI Summarization:</strong> Generate concise summaries instantly</li>
+                <li><strong>Instant Translation:</strong> Break language barriers effortlessly</li>
+                <li><strong>Flashcard Creation:</strong> Convert highlights to study cards</li>
+                <li><strong>Keyword Tracking:</strong> Monitor and memorize important terms</li>
+                <li><strong>Offline Access:</strong> All data stored locally on your device</li>
+                <li><strong>Privacy First:</strong> Your data never leaves your browser</li>
+            </ul>
+        </div>
+    </div>
+</body>
+
+</html>
