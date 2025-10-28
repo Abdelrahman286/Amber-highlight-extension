@@ -4,7 +4,7 @@
 
 Built with performance, usability, and local-first data storage in mind.
 
-![Demo](./demo-gif.gif)
+![Demo](./demo.gif)
 
 ## ✨ Key Features
 
