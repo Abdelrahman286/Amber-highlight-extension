@@ -4,7 +4,7 @@
 
 Built with performance, usability, and local-first data storage in mind.
 
-![Demo](./demo.gif)
+![Image](https://github.com/user-attachments/assets/0db5477e-841e-4e3d-8b4b-983521c8d15f)
 
 ## ✨ Key Features
 
